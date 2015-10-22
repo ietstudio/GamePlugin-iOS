@@ -1,0 +1,6 @@
+framework module GamePluginIOS {
+  umbrella header "GamePluginIOS-umbrella.h"
+
+  export *
+  module * { export * }
+}

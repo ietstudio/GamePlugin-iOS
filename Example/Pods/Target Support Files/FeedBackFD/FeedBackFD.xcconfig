@@ -1,0 +1,2 @@
+FEEDBACKFD_LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/MobihelpSDK/MobihelpSDK"
+FEEDBACKFD_OTHER_LDFLAGS = -l"FDMobihelpSDK" -framework "AVFoundation" -framework "CoreData" -framework "CoreGraphics" -framework "CoreTelephony" -framework "Foundation" -framework "MobileCoreServices" -framework "QuartzCore" -framework "Security" -framework "SystemConfiguration" -framework "UIKit"

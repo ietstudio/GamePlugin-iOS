@@ -1,0 +1,1 @@
+ALASSETSLIBRARY_CUSTOMPHOTOALBUM_OTHER_LDFLAGS = -framework "AssetsLibrary" -framework "UIKit" -weak_framework "Photos"

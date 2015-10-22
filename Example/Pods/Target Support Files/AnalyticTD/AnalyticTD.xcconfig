@@ -1,0 +1,2 @@
+ANALYTICTD_LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/AnalyticTD/Pod/SDK/Game_Analytics_SDK_IOS_3.1.60"
+ANALYTICTD_OTHER_LDFLAGS = -l"TalkingDataGA" -l"z" -framework "AdSupport" -framework "CoreTelephony" -framework "Security" -framework "SystemConfiguration"

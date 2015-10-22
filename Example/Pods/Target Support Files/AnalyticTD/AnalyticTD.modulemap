@@ -1,0 +1,6 @@
+framework module AnalyticTD {
+  umbrella header "AnalyticTD-umbrella.h"
+
+  export *
+  module * { export * }
+}

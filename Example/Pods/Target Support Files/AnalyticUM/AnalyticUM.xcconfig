@@ -1,0 +1,2 @@
+ANALYTICUM_LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/AnalyticUM/Pod/SDK/umsdk_iOS_game_idfa_3.5.10.0"
+ANALYTICUM_OTHER_LDFLAGS = -l"MobClickGameLibrary" -l"z"

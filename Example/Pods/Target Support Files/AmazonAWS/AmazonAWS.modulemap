@@ -1,0 +1,6 @@
+framework module AmazonAWS {
+  umbrella header "AmazonAWS-umbrella.h"
+
+  export *
+  module * { export * }
+}

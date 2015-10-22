@@ -1,0 +1,6 @@
+framework module AnalyticUM {
+  umbrella header "AnalyticUM-umbrella.h"
+
+  export *
+  module * { export * }
+}

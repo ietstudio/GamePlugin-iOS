@@ -1,0 +1,1 @@
+../../../GamePluginBase/Pod/Classes/LifeCycleDelegate.h

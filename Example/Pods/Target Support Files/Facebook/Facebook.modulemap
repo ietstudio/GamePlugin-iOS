@@ -1,0 +1,6 @@
+framework module Facebook {
+  umbrella header "Facebook-umbrella.h"
+
+  export *
+  module * { export * }
+}
