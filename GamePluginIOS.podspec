@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "GamePluginIOS"
-  s.version          = "0.1.0"
+  s.version          = "0.1.1"
   s.summary          = "GamePluginIOS."
 
 # This description is used to generate tags and improve search results.
@@ -41,14 +41,6 @@ Pod::Spec.new do |s|
 
   s.frameworks = 'MessageUI'
 
-  s.dependency 'GamePluginBase'
-  s.dependency 'AnalyticTD'
-  s.dependency 'AnalyticUM'
-  # s.dependency 'FeedbackUM'
-  s.dependency 'FeedBackFD'
-  s.dependency 'AmazonAWS'
-  s.dependency 'Facebook'
-
   s.dependency 'AFNetworking', '~> 2.6.0'
   s.dependency 'MD5Digest', '~> 1.0.1'
   s.dependency 'RMStore', '~> 0.7.1'
@@ -59,6 +51,11 @@ Pod::Spec.new do |s|
   s.dependency 'iRate', '~> 1.11.4'
   s.dependency 'ALAssetsLibrary-CustomPhotoAlbum', '~> 1.3.0'
   s.dependency 'NSLogger', '~> 1.5.1'
+
+  s.dependency 'GamePluginBase'
+  s.dependency 'AnalyticTD'
+  s.dependency 'AnalyticUM'
+  s.dependency 'FeedBackFD'
 
   
 

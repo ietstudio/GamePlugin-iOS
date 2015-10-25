@@ -11,10 +11,6 @@
 #import "Macros.h"
 #import "LifeCycleDelegate.h"
 #import "RMStore.h"
-#import "NSLogger/NSLogger.h"
-
-#define COCOAPODS_POD_AVAILABLE_AmazonAWS
-#define COCOAPODS_POD_AVAILABLE_Facebook
 
 @class MBProgressHUD;
 

@@ -8,14 +8,6 @@
 
 #import "IOSAnalyticHelper.h"
 
-#ifdef COCOAPODS_POD_AVAILABLE_AnalyticTD
-#import "TDAnalyticHelper.h"
-#endif//COCOAPODS_POD_AVAILABLE_AnalyticTD
-
-#ifdef COCOAPODS_POD_AVAILABLE_AnalyticUM
-#import "UMAnalyticHelper.h"
-#endif//COCOAPODS_POD_AVAILABLE_AnalyticUM
-
 @implementation IOSAnalyticHelper
 {
     NSMutableArray *_delegates;
@@ -26,12 +18,14 @@ SINGLETON_DEFINITION(IOSAnalyticHelper)
 - (instancetype)init {
     if (self = [super init]) {
         _delegates = [NSMutableArray array];
-#ifdef COCOAPODS_POD_AVAILABLE_AnalyticTD
-        [_delegates addObject:[TDAnalyticHelper getInstance]];
-#endif//COCOAPODS_POD_AVAILABLE_AnalyticTD
-#ifdef COCOAPODS_POD_AVAILABLE_AnalyticUM
-        [_delegates addObject:[UMAnalyticHelper getInstance]];
-#endif//COCOAPODS_POD_AVAILABLE_AnalyticUM
+        id talkingdataHelper = [NSClassFromString(@"TDAnalyticHelper") getInstance];
+        if (talkingdataHelper) {
+            [_delegates addObject:talkingdataHelper];
+        }
+        id umengHelper = [NSClassFromString(@"UMAnalyticHelper") getInstance];
+        if (umengHelper) {
+            [_delegates addObject:umengHelper];
+        }
     }
     // 在DEBUG下不发送统计事件
 #if DEBUG

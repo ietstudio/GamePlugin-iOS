@@ -1,6 +1,6 @@
 {
   "name": "GamePluginIOS",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "summary": "GamePluginIOS.",
   "description": "GamePluginIOS..",
   "homepage": "https://github.com/ietstudio/GamePluginIOS",
@@ -10,7 +10,7 @@
   },
   "source": {
     "git": "https://github.com/ietstudio/GamePluginIOS.git",
-    "tag": "0.1.0"
+    "tag": "0.1.1"
   },
   "platforms": {
     "ios": "7.0"
@@ -24,24 +24,6 @@
   },
   "frameworks": "MessageUI",
   "dependencies": {
-    "GamePluginBase": [
-
-    ],
-    "AnalyticTD": [
-
-    ],
-    "AnalyticUM": [
-
-    ],
-    "FeedBackFD": [
-
-    ],
-    "AmazonAWS": [
-
-    ],
-    "Facebook": [
-
-    ],
     "AFNetworking": [
       "~> 2.6.0"
     ],
@@ -71,6 +53,18 @@
     ],
     "NSLogger": [
       "~> 1.5.1"
+    ],
+    "GamePluginBase": [
+
+    ],
+    "AnalyticTD": [
+
+    ],
+    "AnalyticUM": [
+
+    ],
+    "FeedBackFD": [
+
     ]
   }
 }

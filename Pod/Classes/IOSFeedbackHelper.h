@@ -10,9 +10,6 @@
 #import "Macros.h"
 #import "FeedbackDelegate.h"
 
-//#define COCOAPODS_POD_AVAILABLE_FeedbackUM
-#define COCOAPODS_POD_AVAILABLE_FeedbackFD
-
 @interface IOSFeedbackHelper : NSObject <FeedbackDelegate>
 
 SINGLETON_DECLARE(IOSFeedbackHelper)

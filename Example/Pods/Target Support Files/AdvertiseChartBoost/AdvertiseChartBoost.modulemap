@@ -1,0 +1,6 @@
+framework module AdvertiseChartBoost {
+  umbrella header "AdvertiseChartBoost-umbrella.h"
+
+  export *
+  module * { export * }
+}

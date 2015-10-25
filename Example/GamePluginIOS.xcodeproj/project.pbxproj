@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		33DB8F2A9C633D98A647C056 /* Pods_GamePluginIOS_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA5BB0D5F39391A3938CAEA /* Pods_GamePluginIOS_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		5DD4543FE783597F4A237E30 /* Pods_GamePluginIOS_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDFC2BAC78F7AF1A54F9CCC /* Pods_GamePluginIOS_Example.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		33DB8F2A9C633D98A647C056 /* Pods_GamePluginIOS_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA5BB0D5F39391A3938CAEA /* Pods_GamePluginIOS_Tests.framework */; };
+		5DD4543FE783597F4A237E30 /* Pods_GamePluginIOS_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDFC2BAC78F7AF1A54F9CCC /* Pods_GamePluginIOS_Example.framework */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -514,6 +514,13 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GamePluginIOS/GamePluginIOS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"${inherited}",
+					"NSLOGGER_WAS_HERE=1",
+					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
+				);
 				INFOPLIST_FILE = "GamePluginIOS/GamePluginIOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MODULE_NAME = ExampleApp;
@@ -530,6 +537,13 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GamePluginIOS/GamePluginIOS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"${inherited}",
+					"NSLOGGER_WAS_HERE=1",
+					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
+				);
 				INFOPLIST_FILE = "GamePluginIOS/GamePluginIOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MODULE_NAME = ExampleApp;

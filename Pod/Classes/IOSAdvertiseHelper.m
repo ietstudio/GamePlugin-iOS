@@ -7,23 +7,6 @@
 //
 
 #import "IOSAdvertiseHelper.h"
-#import "AdvertiseDelegate.h"
-
-#ifdef COCOAPODS_POD_AVAILABLE_AdvertiseAdMob
-#import "AdMobAdvertiseHelper.h"
-#endif//COCOAPODS_POD_AVAILABLE_AdvertiseAdMob
-
-#ifdef COCOAPODS_POD_AVAILABLE_AdvertiseCB
-#import "CBAdvertiseHelper.h"
-#endif//COCOAPODS_POD_AVAILABLE_AdvertiseCB
-
-#ifdef COCOAPODS_POD_AVAILABLE_AdvertiseAdcolony
-#import "ACAdvertiseHelper.h"
-#endif//COCOAPODS_POD_AVAILABLE_AdvertiseAdcolony
-
-#ifdef COCOAPODS_POD_AVAILABLE_AdvertiseVungle
-#import "VungleAdvertiseHelper.h"
-#endif//COCOAPODS_POD_AVAILABLE_AdvertiseVungle
 
 @implementation IOSAdvertiseHelper
 {
@@ -36,35 +19,34 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
 - (instancetype)init {
     if (self = [super init]) {
         _spotDelegates = [NSMutableArray array];
-#ifdef COCOAPODS_POD_AVAILABLE_AdvertiseCB
-        [_spotDelegates addObject:[CBAdvertiseHelper getInstance]];
-#endif//COCOAPODS_POD_AVAILABLE_AdvertiseCB
-#ifdef COCOAPODS_POD_AVAILABLE_AdvertiseAdMob
-        [_spotDelegates addObject:[AdMobAdvertiseHelper getInstance]];
-#endif//COCOAPODS_POD_AVAILABLE_AdvertiseAdMob
+        id admobHelper = [NSClassFromString(@"AMAdvertiseHelper") getInstance];
+        if (admobHelper) {
+            [_spotDelegates addObject:admobHelper];
+        }
+        id chartBoostHelper = [NSClassFromString(@"CBAdvertiseHelper") getInstance];
+        if (chartBoostHelper) {
+            [_spotDelegates addObject:chartBoostHelper];
+        }
         
         _vedioDelegates = [NSMutableArray array];
-#ifdef COCOAPODS_POD_AVAILABLE_AdvertiseAdcolony
-        [_vedioDelegates addObject:[ACAdvertiseHelper getInstance]];
-#endif//COCOAPODS_POD_AVAILABLE_AdvertiseAdcolony
-#ifdef COCOAPODS_POD_AVAILABLE_AdvertiseVungle
-        [_vedioDelegates addObject:[VungleAdvertiseHelper getInstance]];
-#endif//COCOAPODS_POD_AVAILABLE_AdvertiseVungle
     }
     return self;
 }
 
 #pragma mark - public method
 
-- (void)showSpotAd {
+- (BOOL)showSpotAd:(void (^)(BOOL))func {
     id<AdvertiseDelegate> spotDelegate = nil;
     BOOL result = NO;
     
     // 按照优先级显示插屏
     for (spotDelegate in _spotDelegates) {
         result = [spotDelegate showSpotAd:^(BOOL result) {
-            NSString* name = [spotDelegate getName];
-            NSLog(@"%@", [NSString stringWithFormat:@"%@ Spot ad clicked", name]);
+            if (result) {
+                NSString* name = [spotDelegate getName];
+                NSLog(@"%@", [NSString stringWithFormat:@"%@ Spot ad clicked", name]);
+            }
+            func(result);
         }];
         GGBREAK_IF(result)
     }
@@ -75,6 +57,7 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
     } else {
         NSLog(@"Spot ad show Failed");
     }
+    return result;
 }
 
 - (BOOL)isVedioAdReady {
@@ -89,18 +72,24 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
     return result;
 }
 
-- (void)showVedioAd:(void (^)(BOOL))func {
+- (BOOL)showVedioAd:(void (^)(BOOL))viewFunc :(void (^)(BOOL))clickFunc {
     id<AdvertiseDelegate> vedioDelegate = nil;
     BOOL result = NO;
     
     // 按照优先级显示视频
     for (vedioDelegate in _vedioDelegates) {
         result = [vedioDelegate showVedioAd:^(BOOL result) {
-            NSString* name = [vedioDelegate getName];
-            NSLog(@"%@", [NSString stringWithFormat:@"%@ Vedio ad play finish", name]);
+            if (result) {
+                NSString* name = [vedioDelegate getName];
+                NSLog(@"%@", [NSString stringWithFormat:@"%@ Vedio ad play finish", name]);
+            }
+            viewFunc(result);
         } :^(BOOL result) {
-            NSString* name = [vedioDelegate getName];
-            NSLog(@"%@", [NSString stringWithFormat:@"%@ Vedio ad clicked", name]);
+            if (result) {
+                NSString* name = [vedioDelegate getName];
+                NSLog(@"%@", [NSString stringWithFormat:@"%@ Vedio ad clicked", name]);
+            }
+            clickFunc(result);
         }];
         GGBREAK_IF(result)
     }
@@ -111,6 +100,7 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
     } else {
         NSLog(@"Vedio ad show Failed");
     }
+    return result;
 }
 
 #pragma mark - LifeCycleDelegate

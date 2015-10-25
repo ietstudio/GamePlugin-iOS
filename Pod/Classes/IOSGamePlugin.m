@@ -15,12 +15,6 @@
 #import "IOSAdvertiseHelper.h"
 #import "IOSAnalyticHelper.h"
 #import "IOSFeedbackHelper.h"
-#ifdef COCOAPODS_POD_AVAILABLE_AmazonAWS
-#import "IOSFacebookHelper.h"
-#endif//COCOAPODS_POD_AVAILABLE_AmazonAWS
-#ifdef COCOAPODS_POD_AVAILABLE_Facebook
-#import "IOSAmazonAWSHelper.h"
-#endif//COCOAPODS_POD_AVAILABLE_Facebook
 
 #import "UIAlertView+Block.h"
 #import "MBProgressHUD.h"
@@ -35,6 +29,7 @@
 #define IAP_VERIFY_URL  @"https://sandbox.itunes.apple.com/verifyReceipt"
 #else
 #define IAP_VERIFY_URL  @"https://buy.itunes.apple.com/verifyReceipt"
+#import "NSLogger/NSLogger.h"
 #endif
 
 @implementation IOSGamePlugin
@@ -276,12 +271,8 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     _advertiseInstance = [IOSAdvertiseHelper getInstance];
     _analyticInstance = [IOSAnalyticHelper getInstance];
     _feedbackInstance = [IOSFeedbackHelper getInstance];
-#ifdef COCOAPODS_POD_AVAILABLE_AmazonAWS
-    _facebookInstance = [IOSFacebookHelper getInstance];
-#endif//COCOAPODS_POD_AVAILABLE_AmazonAWS
-#ifdef COCOAPODS_POD_AVAILABLE_Facebook
-    _amazonAwsInstance = [IOSAmazonAWSHelper getInstance];
-#endif//COCOAPODS_POD_AVAILABLE_Facebook
+    _facebookInstance = [NSClassFromString(@"IOSFacebookHelper") getInstance];
+    _amazonAwsInstance = [NSClassFromString(@"IOSAmazonAWSHelper") getInstance];
     
     [_advertiseInstance application:application didFinishLaunchingWithOptions:launchOptions];
     [_analyticInstance application:application didFinishLaunchingWithOptions:launchOptions];

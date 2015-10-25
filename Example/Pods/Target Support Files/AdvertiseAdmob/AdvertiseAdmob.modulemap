@@ -1,0 +1,6 @@
+framework module AdvertiseAdmob {
+  umbrella header "AdvertiseAdmob-umbrella.h"
+
+  export *
+  module * { export * }
+}

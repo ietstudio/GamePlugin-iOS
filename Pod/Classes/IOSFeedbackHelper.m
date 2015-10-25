@@ -8,13 +8,6 @@
 
 #import "IOSFeedbackHelper.h"
 
-#ifdef COCOAPODS_POD_AVAILABLE_FeedbackUM
-#import "UMFeedbackHelper.h"
-#endif//COCOAPODS_POD_AVAILABLE_FeedbackUM
-#ifdef COCOAPODS_POD_AVAILABLE_FeedbackFD
-#import "FDFeedbackHelper.h"
-#endif//COCOAPODS_POD_AVAILABLE_FeedbackFD
-
 @implementation IOSFeedbackHelper
 {
     NSMutableArray *_delegates;
@@ -25,12 +18,10 @@ SINGLETON_DEFINITION(IOSFeedbackHelper)
 - (instancetype)init {
     if (self = [super init]) {
         _delegates = [NSMutableArray array];
-#ifdef COCOAPODS_POD_AVAILABLE_FeedbackUM
-        [_delegates addObject:[UMFeedbackHelper getInstance]];
-#endif//COCOAPODS_POD_AVAILABLE_FeedbackUM
-#ifdef COCOAPODS_POD_AVAILABLE_FeedbackFD
-        [_delegates addObject:[FDFeedbackHelper getInstance]];
-#endif//COCOAPODS_POD_AVAILABLE_FeedbackFD
+        id freshDeskHelper = [NSClassFromString(@"FDFeedbackHelper") getInstance];
+        if (freshDeskHelper) {
+            [_delegates addObject:freshDeskHelper];
+        }
     }
     return self;
 }
