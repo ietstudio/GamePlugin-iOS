@@ -8,6 +8,7 @@ target 'GamePluginIOS_Example', :exclusive => true do
   pod 'Facebook'
   pod 'AdvertiseAdmob'
   pod 'AdvertiseChartBoost'
+  pod 'iVersion', '~> 1.11.4'
 end
 
 target 'GamePluginIOS_Tests', :exclusive => true do

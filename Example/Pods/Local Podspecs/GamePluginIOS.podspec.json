@@ -1,6 +1,6 @@
 {
   "name": "GamePluginIOS",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "summary": "GamePluginIOS.",
   "description": "GamePluginIOS..",
   "homepage": "https://github.com/ietstudio/GamePluginIOS",
@@ -10,7 +10,7 @@
   },
   "source": {
     "git": "https://github.com/ietstudio/GamePluginIOS.git",
-    "tag": "0.1.1"
+    "tag": "0.1.2"
   },
   "platforms": {
     "ios": "7.0"

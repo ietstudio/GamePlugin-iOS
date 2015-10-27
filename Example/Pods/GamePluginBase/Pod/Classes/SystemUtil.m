@@ -18,6 +18,24 @@
 
 SINGLETON_DEFINITION(SystemUtil)
 
+#pragma mark - private
+
+- (UIViewController *)topViewController:(UIViewController *)rootViewController
+{
+    if (rootViewController.presentedViewController == nil) {
+        return rootViewController;
+    }
+    if ([rootViewController.presentedViewController isMemberOfClass:[UINavigationController class]]) {
+        UINavigationController *navigationController = (UINavigationController *)rootViewController.presentedViewController;
+        UIViewController *lastViewController = [[navigationController viewControllers] lastObject];
+        return [self topViewController:lastViewController];
+    }
+    UIViewController *presentedViewController = (UIViewController *)rootViewController.presentedViewController;
+    return [self topViewController:presentedViewController];
+}
+
+#pragma mark - public
+
 - (NSString *)getCountryCode {
     NSString *country = [[NSLocale currentLocale] objectForKey: NSLocaleCountryCode];
     if(!country) {
@@ -33,27 +51,7 @@ SINGLETON_DEFINITION(SystemUtil)
 }
 
 - (UIViewController *)getCurrentViewController {
-    UIViewController *result = nil;
-    UIWindow * window = [[UIApplication sharedApplication] keyWindow];
-    if (window.windowLevel != UIWindowLevelNormal)
-    {
-        NSArray *windows = [[UIApplication sharedApplication] windows];
-        for(UIWindow * tmpWin in windows)
-        {
-            if (tmpWin.windowLevel == UIWindowLevelNormal)
-            {
-                window = tmpWin;
-                break;
-            }
-        }
-    }
-    UIView *frontView = [[window subviews] objectAtIndex:0];
-    id nextResponder = [frontView nextResponder];
-    if ([nextResponder isKindOfClass:[UIViewController class]])
-        result = nextResponder;
-    else
-        result = window.rootViewController;
-    return result;
+    return [self topViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
 }
 
 - (NSString *)getConfigValueWithKey:(NSString *)key {

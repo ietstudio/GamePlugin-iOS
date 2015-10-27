@@ -25,7 +25,7 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - ALAssetsLibrary-CustomPhotoAlbum (1.3.1)
-  - AmazonAWS (0.1.0):
+  - AmazonAWS (0.1.1):
     - AWSCognito (~> 2.2.4)
     - AWSCore (~> 2.2.4)
     - AWSMobileAnalytics (~> 2.2.4)
@@ -79,8 +79,8 @@ PODS:
   - FeedBackFD (0.1.0):
     - GamePluginBase
     - MobihelpSDK (~> 1.6)
-  - GamePluginBase (0.1.1)
-  - GamePluginIOS (0.1.1):
+  - GamePluginBase (0.1.2)
+  - GamePluginIOS (0.1.2):
     - AFNetworking (~> 2.6.0)
     - ALAssetsLibrary-CustomPhotoAlbum (~> 1.3.0)
     - AnalyticTD
@@ -96,6 +96,7 @@ PODS:
     - RWBarChartView (~> 1.2.0)
     - UIAlertView+Block (~> 1.1.0)
   - iRate (1.11.4)
+  - iVersion (1.11.4)
   - MBProgressHUD (0.9.1)
   - MD5Digest (1.0.1)
   - MobihelpSDK (1.6.5)
@@ -119,6 +120,7 @@ DEPENDENCIES:
   - Facebook
   - FBSnapshotTestCase
   - GamePluginIOS (from `../`)
+  - iVersion (~> 1.11.4)
   - Specta
 
 EXTERNAL SOURCES:
@@ -130,7 +132,7 @@ SPEC CHECKSUMS:
   AdvertiseChartBoost: ebe083592415cf45eaae301412f23ed0487c7aa7
   AFNetworking: 8e4e60500beb8bec644cf575beee72990a76d399
   ALAssetsLibrary-CustomPhotoAlbum: 299ea3f58e988b453b19c595859354e562814c93
-  AmazonAWS: 399cd7196e5f6332c0454095143d723119b4104d
+  AmazonAWS: ef87c9518835382a4edd06ee59bf4c29aa9b4959
   AnalyticTD: a85f6fa0ad09f9bcbf7576e3ea90c4ac56398c1f
   AnalyticUM: d5ff788552a543a5890461bb802b3bcf43efc820
   AWSCognito: f88aa1b969dafc6208d417ebfa18b0f3b3746093
@@ -146,9 +148,10 @@ SPEC CHECKSUMS:
   FBSDKShareKit: 642034ac9f30793dfd897851b724bb4281750266
   FBSnapshotTestCase: 6917deb01d0556dd544536f9eb34e0cf26f904d5
   FeedBackFD: 076f50ca2814f85ed7f2e9c1188f1581526c7339
-  GamePluginBase: 981b0d091f5b8448fdf095be5b2fc26810c8c23d
-  GamePluginIOS: f90353af3f94a8f60f1eb59237f88bb126fb0b9f
+  GamePluginBase: 0b06986d6fbae9b986dfc8bfa754ab9a45f1b0de
+  GamePluginIOS: b0fa2bcb384ad6729fc3b2076996eeb7f31e35cc
   iRate: 599ed07c854e0695f3c605d1b2a64c67d912acb7
+  iVersion: 2b6ffe708672cb494ba3cab150a94800c2892e81
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   MD5Digest: 2757ae2ee239148912a42063135c6fab2fa082f9
   MobihelpSDK: b0311fff3101e6767dfb37c6b2c8c939c3420ed3

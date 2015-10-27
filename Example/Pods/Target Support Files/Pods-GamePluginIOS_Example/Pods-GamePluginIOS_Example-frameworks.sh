@@ -111,6 +111,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-GamePluginIOS_Example/Reachability.framework"
   install_framework "Pods-GamePluginIOS_Example/UIAlertView_Block.framework"
   install_framework "Pods-GamePluginIOS_Example/iRate.framework"
+  install_framework "Pods-GamePluginIOS_Example/iVersion.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-GamePluginIOS_Example/AFNetworking.framework"
@@ -140,4 +141,5 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-GamePluginIOS_Example/Reachability.framework"
   install_framework "Pods-GamePluginIOS_Example/UIAlertView_Block.framework"
   install_framework "Pods-GamePluginIOS_Example/iRate.framework"
+  install_framework "Pods-GamePluginIOS_Example/iVersion.framework"
 fi

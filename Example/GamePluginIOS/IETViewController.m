@@ -119,6 +119,24 @@
     }];
 }
 
+- (IBAction)setNotificationState:(id)sender {
+    [[IOSGamePlugin getInstance] setNotificationState:YES];
+}
+
+- (IBAction)postNotification:(id)sender {
+    NSDictionary* userInfo1 = @{@"message":@"Message1",@"delay":@(5),@"badge":@(1)};
+    NSDictionary* userInfo2 = @{@"message":@"Message2",@"delay":@(10),@"badge":@(2)};
+    NSDictionary* userInfo3 = @{@"message":@"Message3",@"delay":@(15),@"badge":@(3)};
+    NSDictionary* userInfo4 = @{@"message":@"Message4",@"delay":@(20),@"badge":@(4)};
+    NSDictionary* userInfo5 = @{@"message":@"Message5",@"delay":@(25),@"badge":@(5)};
+    [[IOSGamePlugin getInstance] postNotification:userInfo1];
+    [[IOSGamePlugin getInstance] postNotification:userInfo2];
+    [[IOSGamePlugin getInstance] postNotification:userInfo3];
+    [[IOSGamePlugin getInstance] postNotification:userInfo4];
+    [[IOSGamePlugin getInstance] postNotification:userInfo5];
+}
+
+
 #pragma mark - Advertise
 
 - (IBAction)showSpot:(id)sender {

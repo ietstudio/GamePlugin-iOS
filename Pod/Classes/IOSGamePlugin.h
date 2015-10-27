@@ -155,6 +155,20 @@ SINGLETON_DECLARE(IOSGamePlugin)
  */
 - (BOOL)sendEmail:(NSString*)subject :(NSArray*)toRecipients :(NSString*)emailBody :(void(^)(BOOL, NSString*))callback;
 
+/**
+ *  通知开关
+ *
+ *  @param enable
+ */
+- (void)setNotificationState:(BOOL)enable;
+
+/**
+ *  发送通知
+ *
+ *  @param userInfo
+ */
+- (void)postNotification:(NSDictionary *)userInfo;
+
 @end
 
 

@@ -48,18 +48,4 @@ SINGLETON_DECLARE(IOSAmazonAWSHelper)
  */
 - (void)setNotificationFunc:(void(^)(NSDictionary*))callback;
 
-/**
- *  推送的开关
- *
- *  @param enable
- */
-- (void)setNotificationState:(BOOL)enable;
-
-/**
- *  发送通知
- *
- *  @param userInfo
- */
-- (void)postNotification:(NSDictionary*)userInfo;
-
 @end
