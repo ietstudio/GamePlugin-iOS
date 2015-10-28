@@ -1,5 +1,5 @@
 //
-//  IOSAmazonAWSHelper.h
+//  AmazonAWSHelper.h
 //  Pods
 //
 //  Created by geekgy on 15/6/13.
@@ -15,9 +15,9 @@
 #define AWS_SNSPlatformApplicationArn       @"AWSSNSPlatformApplicationArn"
 #define AWS_SNSPlatformApplicationArnDev    @"AWSSNSPlatformApplicationArnDev"
 
-@interface IOSAmazonAWSHelper : NSObject <LifeCycleDelegate>
+@interface AmazonAWSHelper : NSObject <LifeCycleDelegate>
 
-SINGLETON_DECLARE(IOSAmazonAWSHelper)
+SINGLETON_DECLARE(AmazonAWSHelper)
 
 /**
  *  数据同步

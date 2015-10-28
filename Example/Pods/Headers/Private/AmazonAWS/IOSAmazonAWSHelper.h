@@ -1,1 +1,0 @@
-../../../AmazonAWS/Pod/Classes/IOSAmazonAWSHelper.h

@@ -1,12 +1,12 @@
 //
-//  IOSFacebookHelper.m
+//  FacebookHelper.m
 //  Pods
 //
 //  Created by geekgy on 15/5/17.
 //
 //
 
-#import "IOSFacebookHelper.h"
+#import "FacebookHelper.h"
 #import <UIKit/UIKit.h>
 #import "SystemUtil.h"
 
@@ -14,14 +14,14 @@
 #define PERMISSION_PUBLISH      @"Publish"
 #define GRAPH_API_TIMEOUT       5
 
-@implementation IOSFacebookHelper
+@implementation FacebookHelper
 {
     void (^_loginFunc)(NSString*, NSString*);
     void (^_applinkFunc)(NSDictionary*);
     void (^_requestFunc)(NSDictionary*);
 }
 
-SINGLETON_DEFINITION(IOSFacebookHelper)
+SINGLETON_DEFINITION(FacebookHelper)
 
 #pragma mark - private method
 

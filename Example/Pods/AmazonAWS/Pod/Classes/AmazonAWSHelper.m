@@ -1,19 +1,19 @@
 //
-//  IOSAmazonAWSHelper.m
+//  AmazonAWSHelper.m
 //  Pods
 //
 //  Created by geekgy on 15/6/13.
 //
 //
 
-#import "IOSAmazonAWSHelper.h"
+#import "AmazonAWSHelper.h"
 #import "SystemUtil.h"
 #import "AWSCore.h"
 #import "AWSCognito.h"
 #import "AWSSNS.h"
 #import "AWSMobileAnalytics.h"
 
-@implementation IOSAmazonAWSHelper
+@implementation AmazonAWSHelper
 {
     void (^_notificationCallback)(NSDictionary *);
     AWSCognitoCredentialsProvider* credentialsProvider;
@@ -22,7 +22,7 @@
     NSString* SNSPlatformApplicationArn;
 }
 
-SINGLETON_DEFINITION(IOSAmazonAWSHelper)
+SINGLETON_DEFINITION(AmazonAWSHelper)
 
 - (void)identityDidChange:(NSNotification*)notification {
     NSDictionary *userInfo = notification.userInfo;
@@ -112,11 +112,7 @@ SINGLETON_DEFINITION(IOSAmazonAWSHelper)
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    NSArray *notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
-    for (UILocalNotification * notification in notifications) {
-        [[UIApplication sharedApplication] cancelLocalNotification:notification];
-    }
+    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

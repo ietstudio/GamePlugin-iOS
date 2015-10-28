@@ -337,8 +337,8 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     _advertiseInstance = [IOSAdvertiseHelper getInstance];
     _analyticInstance = [IOSAnalyticHelper getInstance];
     _feedbackInstance = [IOSFeedbackHelper getInstance];
-    _facebookInstance = [NSClassFromString(@"IOSFacebookHelper") getInstance];
-    _amazonAwsInstance = [NSClassFromString(@"IOSAmazonAWSHelper") getInstance];
+    _facebookInstance = [NSClassFromString(@"FacebookHelper") getInstance];
+    _amazonAwsInstance = [NSClassFromString(@"AmazonAWSHelper") getInstance];
     
     [_advertiseInstance application:application didFinishLaunchingWithOptions:launchOptions];
     [_analyticInstance application:application didFinishLaunchingWithOptions:launchOptions];

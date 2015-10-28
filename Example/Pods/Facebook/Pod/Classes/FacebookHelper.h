@@ -1,5 +1,5 @@
 //
-//  IOSFacebookHelper.h
+//  FacebookHelper.h
 //  Pods
 //
 //  Created by geekgy on 15/5/17.
@@ -14,9 +14,9 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
 
-@interface IOSFacebookHelper : NSObject <LifeCycleDelegate, FBSDKGameRequestDialogDelegate>
+@interface FacebookHelper : NSObject <LifeCycleDelegate, FBSDKGameRequestDialogDelegate>
 
-SINGLETON_DECLARE(IOSFacebookHelper)
+SINGLETON_DECLARE(FacebookHelper)
 
 /**
  *  设置Login回调
