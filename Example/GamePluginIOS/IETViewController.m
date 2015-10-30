@@ -136,6 +136,19 @@
     [[IOSGamePlugin getInstance] postNotification:userInfo5];
 }
 
+- (IBAction)showImgDialog:(id)sender {
+    [[IOSGamePlugin getInstance] showImageDialog:@"2048x1536_01.png" :@"12.png" :^(BOOL result) {
+        NSLog(@"%@", result?@"YES":@"NO");
+    }];
+}
+
+- (IBAction)showProgressDialog:(id)sender {
+    [[IOSGamePlugin getInstance] showProgressDialog:@"loading" :20];
+}
+
+- (IBAction)hideProgressDialog:(id)sender {
+    [[IOSGamePlugin getInstance] hideProgressDialog];
+}
 
 #pragma mark - Advertise
 

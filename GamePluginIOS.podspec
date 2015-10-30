@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "GamePluginIOS"
-  s.version          = "0.1.3"
+  s.version          = "0.1.4"
   s.summary          = "GamePluginIOS."
 
 # This description is used to generate tags and improve search results.
@@ -45,6 +45,7 @@ Pod::Spec.new do |s|
   s.dependency 'MD5Digest', '~> 1.0.1'
   s.dependency 'RMStore', '~> 0.7.1'
   s.dependency 'UIAlertView+Block', '~> 1.1.0'
+  s.dependency 'CWPopup', '~> 1.2.6'
   s.dependency 'MBProgressHUD', '~> 0.9.1'
   s.dependency 'Reachability', '~> 3.2'
   s.dependency 'RWBarChartView', '~> 1.2.0'

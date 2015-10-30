@@ -169,6 +169,28 @@ SINGLETON_DECLARE(IOSGamePlugin)
  */
 - (void)postNotification:(NSDictionary *)userInfo;
 
+/**
+ *  显示图片弹框
+ *
+ *  @param img
+ *  @param btnImg
+ *  @param func
+ */
+- (void)showImageDialog:(NSString*)img :(NSString*)btnImg :(void(^)(BOOL))func;
+
+/**
+ *  显示进度弹框
+ *
+ *  @param msg
+ *  @param percent
+ */
+- (void)showProgressDialog:(NSString*)msg :(int)percent;
+
+/**
+ *  隐藏进度弹框
+ */
+- (void)hideProgressDialog;
+
 @end
 
 

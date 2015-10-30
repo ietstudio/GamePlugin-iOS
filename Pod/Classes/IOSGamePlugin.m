@@ -16,10 +16,14 @@
 #import "IOSAnalyticHelper.h"
 #import "IOSFeedbackHelper.h"
 
+#import "RWDemoViewController.h"
+#import "ImgDialogViewController.h"
+#import "ProgressDialogViewController.h"
+
 #import "UIAlertView+Block.h"
+#import "UIViewController+CWPopup.h"
 #import "MBProgressHUD.h"
 #import "Reachability.h"
-#import "RWDemoViewController.h"
 #import "iRate.h"
 #import "ALAssetsLibrary+CustomPhotoAlbum.h"
 #import "AFNetworking.h"
@@ -36,7 +40,8 @@
 {
     UIImageView* _gameLoadingView;
     MBProgressHUD* _hud;
-    Reachability* reachability;
+    Reachability* _reachability;
+    ProgressDialogViewController* _progressDialogController;
     void (^_emailCallFunc)(BOOL, NSString*);
     NSString *(^_genVerifyUrlCallFunc)(NSDictionary *);
     id _advertiseInstance;
@@ -115,7 +120,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 }
 
 - (NSString *)getNetworkState {
-    NetworkStatus state = [reachability currentReachabilityStatus];
+    NetworkStatus state = [_reachability currentReachabilityStatus];
     if (state == NotReachable) {
         return @"NotReachable";
     } else if (state == ReachableViaWWAN) {
@@ -331,6 +336,34 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 }
 
+- (void)showImageDialog:(NSString *)img :(NSString *)btnImg :(void (^)(BOOL))func {
+    ImgDialogViewController *imgDialogViewController = [[ImgDialogViewController alloc] init];
+    [imgDialogViewController setImgPath:img];
+    [imgDialogViewController setBtnPath:btnImg];
+    [imgDialogViewController setCallFunc:^(BOOL result) {
+        [[[SystemUtil getInstance] getCurrentViewController] dismissPopupViewControllerAnimated:YES completion:^{
+            func(result);
+        }];
+    }];
+    [[[SystemUtil getInstance] getCurrentViewController] presentPopupViewController:imgDialogViewController animated:YES completion:nil];
+}
+
+- (void)showProgressDialog:(NSString*)msg :(int)percent {
+    if (_progressDialogController == nil) {
+        _progressDialogController = [[ProgressDialogViewController alloc] init];
+        [[[SystemUtil getInstance] getCurrentViewController] presentPopupViewController:_progressDialogController animated:YES completion:nil];
+    }
+    [_progressDialogController setPercent:msg :percent/100.0f];
+}
+
+- (void)hideProgressDialog {
+    if (_progressDialogController == nil) {
+        return;
+    }
+    [[[SystemUtil getInstance] getCurrentViewController] dismissPopupViewControllerAnimated:YES completion:nil];
+    _progressDialogController = nil;
+}
+
 #pragma mark - LifeCycleDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -354,19 +387,19 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     } else {
         hostName = @"www.google.com";
     }
-    reachability = [Reachability reachabilityWithHostName:hostName];
-    reachability.reachableBlock = ^(Reachability*reach) {
+    _reachability = [Reachability reachabilityWithHostName:hostName];
+    _reachability.reachableBlock = ^(Reachability*reach) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [gamePlugin networkConnect];
         });
     };
-    reachability.unreachableBlock = ^(Reachability*reach)
+    _reachability.unreachableBlock = ^(Reachability*reach)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             [gamePlugin networkDisconnect];
         });
     };
-    [reachability startNotifier];
+    [_reachability startNotifier];
     
     // rmstore 订单验证
     [RMStore defaultStore].receiptVerificator = self;

@@ -23,6 +23,8 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		C32696211BE321EF007121D7 /* 12.png in Resources */ = {isa = PBXBuildFile; fileRef = C326961F1BE321EF007121D7 /* 12.png */; };
+		C32696221BE321EF007121D7 /* 2048x1536_01.png in Resources */ = {isa = PBXBuildFile; fileRef = C32696201BE321EF007121D7 /* 2048x1536_01.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +64,8 @@
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		B52AFA9B45D0EE08B3805FA4 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		C152E10D66A8AD1C45F631E3 /* GamePluginIOS.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = GamePluginIOS.podspec; path = ../GamePluginIOS.podspec; sourceTree = "<group>"; };
+		C326961F1BE321EF007121D7 /* 12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 12.png; sourceTree = "<group>"; };
+		C32696201BE321EF007121D7 /* 2048x1536_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2048x1536_01.png; sourceTree = "<group>"; };
 		C46E9895D6CFD6BCF768FEE9 /* Pods-GamePluginIOS_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GamePluginIOS_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GamePluginIOS_Example/Pods-GamePluginIOS_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		DEF4D5C70D1713D7F2CBA5A5 /* Pods-GamePluginIOS_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GamePluginIOS_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-GamePluginIOS_Example/Pods-GamePluginIOS_Example.release.xcconfig"; sourceTree = "<group>"; };
 		ED28A4492F32F90B98BB50AA /* Pods-GamePluginIOS_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GamePluginIOS_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GamePluginIOS_Tests/Pods-GamePluginIOS_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -145,6 +149,8 @@
 		6003F594195388D20070C39A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C326961F1BE321EF007121D7 /* 12.png */,
+				C32696201BE321EF007121D7 /* 2048x1536_01.png */,
 				6003F595195388D20070C39A /* GamePluginIOS-Info.plist */,
 				6003F596195388D20070C39A /* InfoPlist.strings */,
 				6003F599195388D20070C39A /* main.m */,
@@ -276,6 +282,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C32696211BE321EF007121D7 /* 12.png in Resources */,
+				C32696221BE321EF007121D7 /* 2048x1536_01.png in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
