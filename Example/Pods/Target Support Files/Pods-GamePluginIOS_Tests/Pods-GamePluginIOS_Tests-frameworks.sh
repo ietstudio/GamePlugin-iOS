@@ -86,10 +86,7 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-GamePluginIOS_Tests/AFNetworking.framework"
   install_framework "Pods-GamePluginIOS_Tests/ALAssetsLibrary_CustomPhotoAlbum.framework"
-  install_framework "Pods-GamePluginIOS_Tests/AnalyticTD.framework"
-  install_framework "Pods-GamePluginIOS_Tests/AnalyticUM.framework"
   install_framework "Pods-GamePluginIOS_Tests/CWPopup.framework"
-  install_framework "Pods-GamePluginIOS_Tests/FeedBackFD.framework"
   install_framework "Pods-GamePluginIOS_Tests/GamePluginBase.framework"
   install_framework "Pods-GamePluginIOS_Tests/GamePluginIOS.framework"
   install_framework "Pods-GamePluginIOS_Tests/MBProgressHUD.framework"
@@ -108,10 +105,7 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-GamePluginIOS_Tests/AFNetworking.framework"
   install_framework "Pods-GamePluginIOS_Tests/ALAssetsLibrary_CustomPhotoAlbum.framework"
-  install_framework "Pods-GamePluginIOS_Tests/AnalyticTD.framework"
-  install_framework "Pods-GamePluginIOS_Tests/AnalyticUM.framework"
   install_framework "Pods-GamePluginIOS_Tests/CWPopup.framework"
-  install_framework "Pods-GamePluginIOS_Tests/FeedBackFD.framework"
   install_framework "Pods-GamePluginIOS_Tests/GamePluginBase.framework"
   install_framework "Pods-GamePluginIOS_Tests/GamePluginIOS.framework"
   install_framework "Pods-GamePluginIOS_Tests/MBProgressHUD.framework"

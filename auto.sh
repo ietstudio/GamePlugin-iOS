@@ -41,4 +41,4 @@ pod spec lint --allow-warnings --sources='https://github.com/ietstudio/Specs.git
 pringMsg
 
 echo "-->pod repo push"
-pod repo push ietstudio *.podspec
+pod repo push ietstudio *.podspec --allow-warnings

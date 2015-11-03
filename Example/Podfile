@@ -4,11 +4,19 @@ use_frameworks!
 
 target 'GamePluginIOS_Example', :exclusive => true do
   pod "GamePluginIOS", :path => "../"
+  #亚马逊AWS
   pod 'AmazonAWS'
+  #Facebook
   pod 'Facebook'
+  #广告
   pod 'AdvertiseAdmob'
-  pod 'AdvertiseChartBoost'
-  pod 'iVersion', '~> 1.11.4'
+  #pod 'AdvertiseChartBoost'
+  #统计
+  pod 'AnalyticTD'
+  #pod 'AnalyticUM'
+  pod 'AnalyticFL'
+  #反馈
+  pod 'FeedBackFD'
 end
 
 target 'GamePluginIOS_Tests', :exclusive => true do

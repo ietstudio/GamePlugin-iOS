@@ -26,6 +26,10 @@ SINGLETON_DEFINITION(IOSAnalyticHelper)
         if (umengHelper) {
             [_delegates addObject:umengHelper];
         }
+        id flurryHelper = [NSClassFromString(@"FLAnalyticHelper") getInstance];
+        if (flurryHelper) {
+            [_delegates addObject:flurryHelper];
+        }
     }
     // 在DEBUG下不发送统计事件
 #if DEBUG

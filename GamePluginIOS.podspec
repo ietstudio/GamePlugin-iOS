@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "GamePluginIOS"
-  s.version          = "0.1.4"
+  s.version          = "0.1.5"
   s.summary          = "GamePluginIOS."
 
 # This description is used to generate tags and improve search results.
@@ -54,10 +54,5 @@ Pod::Spec.new do |s|
   s.dependency 'NSLogger', '~> 1.5.1'
 
   s.dependency 'GamePluginBase'
-  s.dependency 'AnalyticTD'
-  s.dependency 'AnalyticUM'
-  s.dependency 'FeedBackFD'
-
-  
 
 end
