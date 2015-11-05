@@ -186,8 +186,8 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tAu-nn-4Ck">
-                                        <rect key="frame" x="17" y="65" width="60" height="30"/>
-                                        <state key="normal" title="GetBuild">
+                                        <rect key="frame" x="17" y="65" width="103" height="30"/>
+                                        <state key="normal" title="GetAppVersion">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -258,7 +258,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M5l-rQ-kcj">
-                                        <rect key="frame" x="17" y="369" width="32" height="30"/>
+                                        <rect key="frame" x="284" y="28" width="32" height="30"/>
                                         <state key="normal" title="Rate">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -267,7 +267,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i5O-fo-E2e">
-                                        <rect key="frame" x="17" y="407" width="74" height="30"/>
+                                        <rect key="frame" x="242" y="103" width="74" height="30"/>
                                         <state key="normal" title="SendEmail">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -276,7 +276,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c81-pm-qsE">
-                                        <rect key="frame" x="16" y="445" width="138" height="30"/>
+                                        <rect key="frame" x="178" y="141" width="138" height="30"/>
                                         <state key="normal" title="SetNotificationState">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -285,7 +285,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jSV-Vz-Mda">
-                                        <rect key="frame" x="16" y="483" width="110" height="30"/>
+                                        <rect key="frame" x="206" y="179" width="110" height="30"/>
                                         <state key="normal" title="PostNotification">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -294,7 +294,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="shu-29-avt">
-                                        <rect key="frame" x="16" y="521" width="108" height="30"/>
+                                        <rect key="frame" x="208" y="217" width="108" height="30"/>
                                         <state key="normal" title="ShowImgDialog">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -303,7 +303,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="exE-A9-cHe">
-                                        <rect key="frame" x="174" y="27" width="143" height="30"/>
+                                        <rect key="frame" x="173" y="255" width="143" height="30"/>
                                         <state key="normal" title="ShowProgressDialog">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -311,13 +311,58 @@
                                             <action selector="showProgressDialog:" destination="whP-gf-Uak" eventType="touchUpInside" id="FvT-dy-uU1"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O4t-3n-z08">
-                                        <rect key="frame" x="181" y="65" width="136" height="30"/>
-                                        <state key="normal" title="HideProgressDialog">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Xg-NQ-614">
+                                        <rect key="frame" x="16" y="369" width="135" height="30"/>
+                                        <state key="normal" title="ShowGameLoading">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="hideProgressDialog:" destination="whP-gf-Uak" eventType="touchUpInside" id="TjV-CF-eWY"/>
+                                            <action selector="showGameLoading:" destination="whP-gf-Uak" eventType="touchUpInside" id="FXD-ZV-EMX"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uFL-Ht-otv">
+                                        <rect key="frame" x="17" y="407" width="94" height="30"/>
+                                        <state key="normal" title="ShowLoading">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="showLoading:" destination="whP-gf-Uak" eventType="touchUpInside" id="xmh-dP-2sw"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0LG-zt-ENL">
+                                        <rect key="frame" x="17" y="445" width="169" height="30"/>
+                                        <state key="normal" title="SetGenVerifyUrlCallFunc">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="setGenVerifyUrlCallFunc:" destination="whP-gf-Uak" eventType="touchUpInside" id="DXb-s2-rti"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mUS-1w-2Xk">
+                                        <rect key="frame" x="16" y="483" width="41" height="30"/>
+                                        <state key="normal" title="DoIap">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="doIap:" destination="whP-gf-Uak" eventType="touchUpInside" id="6oc-6V-BNl"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3ib-wN-gKt">
+                                        <rect key="frame" x="16" y="521" width="109" height="30"/>
+                                        <state key="normal" title="ShowChartView">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="showChartView:" destination="whP-gf-Uak" eventType="touchUpInside" id="zrz-4q-bZ8"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5xn-Pa-Vyg">
+                                        <rect key="frame" x="239" y="65" width="77" height="30"/>
+                                        <state key="normal" title="SaveImage">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="saveImg:" destination="whP-gf-Uak" eventType="touchUpInside" id="Khj-Fe-X0h"/>
                                         </connections>
                                     </button>
                                 </subviews>

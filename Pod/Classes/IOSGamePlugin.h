@@ -19,7 +19,7 @@
 SINGLETON_DECLARE(IOSGamePlugin)
 
 /**
- *  获取App的版本好，是build号
+ *  获取App的版本号，build
  *
  *  @return
  */

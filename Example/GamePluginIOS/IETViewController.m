@@ -9,6 +9,7 @@
 #import "IETViewController.h"
 #import "IOSGamePlugin.h"
 #import "IOSAdvertiseHelper.h"
+#import "NSString+MD5.h"
 
 @interface IETViewController ()
 @property (weak, nonatomic) IBOutlet UIView *commonView;
@@ -108,8 +109,54 @@
     NSLog(@"%@", [[IOSGamePlugin getInstance] getNetworkState]);
 }
 
+- (IBAction)showGameLoading:(id)sender {
+    [[IOSGamePlugin getInstance] showGameLoading:@"12.png" :CGPointMake(0.5, 0.25) :0.5f];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC*5), dispatch_get_main_queue(), ^{
+        [[IOSGamePlugin getInstance] hideGameLoading];
+    });
+}
+
+- (IBAction)showLoading:(id)sender {
+    [[IOSGamePlugin getInstance] showLoading:@"Loading..."];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC*5), dispatch_get_main_queue(), ^{
+        [[IOSGamePlugin getInstance] hideLoading];
+    });
+}
+
+- (IBAction)setGenVerifyUrlCallFunc:(id)sender {
+    [[IOSGamePlugin getInstance] setGenVerifyUrlCallFunc:^NSString *(NSDictionary *userInfo) {
+        NSString* userId = [userInfo objectForKey:@"userId"];
+        NSString* productId = [userInfo objectForKey:@"productId"];
+        NSString* receipt = [userInfo objectForKey:@"receipt"];
+        NSString* sign = [[NSString stringWithFormat:@"iet_studio%@%@%@", userId, productId, receipt] MD5Digest];
+        NSString* url = [NSString stringWithFormat:@"http://52.5.157.26:7999/mayaslots/iap_verify?user_id=%@&product_id=%@&receipt=%@&sign=%@", userId, productId, receipt, sign];
+        return url;
+    }];
+}
+
+- (IBAction)doIap:(id)sender {
+    [[IOSGamePlugin getInstance] doIap:@[@"com.ietstudio.mayaslot.coin1"]
+                                      :@"com.ietstudio.mayaslot.coin1"
+                                      :@"guest"
+                                      :^(BOOL result, NSString *msg) {
+                                          NSLog(@"result=%@", result?@"YES":@"NO");
+                                          NSLog(@"%@", msg);
+                                      }];
+}
+
+- (IBAction)showChartView:(id)sender {
+    [[IOSGamePlugin getInstance] showChartViewWithArr:@[@(0.1),@(0.2)] multiply:1];
+}
+
 - (IBAction)rate:(id)sender {
     [[IOSGamePlugin getInstance] rate:YES];
+}
+
+- (IBAction)saveImg:(id)sender {
+    [[IOSGamePlugin getInstance] saveImage:@"12.png" toAlbum:@"test" :^(BOOL result, NSString *msg) {
+        NSLog(@"result=%@", result?@"YES":@"NO");
+        NSLog(@"%@", msg);
+    }];
 }
 
 - (IBAction)sendEmail:(id)sender {
@@ -144,10 +191,9 @@
 
 - (IBAction)showProgressDialog:(id)sender {
     [[IOSGamePlugin getInstance] showProgressDialog:@"loading" :20];
-}
-
-- (IBAction)hideProgressDialog:(id)sender {
-    [[IOSGamePlugin getInstance] hideProgressDialog];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC*5), dispatch_get_main_queue(), ^{
+        [[IOSGamePlugin getInstance] hideProgressDialog];
+    });
 }
 
 #pragma mark - Advertise

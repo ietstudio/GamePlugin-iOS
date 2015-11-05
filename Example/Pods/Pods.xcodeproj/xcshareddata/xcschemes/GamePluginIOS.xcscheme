@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '720C7D2E1001E32D82F3BD5B'
+               BlueprintIdentifier = '743B47AEA8346DE02F303981'
                BlueprintName = 'GamePluginIOS'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'GamePluginIOS.framework'>

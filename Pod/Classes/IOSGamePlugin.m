@@ -28,13 +28,7 @@
 #import "ALAssetsLibrary+CustomPhotoAlbum.h"
 #import "AFNetworking.h"
 #import "NSString+MD5.h"
-
-#if DEBUG
-#define IAP_VERIFY_URL  @"https://sandbox.itunes.apple.com/verifyReceipt"
-#else
-#define IAP_VERIFY_URL  @"https://buy.itunes.apple.com/verifyReceipt"
 #import "NSLogger/NSLogger.h"
-#endif
 
 @implementation IOSGamePlugin
 {
@@ -136,15 +130,12 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     if (_gameLoadingView != nil) {
         return;
     }
+    // 屏幕宽高
+    float swidth = [UIScreen mainScreen].applicationFrame.size.width;
+    float sheight = [UIScreen mainScreen].applicationFrame.size.height;
     scale = UA_isRetinaDevice?scale:scale*2;
-    CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    if (screenSize.width>screenSize.height) {
-        point.x = point.x*screenSize.width;
-        point.y = point.y*screenSize.height;
-    } else {
-        point.x = point.x*screenSize.height;
-        point.y = point.y*screenSize.width;
-    }
+    point.x = point.x*swidth;
+    point.y = (1-point.y)*sheight;
     UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:img]];
     CGSize viewSize = imageView.frame.size;
     viewSize = CGSizeApplyAffineTransform(viewSize, CGAffineTransformMakeScale(scale, scale));
@@ -341,17 +332,22 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     [imgDialogViewController setImgPath:img];
     [imgDialogViewController setBtnPath:btnImg];
     [imgDialogViewController setCallFunc:^(BOOL result) {
-        [[[SystemUtil getInstance] getCurrentViewController] dismissPopupViewControllerAnimated:YES completion:^{
+        UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
+        [controller dismissPopupViewControllerAnimated:YES completion:^{
             func(result);
         }];
     }];
+    UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
+    controller.useBlurForPopup = YES;
     [[[SystemUtil getInstance] getCurrentViewController] presentPopupViewController:imgDialogViewController animated:YES completion:nil];
 }
 
 - (void)showProgressDialog:(NSString*)msg :(int)percent {
     if (_progressDialogController == nil) {
         _progressDialogController = [[ProgressDialogViewController alloc] init];
-        [[[SystemUtil getInstance] getCurrentViewController] presentPopupViewController:_progressDialogController animated:YES completion:nil];
+        UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
+        controller.useBlurForPopup = YES;
+        [controller presentPopupViewController:_progressDialogController animated:YES completion:nil];
     }
     [_progressDialogController setPercent:msg :percent/100.0f];
 }
@@ -512,96 +508,138 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 
 #pragma mark - RMStoreReceiptVerificator
 
+- (void)verifyTransactionLocal:(NSDictionary*)userInfo success:(void (^)())successBlock failure:(void (^)(NSError *))failureBlock {
+    // Create the JSON object that describes the request
+    NSString* userId = [userInfo objectForKey:@"userId"];
+    NSString* productId = [userInfo objectForKey:@"productId"];
+    NSString* receipt = [userInfo objectForKey:@"receipt"];
+    void(^block)(NSString*, void(^)(NSError*)) = ^(NSString* url, void(^callback)(NSError*)) {
+        NSError *error;
+        NSDictionary *requestContents = @{@"receipt-data": receipt};
+        NSData *requestData = [NSJSONSerialization dataWithJSONObject:requestContents options:0 error:&error];
+        // Create a POST request with the receipt data.
+        NSURL *storeURL = [NSURL URLWithString:url];
+        NSMutableURLRequest *storeRequest = [NSMutableURLRequest requestWithURL:storeURL];
+        [storeRequest setHTTPMethod:@"POST"];
+        [storeRequest setHTTPBody:requestData];
+        // Make a connection to the iTunes Store on a background queue.
+        NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+        [NSURLConnection sendAsynchronousRequest:storeRequest queue:queue
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                                   dispatch_sync(dispatch_get_main_queue(), ^{
+                                       if (connectionError) {
+                                           NSLog(@"Error: %@", error);
+                                           callback(error);
+                                           return;
+                                       }
+                                       NSError *error;
+                                       NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+                                       if (!jsonResponse) {
+                                           NSLog(@"Error: %@", error);
+                                           callback(error);
+                                           return;
+                                       }
+                                       NSLog(@"%@", jsonResponse);
+                                       // 验证status
+                                       int status = [[jsonResponse objectForKey:@"status"] intValue];
+                                       if (status != 0) {
+                                           callback([NSError errorWithDomain:@"status!=0" code:0 userInfo:nil]);
+                                           return;
+                                       }
+                                       NSDictionary* receipt = [jsonResponse objectForKey:@"receipt"];
+                                       // 验证程序包名
+                                       NSString* bundleId = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
+                                       NSString* bundle_id = [receipt objectForKey:@"bundle_id"];
+                                       if (![bundle_id isEqualToString:bundleId]) {
+                                           callback([NSError errorWithDomain:@"bundle_id is wrong" code:0 userInfo:nil]);
+                                           return;
+                                       }
+                                       callback(nil);
+                                       NSString* label = [NSString stringWithFormat:@"%@,%@", userId, productId];
+                                       [[IOSAnalyticHelper getInstance] onEvent:@"purchase" Label:label];
+                                   });
+                               }];
+    };
+    // 先验证buy在验证sanbox
+    block(@"https://buy.itunes.apple.com/verifyReceipt", ^(NSError* buyError){
+        if (buyError != nil) {
+            block(@"https://sandbox.itunes.apple.com/verifyReceipt", ^(NSError* sanboxError){
+                if (sanboxError != nil) {
+                    NSError* error = [NSError errorWithDomain:[NSString stringWithFormat:@"%@,%@", buyError, sanboxError]
+                                                         code:0
+                                                     userInfo:nil];
+                    failureBlock(error);
+                } else {
+                    successBlock();
+                }
+            });
+        } else {
+            successBlock();
+        }
+    });
+}
+
+- (void)verifyTransactionRemote:(NSDictionary*)userInfo success:(void (^)())successBlock failure:(void (^)(NSError *))failureBlock {
+    NSString* url = _genVerifyUrlCallFunc(userInfo);
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/json", nil];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        int state = [[responseObject objectForKey:@"state"] intValue];
+        NSString* msg = [responseObject objectForKey:@"msg"];
+        if (state == 1) {
+            successBlock();
+        } else {
+            failureBlock([NSError errorWithDomain:msg code:0 userInfo:nil]);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"get url failed : %@", error);
+        failureBlock(error);
+    }];
+}
+
 - (void)verifyTransaction:(SKPaymentTransaction *)transaction success:(void (^)())successBlock failure:(void (^)(NSError *))failureBlock {
     void(^block)(NSString*, NSString*, NSString*) = ^(NSString* productId, NSString* userId, NSString* receipt){
-        NSLog(@"%@,%@,%@", productId, userId, receipt);
-        if (productId == nil || userId == nil || receipt == nil) {
+        if (productId == nil) {
+            NSString* msg = @"productId is nil";
+            NSLog(@"%@", msg);
+            failureBlock([NSError errorWithDomain:msg code:0 userInfo:nil]);
             return;
         }
+        if (userId == nil) {
+            NSString* msg = @"userId is nil";
+            NSLog(@"%@", msg);
+            failureBlock([NSError errorWithDomain:msg code:0 userInfo:nil]);
+            return;
+        }
+        if (receipt == nil) {
+            NSString* msg = @"receipt is nil";
+            NSLog(@"%@", msg);
+            failureBlock([NSError errorWithDomain:msg code:0 userInfo:nil]);
+            return;
+        }
+        NSMutableDictionary* userInfo = [NSMutableDictionary dictionary];
+        [userInfo setObject:userId forKey:@"userId"];
+        [userInfo setObject:productId forKey:@"productId"];
+        [userInfo setObject:receipt forKey:@"receipt"];
         // 如果没有设置生成验证url的回调函数，本地调用苹果接口验证
         if (_genVerifyUrlCallFunc == nil) {
-            // Create the JSON object that describes the request
-            NSError *error;
-            NSDictionary *requestContents = @{@"receipt-data": receipt};
-            NSData *requestData = [NSJSONSerialization dataWithJSONObject:requestContents options:0 error:&error];
-            if (!requestData) {
-                NSLog(@"Error: %@", error);
-            } else {
-                // Create a POST request with the receipt data.
-                NSURL *storeURL = [NSURL URLWithString:IAP_VERIFY_URL];
-                NSMutableURLRequest *storeRequest = [NSMutableURLRequest requestWithURL:storeURL];
-                [storeRequest setHTTPMethod:@"POST"];
-                [storeRequest setHTTPBody:requestData];
-                // Make a connection to the iTunes Store on a background queue.
-                NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-                [NSURLConnection sendAsynchronousRequest:storeRequest queue:queue
-                                       completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-                                           dispatch_sync(dispatch_get_main_queue(), ^{
-                                               if (connectionError) {
-                                                   NSLog(@"Error: %@", error);
-                                               } else {
-                                                   NSError *error;
-                                                   NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                                                   if (!jsonResponse) {
-                                                       NSLog(@"Error: %@", error);
-                                                   } else {
-                                                       NSLog(@"%@", jsonResponse);
-                                                       // 验证status
-                                                       int status = [[jsonResponse objectForKey:@"status"] intValue];
-                                                       if (status != 0) {
-                                                           failureBlock(nil);
-                                                           return;
-                                                       }
-                                                       NSDictionary* receipt = [jsonResponse objectForKey:@"receipt"];
-                                                       // 验证程序包名
-                                                       NSString* bundleId = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
-                                                       NSString* bundle_id = [receipt objectForKey:@"bundle_id"];
-                                                       if (![bundle_id isEqualToString:bundleId]) {
-                                                           failureBlock(nil);
-                                                           return;
-                                                       }
-                                                       successBlock();
-                                                       NSString* label = [NSString stringWithFormat:@"%@,%@", userId, productId];
-                                                       [[IOSAnalyticHelper getInstance] onEvent:@"purchase" Label:label];
-                                                   }
-                                               }
-                                           });
-                                       }];
-            }
+            [self verifyTransactionLocal:userInfo success:successBlock failure:failureBlock];
         } else {
-            NSMutableDictionary* dict = [NSMutableDictionary dictionary];
-            [dict setObject:userId forKey:@"userId"];
-            [dict setObject:productId forKey:@"productId"];
-            [dict setObject:receipt forKey:@"receipt"];
-            NSString* url = _genVerifyUrlCallFunc(dict);
-            // 后台验证
-            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-            manager.responseSerializer = [AFJSONResponseSerializer serializer];
-            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/json", nil];
-            [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSLog(@"JSON: %@", responseObject);
-                int state = [[responseObject objectForKey:@"state"] intValue];
-                NSString* msg = [responseObject objectForKey:@"msg"];
-                if (state == 1) {
-                    successBlock();
-                } else {
-                    failureBlock([NSError errorWithDomain:msg code:0 userInfo:nil]);
-                }
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"Error: %@", error);
-            }];
+            [self verifyTransactionRemote:userInfo success:successBlock failure:failureBlock];
         }
     };
     // 获取产品id
     NSString* productId = transaction.payment.productIdentifier;
-    //获取用户id
+    // 获取用户id
     NSString* userId = transaction.payment.applicationUsername;
-    //获取订单回执
+    // 获取订单回执
     NSURL *receiptUrl = [[NSBundle mainBundle] appStoreReceiptURL];
     NSData *receiptData = [NSData dataWithContentsOfURL:receiptUrl];
     NSString *receipt = [receiptData base64EncodedStringWithOptions:0];
-    //如果订单回执为空刷新
+    // 如果订单回执为空刷新回执
     if (receipt == nil) {
         [[RMStore defaultStore] refreshReceiptOnSuccess:^{
             NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
@@ -610,6 +648,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
             block(productId, userId, receipt);
         } failure:^(NSError *error) {
             NSLog(@"refresh receipt failed %@", error);
+            failureBlock(error);
         }];
     } else {
         block(productId, userId, receipt);
