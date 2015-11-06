@@ -191,8 +191,11 @@
 
 - (IBAction)showProgressDialog:(id)sender {
     [[IOSGamePlugin getInstance] showProgressDialog:@"loading" :20];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC*5), dispatch_get_main_queue(), ^{
-        [[IOSGamePlugin getInstance] hideProgressDialog];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC*2), dispatch_get_main_queue(), ^{
+        [[IOSGamePlugin getInstance] showProgressDialog:@"uncompress" :80];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC*2), dispatch_get_main_queue(), ^{
+            [[IOSGamePlugin getInstance] hideProgressDialog];
+        });
     });
 }
 

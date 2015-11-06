@@ -7,7 +7,6 @@
 #import "IOSFeedbackHelper.h"
 #import "IOSGamePlugin.h"
 #import "ImgDialogViewController.h"
-#import "ProgressDialogViewController.h"
 #import "RWDemoViewController.h"
 
 FOUNDATION_EXPORT double GamePluginIOSVersionNumber;

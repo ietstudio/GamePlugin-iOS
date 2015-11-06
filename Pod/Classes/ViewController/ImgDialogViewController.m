@@ -18,25 +18,6 @@
     self = [super init];
     if (self) {
         // custom init
-        UIScreen *currentScreen = [UIScreen mainScreen];
-        
-        NSLog(@"applicationFrame.size.height = %f",currentScreen.applicationFrame.size.height);
-        
-        NSLog(@"applicationFrame.size.width = %f",currentScreen.applicationFrame.size.width);
-        
-        NSLog(@"applicationFrame.origin.x = %f",currentScreen.applicationFrame.origin.x);
-        
-        NSLog(@"applicationFrame.origin.y = %f",currentScreen.applicationFrame.origin.y);
-        
-        NSLog(@"bounds.x = %f",currentScreen.bounds.origin.x);
-        
-        NSLog(@"bounds.y = %f",currentScreen.bounds.origin.y);
-        
-        NSLog(@"bounds.height = %f",currentScreen.bounds.size.height);
-        
-        NSLog(@"bounds.width = %f",currentScreen.bounds.size.width);
-        
-        NSLog(@"brightness = %f",currentScreen.brightness);
     }
     return self;
 }

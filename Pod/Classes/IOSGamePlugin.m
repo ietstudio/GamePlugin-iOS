@@ -18,7 +18,6 @@
 
 #import "RWDemoViewController.h"
 #import "ImgDialogViewController.h"
-#import "ProgressDialogViewController.h"
 
 #import "UIAlertView+Block.h"
 #import "UIViewController+CWPopup.h"
@@ -32,12 +31,11 @@
 
 @implementation IOSGamePlugin
 {
-    UIImageView* _gameLoadingView;
-    MBProgressHUD* _hud;
-    Reachability* _reachability;
-    ProgressDialogViewController* _progressDialogController;
     void (^_emailCallFunc)(BOOL, NSString*);
     NSString *(^_genVerifyUrlCallFunc)(NSDictionary *);
+    Reachability* _reachability;
+    UIView* _loadingView;
+    UIView* _imageView;
     id _advertiseInstance;
     id _analyticInstance;
     id _feedbackInstance;
@@ -127,59 +125,56 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 }
 
 - (void)showGameLoading:(NSString *)img :(CGPoint)point :(CGFloat)scale {
-    if (_gameLoadingView != nil) {
+    if (_loadingView != nil) {
         return;
     }
-    // 屏幕宽高
+    UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
+
     float swidth = [UIScreen mainScreen].applicationFrame.size.width;
     float sheight = [UIScreen mainScreen].applicationFrame.size.height;
-    scale = UA_isRetinaDevice?scale:scale*2;
-    point.x = point.x*swidth;
-    point.y = (1-point.y)*sheight;
+    
+    UIView* view = [[UIView alloc] initWithFrame:CGRectMake(swidth*point.x, sheight*(1-point.y), 0, 0)];
+    [controller.view addSubview:view];
+    
     UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:img]];
     CGSize viewSize = imageView.frame.size;
     viewSize = CGSizeApplyAffineTransform(viewSize, CGAffineTransformMakeScale(scale, scale));
-    imageView.frame = CGRectMake(point.x-viewSize.width/2, point.y-viewSize.height/2, viewSize.width, viewSize.height);
-    [[[SystemUtil getInstance] getCurrentViewController].view addSubview:imageView];
+    // 缩放
+    imageView.frame = CGRectMake(-viewSize.width/2, -viewSize.height/2, viewSize.width, viewSize.height);
+    // 动画
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath: @"transform"];
     animation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
     animation.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeRotation(M_PI-0.001, 0.0, 0.0, 1.0)];
     animation.duration = 0.5;
     animation.cumulative = YES;
     animation.repeatCount = INT_MAX;
-    CGRect imageRrect = CGRectMake(0, 0,imageView.frame.size.width, imageView.frame.size.height);
+    CGRect imageRrect = CGRectMake(0, 0,viewSize.width, viewSize.height);
     UIGraphicsBeginImageContext(imageRrect.size);
-    [imageView.image drawInRect:CGRectMake(1,1,imageView.frame.size.width-2,imageView.frame.size.height-2)];
+    [imageView.image drawInRect:CGRectMake(0,0,viewSize.width,viewSize.height)];
     imageView.image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     [imageView.layer addAnimation:animation forKey:nil];
-    _gameLoadingView = imageView;
+    [view addSubview:imageView];
+    _loadingView = view;
 }
 
 - (void)hideGameLoading {
-    if (_gameLoadingView == nil) {
+    if (_loadingView == nil) {
         return;
     }
-    [_gameLoadingView.layer removeAllAnimations];
-    [_gameLoadingView removeFromSuperview];
-    _gameLoadingView = nil;
+    [_loadingView removeFromSuperview];
+    _loadingView = nil;
 }
 
 - (void)showLoading:(NSString *)msg {
-    if (_hud == nil) {
-        UIWindow* window = [[SystemUtil getInstance] getCurrentWindow];
-        _hud = [MBProgressHUD showHUDAddedTo:window animated:YES];
-    }
-    [_hud show:YES];
-    _hud.labelText = msg;
+    UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
+    MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
+    hud.labelText = msg;
 }
 
 - (void)hideLoading {
-    if (_hud == nil) {
-        return;
-    }
-    [_hud hide:YES];
-    _hud = nil;
+    UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
+    [MBProgressHUD hideHUDForView:controller.view animated:YES];
 }
 
 - (void)setGenVerifyUrlCallFunc:(NSString *(^)(NSDictionary *))func {
@@ -333,31 +328,25 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     [imgDialogViewController setBtnPath:btnImg];
     [imgDialogViewController setCallFunc:^(BOOL result) {
         UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
-        [controller dismissPopupViewControllerAnimated:YES completion:^{
+        [controller dismissPopupViewControllerAnimated:NO completion:^{
             func(result);
         }];
     }];
     UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
-    controller.useBlurForPopup = YES;
-    [[[SystemUtil getInstance] getCurrentViewController] presentPopupViewController:imgDialogViewController animated:YES completion:nil];
+    [controller presentPopupViewController:imgDialogViewController animated:NO completion:nil];
 }
 
 - (void)showProgressDialog:(NSString*)msg :(int)percent {
-    if (_progressDialogController == nil) {
-        _progressDialogController = [[ProgressDialogViewController alloc] init];
-        UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
-        controller.useBlurForPopup = YES;
-        [controller presentPopupViewController:_progressDialogController animated:YES completion:nil];
-    }
-    [_progressDialogController setPercent:msg :percent/100.0f];
+    UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
+    MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
+    hud.mode = MBProgressHUDModeDeterminateHorizontalBar;
+    hud.progress = percent/100.0f;
+    hud.labelText = msg;
 }
 
 - (void)hideProgressDialog {
-    if (_progressDialogController == nil) {
-        return;
-    }
-    [[[SystemUtil getInstance] getCurrentViewController] dismissPopupViewControllerAnimated:YES completion:nil];
-    _progressDialogController = nil;
+    UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
+    [MBProgressHUD hideHUDForView:controller.view animated:YES];
 }
 
 #pragma mark - LifeCycleDelegate
