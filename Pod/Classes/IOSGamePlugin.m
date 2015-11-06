@@ -41,6 +41,7 @@
     id _feedbackInstance;
     id _amazonAwsInstance;
     id _facebookInstance;
+    MBProgressHUD* _hud;
 }
 
 SINGLETON_DEFINITION(IOSGamePlugin)
@@ -167,14 +168,21 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 }
 
 - (void)showLoading:(NSString *)msg {
+    if (_hud != nil) {
+        return;
+    }
     UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
-    MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
-    hud.labelText = msg;
+    _hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
+    _hud.labelText = msg;
 }
 
 - (void)hideLoading {
+    if (_hud == nil) {
+        return;
+    }
     UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
     [MBProgressHUD hideHUDForView:controller.view animated:YES];
+    _hud = nil;
 }
 
 - (void)setGenVerifyUrlCallFunc:(NSString *(^)(NSDictionary *))func {
@@ -337,16 +345,23 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 }
 
 - (void)showProgressDialog:(NSString*)msg :(int)percent {
+    if (_hud != nil) {
+        return;
+    }
     UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
-    MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
-    hud.mode = MBProgressHUDModeDeterminateHorizontalBar;
-    hud.progress = percent/100.0f;
-    hud.labelText = msg;
+    _hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
+    _hud.mode = MBProgressHUDModeDeterminateHorizontalBar;
+    _hud.progress = percent/100.0f;
+    _hud.labelText = msg;
 }
 
 - (void)hideProgressDialog {
+    if (_hud == nil) {
+        return;
+    }
     UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
     [MBProgressHUD hideHUDForView:controller.view animated:YES];
+    _hud = nil;
 }
 
 #pragma mark - LifeCycleDelegate
