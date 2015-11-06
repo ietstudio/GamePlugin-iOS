@@ -168,7 +168,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 }
 
 - (void)showLoading:(NSString *)msg {
-    if (_hud != nil) {
+    if (_hud == nil) {
         UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
         _hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
     }
@@ -344,7 +344,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 }
 
 - (void)showProgressDialog:(NSString*)msg :(int)percent {
-    if (_hud != nil) {
+    if (_hud == nil) {
         UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
         _hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
     }
