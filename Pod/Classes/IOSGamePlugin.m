@@ -169,10 +169,9 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 
 - (void)showLoading:(NSString *)msg {
     if (_hud != nil) {
-        return;
+        UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
+        _hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
     }
-    UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
-    _hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
     _hud.labelText = msg;
 }
 
@@ -346,10 +345,9 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 
 - (void)showProgressDialog:(NSString*)msg :(int)percent {
     if (_hud != nil) {
-        return;
+        UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
+        _hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
     }
-    UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
-    _hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
     _hud.mode = MBProgressHUDModeDeterminateHorizontalBar;
     _hud.progress = percent/100.0f;
     _hud.labelText = msg;
