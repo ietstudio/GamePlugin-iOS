@@ -1,1 +1,0 @@
-../../../GamePluginBase/Pod/Classes/CrashlyticDelegate.h

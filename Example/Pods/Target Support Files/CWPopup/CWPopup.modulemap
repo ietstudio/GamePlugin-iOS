@@ -1,6 +1,0 @@
-framework module CWPopup {
-  umbrella header "CWPopup-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -1,6 +1,0 @@
-framework module RWBarChartView {
-  umbrella header "RWBarChartView-umbrella.h"
-
-  export *
-  module * { export * }
-}

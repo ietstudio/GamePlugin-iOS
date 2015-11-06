@@ -1,6 +1,0 @@
-framework module AnalyticFL {
-  umbrella header "AnalyticFL-umbrella.h"
-
-  export *
-  module * { export * }
-}

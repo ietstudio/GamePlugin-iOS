@@ -1,6 +1,0 @@
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/AdvertiseAdmob/Pod/SDK/v752/GoogleMobileAdsSdkiOS-7.5.2"
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/AdvertiseAdmob" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/MobihelpSDK"
-OTHER_LDFLAGS = -framework "AVFoundation" -framework "AdSupport" -framework "AudioToolbox" -framework "CoreGraphics" -framework "CoreMedia" -framework "CoreTelephony" -framework "EventKit" -framework "EventKitUI" -framework "GoogleMobileAds" -framework "MessageUI" -framework "StoreKit" -framework "SystemConfiguration"
-PODS_ROOT = ${SRCROOT}
-SKIP_INSTALL = YES

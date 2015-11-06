@@ -1,1 +1,0 @@
-../../../AdvertiseAdmob/Pod/Classes/AMAdvertiseDelegate.h

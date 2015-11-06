@@ -1,6 +1,0 @@
-framework module ALAssetsLibrary_CustomPhotoAlbum {
-  umbrella header "ALAssetsLibrary-CustomPhotoAlbum-umbrella.h"
-
-  export *
-  module * { export * }
-}
