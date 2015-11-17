@@ -558,7 +558,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                        }
                                        callback(nil);
                                        NSString* label = [NSString stringWithFormat:@"%@,%@", userId, productId];
-                                       [[IOSAnalyticHelper getInstance] onEvent:@"purchase" Label:label];
+                                       [[IOSAnalyticHelper getInstance] onEvent:@"Purchase" Label:label];
                                    });
                                }];
     };

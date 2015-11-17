@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.ietstudio.mayaslot</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -22,6 +22,39 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
+	<key>IETConfigs</key>
+	<dict>
+		<key>AWSCognitoIdentityPoolId</key>
+		<string>us-east-1:4f734aca-32b0-4788-a6ad-9b15df0716ed</string>
+		<key>AWSMobileAnalyticsAppId</key>
+		<string>9f4c9665f726472d8e400cf20c123c1b</string>
+		<key>AWSSNSPlatformApplicationArn</key>
+		<string>arn:aws:sns:us-east-1:091832752676:app/APNS/mayaslot</string>
+		<key>AWSSNSPlatformApplicationArnDev</key>
+		<string>arn:aws:sns:us-east-1:091832752676:app/APNS_SANDBOX/mayaslot</string>
+		<key>Admob_UnitId</key>
+		<string>ca-app-pub-8616016493142890/9103160968</string>
+		<key>ChartBoost_AppId</key>
+		<string>55560bf143150f4409a8c7eb</string>
+		<key>ChartBoost_AppSignature</key>
+		<string>5f6a4cc0976632f47842164c9b76c542e239bc4b</string>
+		<key>FlurryKey</key>
+		<string>R433V7Q4VNFVQH6VGKW5 </string>
+		<key>FreshDesk_domain</key>
+		<string>ietstudio.freshdesk.com</string>
+		<key>FreshDesk_key</key>
+		<string>mayaslots-2-883d504992cdb1cdd7cf77bca2b06336</string>
+		<key>FreshDesk_secret</key>
+		<string>471c8fdf8325e541f0c73a963a3def1593609fd8</string>
+		<key>TalkingDataChannal</key>
+		<string>AppStore</string>
+		<key>TalkingDataKey</key>
+		<string>14B2C459391331DD7BB576BA45CF33BB</string>
+		<key>UmengChannal</key>
+		<string>AppStore</string>
+		<key>UmengKey</key>
+		<string>55e0118a67e58ebdb40006d3</string>
+	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIMainStoryboardFile</key>
@@ -43,38 +76,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>IETConfigs</key>
-	<dict>
-		<key>Admob_UnitId</key>
-		<string>ca-app-pub-8616016493142890/9103160968</string>
-		<key>ChartBoost_AppId</key>
-		<string>55560bf143150f4409a8c7eb</string>
-		<key>ChartBoost_AppSignature</key>
-		<string>5f6a4cc0976632f47842164c9b76c542e239bc4b</string>
-		<key>TalkingDataKey</key>
-		<string>14B2C459391331DD7BB576BA45CF33BB</string>
-		<key>TalkingDataChannal</key>
-		<string>AppStore</string>
-		<key>UmengKey</key>
-		<string>55e0118a67e58ebdb40006d3</string>
-		<key>UmengChannal</key>
-		<string>AppStore</string>
-		<key>FlurryKey</key>
-		<string>R433V7Q4VNFVQH6VGKW5 </string>
-		<key>FreshDesk_domain</key>
-		<string>ietstudio.freshdesk.com</string>
-		<key>FreshDesk_key</key>
-		<string>mayaslots-2-883d504992cdb1cdd7cf77bca2b06336</string>
-		<key>FreshDesk_secret</key>
-		<string>471c8fdf8325e541f0c73a963a3def1593609fd8</string>
-		<key>AWSCognitoIdentityPoolId</key>
-		<string>us-east-1:4f734aca-32b0-4788-a6ad-9b15df0716ed</string>
-		<key>AWSMobileAnalyticsAppId</key>
-		<string>9f4c9665f726472d8e400cf20c123c1b</string>
-		<key>AWSSNSPlatformApplicationArn</key>
-		<string>arn:aws:sns:us-east-1:091832752676:app/APNS/mayaslot</string>
-		<key>AWSSNSPlatformApplicationArnDev</key>
-		<string>arn:aws:sns:us-east-1:091832752676:app/APNS_SANDBOX/mayaslot</string>
-	</dict>
 </dict>
 </plist>

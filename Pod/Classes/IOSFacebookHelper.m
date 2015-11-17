@@ -7,6 +7,7 @@
 //
 
 #import "IOSFacebookHelper.h"
+#import "IOSAnalyticHelper.h"
 
 @implementation IOSFacebookHelper
 {

@@ -7,6 +7,7 @@
 //
 
 #import "IOSAdvertiseHelper.h"
+#import "IOSAnalyticHelper.h"
 
 @implementation IOSAdvertiseHelper
 {
@@ -39,12 +40,16 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
     id<AdvertiseDelegate> spotDelegate = nil;
     BOOL result = NO;
     
-    // 按照优先级显示插屏
     for (spotDelegate in _spotDelegates) {
         result = [spotDelegate showSpotAd:^(BOOL result) {
             if (result) {
                 NSString* name = [spotDelegate getName];
                 NSLog(@"%@", [NSString stringWithFormat:@"%@ Spot ad clicked", name]);
+                [[IOSAnalyticHelper getInstance] onEvent:@"SpotAd Clicked" Label:name];
+            } else {
+                NSString* name = [spotDelegate getName];
+                NSLog(@"%@", [NSString stringWithFormat:@"%@ Spot ad dismiss", name]);
+                [[IOSAnalyticHelper getInstance] onEvent:@"SpotAd Dismiss" Label:name];
             }
             func(result);
         }];
@@ -54,8 +59,10 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
     if (result) {
         NSString* name = [spotDelegate getName];
         NSLog(@"%@", [NSString stringWithFormat:@"%@ Spot ad show Success", name]);
+        [[IOSAnalyticHelper getInstance] onEvent:@"SpotAd Show Success" Label:name];
     } else {
         NSLog(@"Spot ad show Failed");
+        [[IOSAnalyticHelper getInstance] onEvent:@"SpotAd Show Failed"];
     }
     return result;
 }
@@ -76,18 +83,19 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
     id<AdvertiseDelegate> vedioDelegate = nil;
     BOOL result = NO;
     
-    // 按照优先级显示视频
     for (vedioDelegate in _vedioDelegates) {
         result = [vedioDelegate showVedioAd:^(BOOL result) {
             if (result) {
                 NSString* name = [vedioDelegate getName];
                 NSLog(@"%@", [NSString stringWithFormat:@"%@ Vedio ad play finish", name]);
+                [[IOSAnalyticHelper getInstance] onEvent:@"VedioAd Play Finish" Label:name];
             }
             viewFunc(result);
         } :^(BOOL result) {
             if (result) {
                 NSString* name = [vedioDelegate getName];
                 NSLog(@"%@", [NSString stringWithFormat:@"%@ Vedio ad clicked", name]);
+                [[IOSAnalyticHelper getInstance] onEvent:@"VedioAd Clicked" Label:name];
             }
             clickFunc(result);
         }];
@@ -97,8 +105,10 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
     if (result) {
         NSString* name = [vedioDelegate getName];
         NSLog(@"%@", [NSString stringWithFormat:@"%@ Vedio ad show Success", name]);
+        [[IOSAnalyticHelper getInstance] onEvent:@"VedioAd Show Success" Label:name];
     } else {
         NSLog(@"Vedio ad show Failed");
+        [[IOSAnalyticHelper getInstance] onEvent:@"VedioAd Show Failed"];
     }
     return result;
 }

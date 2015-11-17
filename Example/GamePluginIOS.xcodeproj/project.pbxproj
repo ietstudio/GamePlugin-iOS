@@ -520,7 +520,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: GAO YANG (M8T95TFH5C)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jiabi Miao (3Y3Y3DPRAB)";
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GamePluginIOS/GamePluginIOS-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -533,8 +534,9 @@
 				INFOPLIST_FILE = "GamePluginIOS/GamePluginIOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MODULE_NAME = ExampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joylifez.mayaslots;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "cca1a006-18fe-4103-8f2a-6e9c8cc85ae2";
+				PROVISIONING_PROFILE = "00e3f284-6f21-409b-bcbb-0384198e0bc0";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -545,7 +547,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: GAO YANG (M8T95TFH5C)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jiabi Miao (3Y3Y3DPRAB)";
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GamePluginIOS/GamePluginIOS-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -558,8 +561,9 @@
 				INFOPLIST_FILE = "GamePluginIOS/GamePluginIOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MODULE_NAME = ExampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joylifez.mayaslots;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "cca1a006-18fe-4103-8f2a-6e9c8cc85ae2";
+				PROVISIONING_PROFILE = "00e3f284-6f21-409b-bcbb-0384198e0bc0";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
