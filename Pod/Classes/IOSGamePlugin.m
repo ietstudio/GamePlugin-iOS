@@ -198,22 +198,18 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     }
     NSSet* iapIdsSet = [[NSSet alloc] initWithArray:iapIdsArr];
     [[RMStore defaultStore] requestProducts:iapIdsSet success:^(NSArray *products, NSArray *invalidProductIdentifiers) {
-        NSLog(@"Products loaded");
         [[RMStore defaultStore] addPayment:iapId
                                       user:userId
                                    success:^(SKPaymentTransaction *transaction) {
-                                       NSLog(@"Payment Success!");
                                        callback(YES, @"Payment Success!");
                                    }
                                    failure:^(SKPaymentTransaction *transaction, NSError *error) {
-                                       NSLog(@"%@", error);
-                                       NSLog(@"Payment Failed!");
-                                       callback(NO, @"Payment Failed!");
+                                       NSString* msg = [NSString stringWithFormat:@"Payment Failed! %@", error];
+                                       callback(NO, msg);
                                    }];
     } failure:^(NSError *error) {
-        NSLog(@"%@", error);
-        NSLog(@"Request Products Failed!");
-        callback(NO, @"Request Products Failed!");
+        NSString* msg = [NSString stringWithFormat:@"Request Products Failed! %@", error];
+        callback(NO, msg);
     }];
 }
 
