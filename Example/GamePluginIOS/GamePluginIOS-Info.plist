@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -43,9 +48,9 @@
 		<key>FreshDesk_domain</key>
 		<string>ietstudio.freshdesk.com</string>
 		<key>FreshDesk_key</key>
-		<string>mayaslots-2-883d504992cdb1cdd7cf77bca2b06336</string>
+		<string>mayaslots-2-9da78ac648190b27c460f1fcb3687b31</string>
 		<key>FreshDesk_secret</key>
-		<string>471c8fdf8325e541f0c73a963a3def1593609fd8</string>
+		<string>f094ac80720519b66b1fed10e02a1203dfa9c6ea</string>
 		<key>TalkingDataChannal</key>
 		<string>AppStore</string>
 		<key>TalkingDataKey</key>
@@ -57,8 +62,6 @@
 	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

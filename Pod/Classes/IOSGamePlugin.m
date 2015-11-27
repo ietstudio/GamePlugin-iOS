@@ -20,7 +20,6 @@
 #import "ImgDialogViewController.h"
 
 #import "UIAlertView+Block.h"
-#import "UIViewController+CWPopup.h"
 #import "MBProgressHUD.h"
 #import "Reachability.h"
 #import "iRate.h"
@@ -63,7 +62,11 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 }
 
 - (NSString *)getCountryCode {
-    return [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
+    NSString *country = [[NSLocale currentLocale] objectForKey: NSLocaleCountryCode];
+    if(!country) {
+        country = [[NSLocale systemLocale] objectForKey:NSLocaleCountryCode];
+    }
+    return country;
 }
 
 - (NSString *)getLanguageCode {
@@ -129,7 +132,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     if (_loadingView != nil) {
         return;
     }
-    UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
+    UIViewController* controller = [[SystemUtil getInstance] controller];
 
     float swidth = [UIScreen mainScreen].applicationFrame.size.width;
     float sheight = [UIScreen mainScreen].applicationFrame.size.height;
@@ -169,8 +172,8 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 
 - (void)showLoading:(NSString *)msg {
     if (_hud == nil) {
-        UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
-        _hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
+        UIWindow* window = [[SystemUtil getInstance] window];
+        _hud = [MBProgressHUD showHUDAddedTo:window animated:YES];
     }
     _hud.labelText = msg;
 }
@@ -179,8 +182,8 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     if (_hud == nil) {
         return;
     }
-    UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
-    [MBProgressHUD hideHUDForView:controller.view animated:YES];
+    UIWindow* window = [[SystemUtil getInstance] window];
+    [MBProgressHUD hideHUDForView:window animated:YES];
     _hud = nil;
 }
 
@@ -214,7 +217,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 }
 
 - (void)showChartViewWithArr:(NSArray *)arr multiply:(float)multiply {
-    UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
+    UIViewController* controller = [[SystemUtil getInstance] controller];
     RWDemoViewController *vc = [[RWDemoViewController alloc] initWithArr:arr multiply:multiply];
     [controller presentViewController:vc
                               animated:YES
@@ -252,7 +255,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
         [controller setSubject: subject];//设置主题
         [controller setToRecipients: toRecipients];//添加收件人
         [controller setMessageBody:emailBody isHTML:YES];//添加正文
-        [[[SystemUtil getInstance] getCurrentViewController] presentViewController:controller animated:YES completion:^{
+        [[[SystemUtil getInstance] controller] presentViewController:controller animated:YES completion:^{
             NSLog(@"email controller present");
         }];
     }
@@ -326,23 +329,23 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 }
 
 - (void)showImageDialog:(NSString *)img :(NSString *)btnImg :(void (^)(BOOL))func {
-    ImgDialogViewController *imgDialogViewController = [[ImgDialogViewController alloc] init];
-    [imgDialogViewController setImgPath:img];
-    [imgDialogViewController setBtnPath:btnImg];
-    [imgDialogViewController setCallFunc:^(BOOL result) {
-        UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
-        [controller dismissPopupViewControllerAnimated:NO completion:^{
-            func(result);
-        }];
-    }];
-    UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
-    [controller presentPopupViewController:imgDialogViewController animated:NO completion:nil];
+//    ImgDialogViewController *imgDialogViewController = [[ImgDialogViewController alloc] init];
+//    [imgDialogViewController setImgPath:img];
+//    [imgDialogViewController setBtnPath:btnImg];
+//    [imgDialogViewController setCallFunc:^(BOOL result) {
+//        UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
+//        [controller dismissPopupViewControllerAnimated:NO completion:^{
+//            func(result);
+//        }];
+//    }];
+//    UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
+//    [controller presentPopupViewController:imgDialogViewController animated:NO completion:nil];
 }
 
 - (void)showProgressDialog:(NSString*)msg :(int)percent {
     if (_hud == nil) {
-        UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
-        _hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
+        UIWindow* window = [[SystemUtil getInstance] window];
+        _hud = [MBProgressHUD showHUDAddedTo:window animated:YES];
     }
     _hud.mode = MBProgressHUDModeDeterminateHorizontalBar;
     _hud.progress = percent/100.0f;
@@ -353,8 +356,8 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     if (_hud == nil) {
         return;
     }
-    UIViewController* controller = [[SystemUtil getInstance] getCurrentViewController];
-    [MBProgressHUD hideHUDForView:controller.view animated:YES];
+    UIWindow* window = [[SystemUtil getInstance] window];
+    [MBProgressHUD hideHUDForView:window animated:YES];
     _hud = nil;
 }
 
@@ -376,7 +379,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     // 注册网络状态变化通知
     __block IOSGamePlugin *gamePlugin = self;
     NSString* hostName;
-    if ([[[SystemUtil getInstance] getCountryCode] isEqualToString:@"CN"]) {
+    if ([[self getCountryCode] isEqualToString:@"CN"]) {
         hostName = @"www.baidu.com";
     } else {
         hostName = @"www.google.com";

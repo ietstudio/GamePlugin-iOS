@@ -9,6 +9,7 @@
 #import "IETViewController.h"
 #import "IOSGamePlugin.h"
 #import "IOSAdvertiseHelper.h"
+#import "IOSFeedbackHelper.h"
 #import "NSString+MD5.h"
 
 @interface IETViewController ()
@@ -221,5 +222,17 @@
     }];
     NSLog(@"VedioAd Show: %@", result?@"YES":@"NO");
 }
+
+#pragma mark - Feedback
+- (IBAction)showFeedback:(id)sender {
+    NSDictionary* userInfo = @{@"user_name":@"gaoyang",
+                               @"email":@"gaoyang@ietstudio.com",
+                               @"key1":@"value1",
+                               @"key2":@"value2"};
+    [[IOSFeedbackHelper getInstance] showFeedBack:userInfo];
+}
+
+#pragma mark - Analytic
+
 
 @end

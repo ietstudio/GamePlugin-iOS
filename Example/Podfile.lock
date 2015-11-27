@@ -1,5 +1,5 @@
 PODS:
-  - AdvertiseAdmob (0.1.1):
+  - AdvertiseAdmob (0.1.2):
     - GamePluginBase
   - AFNetworking (2.6.2):
     - AFNetworking/NSURLConnection (= 2.6.2)
@@ -47,7 +47,6 @@ PODS:
   - Bolts/AppLinks (1.2.2):
     - Bolts/Tasks
   - Bolts/Tasks (1.2.2)
-  - CWPopup (1.2.6)
   - Expecta (1.0.5)
   - Expecta+Snapshots (2.0.0):
     - Expecta (~> 1.0)
@@ -76,15 +75,14 @@ PODS:
   - FBSnapshotTestCase/Core (2.0.7)
   - FBSnapshotTestCase/SwiftSupport (2.0.7):
     - FBSnapshotTestCase/Core
-  - FeedBackFD (0.1.0):
+  - FeedBackFD (0.1.1):
     - GamePluginBase
     - MobihelpSDK (~> 1.6)
   - Flurry-iOS-SDK/FlurrySDK (7.1.0)
-  - GamePluginBase (0.1.2)
-  - GamePluginIOS (0.2.2):
+  - GamePluginBase (0.1.3)
+  - GamePluginIOS (0.2.3):
     - AFNetworking (~> 2.6.0)
     - ALAssetsLibrary-CustomPhotoAlbum (~> 1.3.0)
-    - CWPopup (~> 1.2.6)
     - GamePluginBase
     - iRate (~> 1.11.4)
     - MBProgressHUD (~> 0.9.1)
@@ -127,7 +125,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  AdvertiseAdmob: 852fe72023284aefb12909dd73845cd94bc51f1c
+  AdvertiseAdmob: 0a66f21a6c3e84221bf375edc434bd09ffc5a4f3
   AFNetworking: 7f317038a9710cabfa43ec56396b307b45df72ab
   ALAssetsLibrary-CustomPhotoAlbum: 299ea3f58e988b453b19c595859354e562814c93
   AmazonAWS: 58a25d5dc63bdf376f88d2e1a109786d03f7738a
@@ -138,7 +136,6 @@ SPEC CHECKSUMS:
   AWSMobileAnalytics: ee66bd427dcfa264088804776e94d82932ad07f5
   AWSSNS: 6f526c50d4013eacd4c35af4b9b35eb415d202ec
   Bolts: 20a2bd788273360cb1e31530dc19b8544eef2544
-  CWPopup: 3f8b0704a9914813d90372d66525d31f24b27d49
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: 29b38dd695bc72a0ed2bea833937d78df41943ba
   Facebook: 49905662750b011d8b2700b8bc6e8ed5618fdfd3
@@ -146,10 +143,10 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: 225cc9a388a92916ee3f3bb14422017b6e44b65b
   FBSDKShareKit: 642034ac9f30793dfd897851b724bb4281750266
   FBSnapshotTestCase: 7e85180d0d141a0cf472352edda7e80d7eaeb547
-  FeedBackFD: 076f50ca2814f85ed7f2e9c1188f1581526c7339
+  FeedBackFD: 6e253d573e68bd5b82399295d959439edd65e2fd
   Flurry-iOS-SDK: 7b3fe6c3344c82b73c4c84163652eada84fbfcf4
-  GamePluginBase: 0b06986d6fbae9b986dfc8bfa754ab9a45f1b0de
-  GamePluginIOS: 95f65e6c22d7fa91be89d035313810261ad7e7fd
+  GamePluginBase: 06f08f188c9394bfa148e76802b7fbf7dcbffca5
+  GamePluginIOS: 85aecc39d4039181abd7e04100b41054f267e9e9
   iRate: 599ed07c854e0695f3c605d1b2a64c67d912acb7
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   MD5Digest: 2757ae2ee239148912a42063135c6fab2fa082f9

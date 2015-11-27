@@ -8,14 +8,21 @@
 
 #import "IETAppDelegate.h"
 #import "IOSGamePlugin.h"
-#import "NSString+MD5.h"
+#import "SystemUtil.h"
+
 
 @implementation IETAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    self.window.rootViewController=[storyboard instantiateInitialViewController];
+    [self.window makeKeyAndVisible];
+    
     [[IOSGamePlugin getInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+    [[SystemUtil getInstance] setWindow:self.window];
+    [[SystemUtil getInstance] setController:self.window.rootViewController];
     return YES;
 }
 
