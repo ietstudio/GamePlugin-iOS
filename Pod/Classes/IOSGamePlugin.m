@@ -26,7 +26,6 @@
 #import "ALAssetsLibrary+CustomPhotoAlbum.h"
 #import "AFNetworking.h"
 #import "NSString+MD5.h"
-#import "NSLogger/NSLogger.h"
 
 @implementation IOSGamePlugin
 {
@@ -41,6 +40,7 @@
     id _amazonAwsInstance;
     id _facebookInstance;
     MBProgressHUD* _hud;
+    NSString* _iapSuccessMsg;
 }
 
 SINGLETON_DEFINITION(IOSGamePlugin)
@@ -204,7 +204,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
         [[RMStore defaultStore] addPayment:iapId
                                       user:userId
                                    success:^(SKPaymentTransaction *transaction) {
-                                       callback(YES, @"Payment Success!");
+                                       callback(YES, _iapSuccessMsg);
                                    }
                                    failure:^(SKPaymentTransaction *transaction, NSError *error) {
                                        NSString* msg = [NSString stringWithFormat:@"Payment Failed! %@", error];
@@ -408,7 +408,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     [iRate sharedInstance].eventsUntilPrompt = 10;//事件N次以上
     [iRate sharedInstance].remindPeriod = 1;//用户点击了稍后提醒以后，等待1天
     [iRate sharedInstance].cancelButtonLabel = @"";//不显示cancel按钮
-
+        
     return YES;
 }
 
@@ -509,7 +509,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 
 #pragma mark - RMStoreReceiptVerificator
 
-- (void)verifyTransactionLocal:(NSDictionary*)userInfo success:(void (^)())successBlock failure:(void (^)(NSError *))failureBlock {
+- (void)verifyLocalTransaction:(SKPaymentTransaction *)transaction userInfo:(NSDictionary*)userInfo success:(void (^)())successBlock failure:(void (^)(NSError *))failureBlock {
     // Create the JSON object that describes the request
     NSString* userId = [userInfo objectForKey:@"userId"];
     NSString* productId = [userInfo objectForKey:@"productId"];
@@ -571,16 +571,18 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                                      userInfo:nil];
                     failureBlock(error);
                 } else {
+                    _iapSuccessMsg = @"ProductionSandbox";
                     successBlock();
                 }
             });
         } else {
+            _iapSuccessMsg = @"Production";
             successBlock();
         }
     });
 }
 
-- (void)verifyTransactionRemote:(NSDictionary*)userInfo success:(void (^)())successBlock failure:(void (^)(NSError *))failureBlock {
+- (void)verifyRemoteTransaction:(SKPaymentTransaction *)transaction userInfo:(NSDictionary*)userInfo success:(void (^)())successBlock failure:(void (^)(NSError *))failureBlock {
     NSString* url = _genVerifyUrlCallFunc(userInfo);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -591,6 +593,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
         int state = [[responseObject objectForKey:@"state"] intValue];
         NSString* msg = [responseObject objectForKey:@"msg"];
         if (state == 1) {
+            _iapSuccessMsg = msg;
             successBlock();
         } else {
             failureBlock([NSError errorWithDomain:msg code:0 userInfo:nil]);
@@ -627,9 +630,15 @@ SINGLETON_DEFINITION(IOSGamePlugin)
         [userInfo setObject:receipt forKey:@"receipt"];
         // 如果没有设置生成验证url的回调函数，本地调用苹果接口验证
         if (_genVerifyUrlCallFunc == nil) {
-            [self verifyTransactionLocal:userInfo success:successBlock failure:failureBlock];
+            [self verifyLocalTransaction:transaction
+                                userInfo:userInfo
+                                 success:successBlock
+                                 failure:failureBlock];
         } else {
-            [self verifyTransactionRemote:userInfo success:successBlock failure:failureBlock];
+            [self verifyRemoteTransaction:transaction
+                                 userInfo:userInfo
+                                  success:successBlock
+                                  failure:failureBlock];
         }
     };
     // 获取产品id

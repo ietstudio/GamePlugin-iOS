@@ -13,6 +13,7 @@
 #import "NSString+MD5.h"
 
 @interface IETViewController ()
+
 @property (weak, nonatomic) IBOutlet UIView *commonView;
 @property (weak, nonatomic) IBOutlet UIView *advertiseView;
 @property (weak, nonatomic) IBOutlet UIView *analyticsView;
@@ -136,8 +137,8 @@
 }
 
 - (IBAction)doIap:(id)sender {
-    [[IOSGamePlugin getInstance] doIap:@[@"com.ietstudio.mayaslot.coin1"]
-                                      :@"com.ietstudio.mayaslot.coin1"
+    [[IOSGamePlugin getInstance] doIap:@[@"mayaslot.coin2"]
+                                      :@"mayaslot.coin2"
                                       :@"guest"
                                       :^(BOOL result, NSString *msg) {
                                           NSLog(@"result=%@", result?@"YES":@"NO");
