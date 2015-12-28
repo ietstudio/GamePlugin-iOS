@@ -201,6 +201,30 @@
     });
 }
 
+- (IBAction)gcReportScore:(id)sender {
+    [[IOSGamePlugin getInstance] gcReportScore:10 leaderboard:@"grp.PlayerScores" sortH2L:YES];
+}
+
+- (IBAction)gcGetScore:(id)sender {
+    NSLog(@"%d", [[IOSGamePlugin getInstance] gcGetScore:@"grp.PlayerScores"]);
+}
+
+- (IBAction)gcReportAchievement:(id)sender {
+    [[IOSGamePlugin getInstance] gcReportAchievement:@"grp.FirstAchievement" percentComplete:10];
+}
+
+- (IBAction)gcGetAchievement:(id)sender {
+    NSLog(@"%f", [[IOSGamePlugin getInstance] gcGetAchievement:@"grp.FirstAchievement"]);
+}
+
+- (IBAction)gcLeaderBoard:(id)sender {
+    [[IOSGamePlugin getInstance] gcShowLeaderBoard];
+}
+
+- (IBAction)gcAchievement:(id)sender {
+    [[IOSGamePlugin getInstance] gcShowArchievement];
+}
+
 #pragma mark - Advertise
 
 - (IBAction)showSpot:(id)sender {

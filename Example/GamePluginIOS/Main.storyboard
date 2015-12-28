@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="whP-gf-Uak">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="whP-gf-Uak">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -138,6 +138,43 @@
                                         </state>
                                         <connections>
                                             <action selector="back:" destination="whP-gf-Uak" eventType="touchUpInside" id="1ZU-Nv-5sv"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G7e-79-rFZ" userLabel="analyticsView">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bvu-lo-X6g">
+                                        <rect key="frame" x="16" y="28" width="35" height="30"/>
+                                        <state key="normal" title="Back">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="back:" destination="whP-gf-Uak" eventType="touchUpInside" id="ynH-Ym-YCd"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gqw-q2-0ly" userLabel="feedbackView">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MCc-hU-CJ1">
+                                        <rect key="frame" x="16" y="28" width="35" height="30"/>
+                                        <state key="normal" title="Back">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="back:" destination="whP-gf-Uak" eventType="touchUpInside" id="nb3-A5-NgF"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XhR-zR-ejB">
+                                        <rect key="frame" x="16" y="66" width="105" height="30"/>
+                                        <state key="normal" title="ShowFeedback"/>
+                                        <connections>
+                                            <action selector="showFeedback:" destination="whP-gf-Uak" eventType="touchUpInside" id="JT0-Yr-rPz"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -335,41 +372,46 @@
                                             <action selector="saveImg:" destination="whP-gf-Uak" eventType="touchUpInside" id="Khj-Fe-X0h"/>
                                         </connections>
                                     </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G7e-79-rFZ" userLabel="analyticsView">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bvu-lo-X6g">
-                                        <rect key="frame" x="16" y="28" width="35" height="30"/>
-                                        <state key="normal" title="Back">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VKA-iq-BEW">
+                                        <rect key="frame" x="210" y="293" width="106" height="30"/>
+                                        <state key="normal" title="GcReportScore"/>
                                         <connections>
-                                            <action selector="back:" destination="whP-gf-Uak" eventType="touchUpInside" id="ynH-Ym-YCd"/>
+                                            <action selector="gcReportScore:" destination="whP-gf-Uak" eventType="touchUpInside" id="utP-eH-ejx"/>
                                         </connections>
                                     </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gqw-q2-0ly" userLabel="feedbackView">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MCc-hU-CJ1">
-                                        <rect key="frame" x="16" y="28" width="35" height="30"/>
-                                        <state key="normal" title="Back">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FZr-g2-A2C">
+                                        <rect key="frame" x="232" y="331" width="84" height="30"/>
+                                        <state key="normal" title="GcGetScore"/>
                                         <connections>
-                                            <action selector="back:" destination="whP-gf-Uak" eventType="touchUpInside" id="nb3-A5-NgF"/>
+                                            <action selector="gcGetScore:" destination="whP-gf-Uak" eventType="touchUpInside" id="Ahh-2X-TF6"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XhR-zR-ejB">
-                                        <rect key="frame" x="16" y="66" width="105" height="30"/>
-                                        <state key="normal" title="ShowFeedback"/>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7hP-xA-XD7">
+                                        <rect key="frame" x="161" y="369" width="155" height="30"/>
+                                        <state key="normal" title="GcReportAchievement"/>
                                         <connections>
-                                            <action selector="showFeedback:" destination="whP-gf-Uak" eventType="touchUpInside" id="JT0-Yr-rPz"/>
+                                            <action selector="gcReportAchievement:" destination="whP-gf-Uak" eventType="touchUpInside" id="BDv-P8-AlX"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CQm-Es-aho">
+                                        <rect key="frame" x="183" y="407" width="133" height="30"/>
+                                        <state key="normal" title="GcGetAchievement"/>
+                                        <connections>
+                                            <action selector="gcGetAchievement:" destination="whP-gf-Uak" eventType="touchUpInside" id="TwT-wL-B9b"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="paX-3K-A8C">
+                                        <rect key="frame" x="209" y="445" width="107" height="30"/>
+                                        <state key="normal" title="GcLeaderBoard"/>
+                                        <connections>
+                                            <action selector="gcLeaderBoard:" destination="whP-gf-Uak" eventType="touchUpInside" id="sb0-uP-W6d"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0tu-GB-QPT">
+                                        <rect key="frame" x="208" y="483" width="108" height="30"/>
+                                        <state key="normal" title="GcAchievement"/>
+                                        <connections>
+                                            <action selector="gcAchievement:" destination="whP-gf-Uak" eventType="touchUpInside" id="G93-H2-VaZ"/>
                                         </connections>
                                     </button>
                                 </subviews>

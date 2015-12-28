@@ -70,10 +70,13 @@ PODS:
     - GamePluginBase
     - MobihelpSDK (~> 1.6)
   - Flurry-iOS-SDK/FlurrySDK (7.1.0)
+  - GameCenterManager (5.3):
+    - Reachability
   - GamePluginBase (0.1.3)
-  - GamePluginIOS (0.2.4):
+  - GamePluginIOS (0.2.5):
     - AFNetworking (~> 2.6.0)
     - ALAssetsLibrary-CustomPhotoAlbum (~> 1.3.0)
+    - GameCenterManager (~> 5.3)
     - GamePluginBase
     - iRate (~> 1.11.4)
     - MBProgressHUD (~> 0.9.1)
@@ -124,8 +127,9 @@ SPEC CHECKSUMS:
   FBSDKShareKit: 642034ac9f30793dfd897851b724bb4281750266
   FeedBackFD: 6e253d573e68bd5b82399295d959439edd65e2fd
   Flurry-iOS-SDK: 7b3fe6c3344c82b73c4c84163652eada84fbfcf4
+  GameCenterManager: e3a855e9db97b876a3a4a0605f5be30c6de9cebd
   GamePluginBase: 06f08f188c9394bfa148e76802b7fbf7dcbffca5
-  GamePluginIOS: 2b3e351762f1295010f1ccb89ce5da4023b16455
+  GamePluginIOS: 04587b69ebbb586de4d881b5bdb0172f65fca523
   iRate: 599ed07c854e0695f3c605d1b2a64c67d912acb7
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   MD5Digest: 2757ae2ee239148912a42063135c6fab2fa082f9

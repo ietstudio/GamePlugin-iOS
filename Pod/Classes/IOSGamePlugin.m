@@ -70,7 +70,11 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 }
 
 - (NSString *)getLanguageCode {
-    return [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+    NSString* language = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+    if(!language) {
+        language = [[NSLocale systemLocale] objectForKey:NSLocaleLanguageCode];
+    }
+    return language;
 }
 
 - (NSString *)getDeviceName {
@@ -193,23 +197,28 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 
 - (void)doIap:(NSArray *)iapIdsArr :(NSString *)iapId :(NSString *)userId :(void (^)(BOOL, NSString *))callback {
     if ([[self getNetworkState] isEqualToString:@"NotReachable"]) {
-        callback(NO, @"can not access internet");
+        callback(NO, @"Can not access internet");
         return;
     }
     if (![RMStore canMakePayments]) {
-        callback(NO, @"can not make payments");
+        callback(NO, @"Can not make payments");
     }
     NSSet* iapIdsSet = [[NSSet alloc] initWithArray:iapIdsArr];
     [[RMStore defaultStore] requestProducts:iapIdsSet success:^(NSArray *products, NSArray *invalidProductIdentifiers) {
-        [[RMStore defaultStore] addPayment:iapId
-                                      user:userId
-                                   success:^(SKPaymentTransaction *transaction) {
-                                       callback(YES, _iapSuccessMsg);
-                                   }
-                                   failure:^(SKPaymentTransaction *transaction, NSError *error) {
-                                       NSString* msg = [NSString stringWithFormat:@"Payment Failed! %@", error];
-                                       callback(NO, msg);
-                                   }];
+        if ([products count] > 0) {
+            [[RMStore defaultStore] addPayment:iapId
+                                          user:userId
+                                       success:^(SKPaymentTransaction *transaction) {
+                                           callback(YES, _iapSuccessMsg);
+                                       }
+                                       failure:^(SKPaymentTransaction *transaction, NSError *error) {
+                                           NSString* msg = [NSString stringWithFormat:@"Payment Failed! %@", error];
+                                           callback(NO, msg);
+                                       }];
+        } else {
+            NSString* msg = [NSString stringWithFormat:@"Invalid ProductId %@", iapId];
+            callback(NO, msg);
+        }
     } failure:^(NSError *error) {
         NSString* msg = [NSString stringWithFormat:@"Request Products Failed! %@", error];
         callback(NO, msg);
@@ -361,6 +370,40 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     _hud = nil;
 }
 
+- (int)gcGetScore:(NSString *)leaderboard {
+    return [[GameCenterManager sharedManager] highScoreForLeaderboard:leaderboard];
+}
+
+- (void)gcReportScore:(int)score leaderboard:(NSString *)leaderboard sortH2L:(BOOL)h2l {
+    [[GameCenterManager sharedManager] saveAndReportScore:score
+                                              leaderboard:leaderboard
+                                                sortOrder:h2l?GameCenterSortOrderHighToLow:GameCenterSortOrderLowToHigh];
+}
+
+- (double)gcGetAchievement:(NSString *)achievement {
+    return [[GameCenterManager sharedManager] highScoreForLeaderboard:achievement];
+}
+
+- (void)gcReportAchievement:(NSString*)achievement percentComplete:(double)percent {
+    double currentPercent = [self gcGetAchievement:achievement];
+    if (currentPercent >= 100) {
+        return;
+    }
+    [[GameCenterManager sharedManager] saveAndReportAchievement:achievement
+                                                percentComplete:percent
+                                      shouldDisplayNotification:YES];
+}
+
+- (void)gcShowLeaderBoard {
+    UIViewController* controller = [[SystemUtil getInstance] controller];
+    [[GameCenterManager sharedManager] presentLeaderboardsOnViewController:controller];
+}
+
+- (void)gcShowArchievement {
+    UIViewController* controller = [[SystemUtil getInstance] controller];
+    [[GameCenterManager sharedManager] presentAchievementsOnViewController:controller];
+}
+
 #pragma mark - LifeCycleDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -408,7 +451,16 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     [iRate sharedInstance].eventsUntilPrompt = 10;//事件N次以上
     [iRate sharedInstance].remindPeriod = 1;//用户点击了稍后提醒以后，等待1天
     [iRate sharedInstance].cancelButtonLabel = @"";//不显示cancel按钮
-        
+    
+    // GameCenter初始化
+    [[GameCenterManager sharedManager] setupManager];
+    [[GameCenterManager sharedManager] setDelegate:self];
+    
+    // 验证是否设置了[UIApplication sharedApplication].delegate.window
+    // 验证是否设置了[UIApplication sharedApplication].delegate.window.rootViewController
+    assert([UIApplication sharedApplication].delegate.window);
+    assert([UIApplication sharedApplication].delegate.window.rootViewController);
+    
     return YES;
 }
 
@@ -529,22 +581,23 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
                                    dispatch_sync(dispatch_get_main_queue(), ^{
                                        if (connectionError) {
-                                           NSLog(@"Error: %@", error);
-                                           callback(error);
+                                           NSString* msg = [NSString stringWithFormat:@"connectionError: %@", error];
+                                           callback([NSError errorWithDomain:msg code:0 userInfo:nil]);
                                            return;
                                        }
                                        NSError *error;
                                        NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
                                        if (!jsonResponse) {
-                                           NSLog(@"Error: %@", error);
-                                           callback(error);
+                                           NSString* msg = [NSString stringWithFormat:@"jsonResponse: %@", error];
+                                           callback([NSError errorWithDomain:msg code:0 userInfo:nil]);
                                            return;
                                        }
                                        NSLog(@"%@", jsonResponse);
                                        // 验证status
                                        int status = [[jsonResponse objectForKey:@"status"] intValue];
                                        if (status != 0) {
-                                           callback([NSError errorWithDomain:@"status!=0" code:0 userInfo:nil]);
+                                           NSString* msg = [NSString stringWithFormat:@"status!=0"];
+                                           callback([NSError errorWithDomain:msg code:0 userInfo:nil]);
                                            return;
                                        }
                                        NSDictionary* receipt = [jsonResponse objectForKey:@"receipt"];
@@ -552,7 +605,8 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                        NSString* bundleId = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
                                        NSString* bundle_id = [receipt objectForKey:@"bundle_id"];
                                        if (![bundle_id isEqualToString:bundleId]) {
-                                           callback([NSError errorWithDomain:@"bundle_id is wrong" code:0 userInfo:nil]);
+                                           NSString* msg = [NSString stringWithFormat:@"bundle_id is wrong"];
+                                           callback([NSError errorWithDomain:msg code:0 userInfo:nil]);
                                            return;
                                        }
                                        callback(nil);
@@ -692,6 +746,69 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     NSLog(@"%@", msg);
     _emailCallFunc(success, msg);
     _emailCallFunc = nil;
+}
+
+#pragma mark - GameCenterManagerDelegate
+
+- (void)gameCenterManager:(GameCenterManager *)manager authenticateUser:(UIViewController *)gameCenterLoginController {
+    UIViewController* controller = [[SystemUtil getInstance] controller];
+    [controller presentViewController:gameCenterLoginController animated:YES completion:^{
+        NSLog(@"Finished Presenting Authentication Controller");
+    }];
+}
+
+- (void)gameCenterManager:(GameCenterManager *)manager availabilityChanged:(NSDictionary *)availabilityInformation {
+    NSLog(@"GC Availabilty: %@", availabilityInformation);
+    if ([[availabilityInformation objectForKey:@"status"] isEqualToString:@"GameCenter Available"]) {
+        NSLog(@"GameCenter Available, Game Center is online, the current player is logged in, and this app is setup.");
+    } else {
+        NSLog(@"GameCenter Unavailable, %@", [availabilityInformation objectForKey:@"error"]);
+    }
+    
+    GKLocalPlayer *player = [[GameCenterManager sharedManager] localPlayerData];
+    if (player) {
+        if ([player isUnderage] == NO) {
+            NSLog(@"%@ signed in.", player.displayName);
+            NSLog(@"Player is not underage and is signed-in");
+            [[GameCenterManager sharedManager] localPlayerPhoto:^(UIImage *playerPhoto) {
+                NSLog(@"playerPhoto = %@", playerPhoto);
+            }];
+        } else {
+            NSLog(@"%@", player.displayName);
+            NSLog(@"Player is underage");
+            NSLog(@"Underage player, %@, signed in.", player.displayName);
+        }
+    } else {
+        NSLog(@"No GameCenter player found.");
+    }
+}
+
+- (void)gameCenterManager:(GameCenterManager *)manager error:(NSError *)error {
+    NSLog(@"GCM Error: %@", error);
+}
+
+- (void)gameCenterManager:(GameCenterManager *)manager reportedAchievement:(GKAchievement *)achievement withError:(NSError *)error {
+    if (!error) {
+        NSLog(@"GCM Reported Achievement: %@", achievement);
+    } else {
+        NSLog(@"GCM Error while reporting achievement: %@", error);
+    }
+}
+
+- (void)gameCenterManager:(GameCenterManager *)manager reportedScore:(GKScore *)score withError:(NSError *)error {
+    if (!error) {
+        NSLog(@"GCM Reported Score: %@", score);
+    } else {
+        NSLog(@"GCM Error while reporting score: %@", error);
+    }
+}
+
+- (void)gameCenterManager:(GameCenterManager *)manager didSaveScore:(GKScore *)score {
+    NSLog(@"Saved GCM Score with value: %lld", score.value);
+}
+
+- (void)gameCenterManager:(GameCenterManager *)manager didSaveAchievement:(GKAchievement *)achievement {
+    NSLog(@"Saved GCM Achievement: %@", achievement);
 }
 
 @end

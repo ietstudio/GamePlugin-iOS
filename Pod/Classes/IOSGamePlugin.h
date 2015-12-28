@@ -11,10 +11,11 @@
 #import "Macros.h"
 #import "LifeCycleDelegate.h"
 #import "RMStore.h"
+#import "GameCenterManager.h"
 
 @class MBProgressHUD;
 
-@interface IOSGamePlugin : NSObject <LifeCycleDelegate, RMStoreReceiptVerificator, MFMailComposeViewControllerDelegate>
+@interface IOSGamePlugin : NSObject <LifeCycleDelegate, RMStoreReceiptVerificator, MFMailComposeViewControllerDelegate, GameCenterManagerDelegate>
 
 SINGLETON_DECLARE(IOSGamePlugin)
 
@@ -191,10 +192,34 @@ SINGLETON_DECLARE(IOSGamePlugin)
  */
 - (void)hideProgressDialog;
 
+/**
+ *  GameCenter获取分数
+ */
+- (int)gcGetScore:(NSString*)leaderboard;
+
+/**
+ *  GameCenter报告分数
+ */
+- (void)gcReportScore:(int)score leaderboard:(NSString*)leaderboard sortH2L:(BOOL)h2l;
+
+/**
+ *  GameCenter获取成就
+ */
+- (double)gcGetAchievement:(NSString*)achievement;
+
+/**
+ *  GameCenter报告成就
+ */
+- (void)gcReportAchievement:(NSString*)achievement percentComplete:(double)percent;
+
+/**
+ *  GameCenter显示排行
+ */
+- (void)gcShowLeaderBoard;
+
+/**
+ *  GameCenter显示成就
+ */
+- (void)gcShowArchievement;
+
 @end
-
-
-
-
-
-
