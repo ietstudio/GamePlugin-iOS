@@ -11,11 +11,10 @@
 #import "Macros.h"
 #import "LifeCycleDelegate.h"
 #import "RMStore.h"
-#import "GameCenterManager.h"
 
 @class MBProgressHUD;
 
-@interface IOSGamePlugin : NSObject <LifeCycleDelegate, RMStoreReceiptVerificator, MFMailComposeViewControllerDelegate, GameCenterManagerDelegate>
+@interface IOSGamePlugin : NSObject <LifeCycleDelegate, RMStoreReceiptVerificator, MFMailComposeViewControllerDelegate>
 
 SINGLETON_DECLARE(IOSGamePlugin)
 

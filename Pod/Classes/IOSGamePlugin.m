@@ -26,6 +26,79 @@
 #import "ALAssetsLibrary+CustomPhotoAlbum.h"
 #import "AFNetworking.h"
 #import "NSString+MD5.h"
+#import "GameCenterManager.h"
+
+#pragma mark - GameCenterManagerImp
+
+@interface GameCenterManagerImp : NSObject <GameCenterManagerDelegate>
+@end
+
+@implementation GameCenterManagerImp
+
+- (void)gameCenterManager:(GameCenterManager *)manager authenticateUser:(UIViewController *)gameCenterLoginController {
+    UIViewController* controller = [[SystemUtil getInstance] controller];
+    [controller presentViewController:gameCenterLoginController animated:YES completion:^{
+        NSLog(@"Finished Presenting Authentication Controller");
+    }];
+}
+
+- (void)gameCenterManager:(GameCenterManager *)manager availabilityChanged:(NSDictionary *)availabilityInformation {
+    NSLog(@"GC Availabilty: %@", availabilityInformation);
+    if ([[availabilityInformation objectForKey:@"status"] isEqualToString:@"GameCenter Available"]) {
+        NSLog(@"GameCenter Available, Game Center is online, the current player is logged in, and this app is setup.");
+    } else {
+        NSLog(@"GameCenter Unavailable, %@", [availabilityInformation objectForKey:@"error"]);
+    }
+    
+    GKLocalPlayer *player = [[GameCenterManager sharedManager] localPlayerData];
+    if (player) {
+        if ([player isUnderage] == NO) {
+            NSLog(@"%@ signed in.", player.displayName);
+            NSLog(@"Player is not underage and is signed-in");
+            [[GameCenterManager sharedManager] localPlayerPhoto:^(UIImage *playerPhoto) {
+                NSLog(@"playerPhoto = %@", playerPhoto);
+            }];
+        } else {
+            NSLog(@"%@", player.displayName);
+            NSLog(@"Player is underage");
+            NSLog(@"Underage player, %@, signed in.", player.displayName);
+        }
+    } else {
+        NSLog(@"No GameCenter player found.");
+    }
+}
+
+- (void)gameCenterManager:(GameCenterManager *)manager error:(NSError *)error {
+    NSLog(@"GCM Error: %@", error);
+}
+
+- (void)gameCenterManager:(GameCenterManager *)manager reportedAchievement:(GKAchievement *)achievement withError:(NSError *)error {
+    if (!error) {
+        NSLog(@"GCM Reported Achievement: %@", achievement);
+    } else {
+        NSLog(@"GCM Error while reporting achievement: %@", error);
+    }
+}
+
+- (void)gameCenterManager:(GameCenterManager *)manager reportedScore:(GKScore *)score withError:(NSError *)error {
+    if (!error) {
+        NSLog(@"GCM Reported Score: %@", score);
+    } else {
+        NSLog(@"GCM Error while reporting score: %@", error);
+    }
+}
+
+- (void)gameCenterManager:(GameCenterManager *)manager didSaveScore:(GKScore *)score {
+    NSLog(@"Saved GCM Score with value: %lld", score.value);
+}
+
+- (void)gameCenterManager:(GameCenterManager *)manager didSaveAchievement:(GKAchievement *)achievement {
+    NSLog(@"Saved GCM Achievement: %@", achievement);
+}
+
+@end
+
+#pragma mark - IOSGamePlugin
 
 @implementation IOSGamePlugin
 {
@@ -45,7 +118,7 @@
 
 SINGLETON_DEFINITION(IOSGamePlugin)
 
-#pragma mark - private method
+#pragma mark private method
 
 - (void)networkDisconnect {
     NSLog(@"can not access internet");
@@ -55,7 +128,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     NSLog(@"access internet success");
 }
 
-#pragma mark - public method
+#pragma mark public method
 
 - (NSString *)getAppVersion {
     return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
@@ -404,7 +477,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     [[GameCenterManager sharedManager] presentAchievementsOnViewController:controller];
 }
 
-#pragma mark - LifeCycleDelegate
+#pragma mark LifeCycleDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     _advertiseInstance = [IOSAdvertiseHelper getInstance];
@@ -453,8 +526,9 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     [iRate sharedInstance].cancelButtonLabel = @"";//不显示cancel按钮
     
     // GameCenter初始化
+    
     [[GameCenterManager sharedManager] setupManager];
-    [[GameCenterManager sharedManager] setDelegate:self];
+    [[GameCenterManager sharedManager] setDelegate:[[GameCenterManagerImp alloc] init]];
     
     // 验证是否设置了[UIApplication sharedApplication].delegate.window
     // 验证是否设置了[UIApplication sharedApplication].delegate.window.rootViewController
@@ -559,7 +633,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                   completionHandler:completionHandler];
 }
 
-#pragma mark - RMStoreReceiptVerificator
+#pragma mark RMStoreReceiptVerificator
 
 - (void)verifyLocalTransaction:(SKPaymentTransaction *)transaction userInfo:(NSDictionary*)userInfo success:(void (^)())successBlock failure:(void (^)(NSError *))failureBlock {
     // Create the JSON object that describes the request
@@ -719,7 +793,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     }
 }
 
-#pragma mark - MFMailComposeViewControllerDelegate
+#pragma mark MFMailComposeViewControllerDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
     //关闭邮件发送窗口
@@ -746,69 +820,6 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     NSLog(@"%@", msg);
     _emailCallFunc(success, msg);
     _emailCallFunc = nil;
-}
-
-#pragma mark - GameCenterManagerDelegate
-
-- (void)gameCenterManager:(GameCenterManager *)manager authenticateUser:(UIViewController *)gameCenterLoginController {
-    UIViewController* controller = [[SystemUtil getInstance] controller];
-    [controller presentViewController:gameCenterLoginController animated:YES completion:^{
-        NSLog(@"Finished Presenting Authentication Controller");
-    }];
-}
-
-- (void)gameCenterManager:(GameCenterManager *)manager availabilityChanged:(NSDictionary *)availabilityInformation {
-    NSLog(@"GC Availabilty: %@", availabilityInformation);
-    if ([[availabilityInformation objectForKey:@"status"] isEqualToString:@"GameCenter Available"]) {
-        NSLog(@"GameCenter Available, Game Center is online, the current player is logged in, and this app is setup.");
-    } else {
-        NSLog(@"GameCenter Unavailable, %@", [availabilityInformation objectForKey:@"error"]);
-    }
-    
-    GKLocalPlayer *player = [[GameCenterManager sharedManager] localPlayerData];
-    if (player) {
-        if ([player isUnderage] == NO) {
-            NSLog(@"%@ signed in.", player.displayName);
-            NSLog(@"Player is not underage and is signed-in");
-            [[GameCenterManager sharedManager] localPlayerPhoto:^(UIImage *playerPhoto) {
-                NSLog(@"playerPhoto = %@", playerPhoto);
-            }];
-        } else {
-            NSLog(@"%@", player.displayName);
-            NSLog(@"Player is underage");
-            NSLog(@"Underage player, %@, signed in.", player.displayName);
-        }
-    } else {
-        NSLog(@"No GameCenter player found.");
-    }
-}
-
-- (void)gameCenterManager:(GameCenterManager *)manager error:(NSError *)error {
-    NSLog(@"GCM Error: %@", error);
-}
-
-- (void)gameCenterManager:(GameCenterManager *)manager reportedAchievement:(GKAchievement *)achievement withError:(NSError *)error {
-    if (!error) {
-        NSLog(@"GCM Reported Achievement: %@", achievement);
-    } else {
-        NSLog(@"GCM Error while reporting achievement: %@", error);
-    }
-}
-
-- (void)gameCenterManager:(GameCenterManager *)manager reportedScore:(GKScore *)score withError:(NSError *)error {
-    if (!error) {
-        NSLog(@"GCM Reported Score: %@", score);
-    } else {
-        NSLog(@"GCM Error while reporting score: %@", error);
-    }
-}
-
-- (void)gameCenterManager:(GameCenterManager *)manager didSaveScore:(GKScore *)score {
-    NSLog(@"Saved GCM Score with value: %lld", score.value);
-}
-
-- (void)gameCenterManager:(GameCenterManager *)manager didSaveAchievement:(GKAchievement *)achievement {
-    NSLog(@"Saved GCM Achievement: %@", achievement);
 }
 
 @end
