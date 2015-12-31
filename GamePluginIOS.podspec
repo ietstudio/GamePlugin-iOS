@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "GamePluginIOS"
-  s.version          = "0.2.5"
+  s.version          = "0.2.6"
   s.summary          = "GamePluginIOS."
 
 # This description is used to generate tags and improve search results.
@@ -41,16 +41,16 @@ Pod::Spec.new do |s|
 
   s.frameworks = 'MessageUI'
 
-  s.dependency 'AFNetworking', '~> 2.6.0'
-  s.dependency 'MD5Digest', '~> 1.0.1'
-  s.dependency 'RMStore', '~> 0.7.1'
-  s.dependency 'UIAlertView+Block', '~> 1.1.0'
-  s.dependency 'MBProgressHUD', '~> 0.9.1'
-  s.dependency 'Reachability', '~> 3.2'
-  s.dependency 'RWBarChartView', '~> 1.2.0'
-  s.dependency 'iRate', '~> 1.11.4'
-  s.dependency 'ALAssetsLibrary-CustomPhotoAlbum', '~> 1.3.0'
-  s.dependency 'GameCenterManager', '~> 5.3'
+  s.dependency 'AFNetworking', '<= 2.6.0'
+  s.dependency 'MD5Digest', '<= 1.0.1'
+  s.dependency 'RMStore', '<= 0.7.1'
+  s.dependency 'UIAlertView+Block', '<= 1.1.0'
+  s.dependency 'MBProgressHUD', '<= 0.9.1'
+  s.dependency 'Reachability', '<= 3.2'
+  s.dependency 'RWBarChartView', '<= 1.2.0'
+  s.dependency 'iRate', '<= 1.11.4'
+  s.dependency 'ALAssetsLibrary-CustomPhotoAlbum', '<= 1.3.0'
+  s.dependency 'GameCenterManager', '<= 5.3'
 
   s.dependency 'GamePluginBase'
 end

@@ -728,7 +728,6 @@ SINGLETON_DEFINITION(IOSGamePlugin)
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"get url failed : %@", error);
-        failureBlock(error);
     }];
 }
 

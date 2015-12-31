@@ -131,7 +131,7 @@
         NSString* productId = [userInfo objectForKey:@"productId"];
         NSString* receipt = [userInfo objectForKey:@"receipt"];
         NSString* sign = [[NSString stringWithFormat:@"iet_studio%@%@%@", userId, productId, receipt] MD5Digest];
-        NSString* url = [NSString stringWithFormat:@"http://52.5.157.26:7999/mayaslots/iap_verify?user_id=%@&product_id=%@&receipt=%@&sign=%@", userId, productId, receipt, sign];
+        NSString* url = [NSString stringWithFormat:@"http://192.168.1.180:7999/mayaslots/iap_verify?user_id=%@&product_id=%@&receipt=%@&sign=%@", userId, productId, receipt, sign];
         return url;
     }];
 }

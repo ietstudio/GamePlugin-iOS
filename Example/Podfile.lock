@@ -1,28 +1,28 @@
 PODS:
   - AdvertiseAdmob (0.1.2):
     - GamePluginBase
-  - AFNetworking (2.6.2):
-    - AFNetworking/NSURLConnection (= 2.6.2)
-    - AFNetworking/NSURLSession (= 2.6.2)
-    - AFNetworking/Reachability (= 2.6.2)
-    - AFNetworking/Security (= 2.6.2)
-    - AFNetworking/Serialization (= 2.6.2)
-    - AFNetworking/UIKit (= 2.6.2)
-  - AFNetworking/NSURLConnection (2.6.2):
+  - AFNetworking (2.6.0):
+    - AFNetworking/NSURLConnection (= 2.6.0)
+    - AFNetworking/NSURLSession (= 2.6.0)
+    - AFNetworking/Reachability (= 2.6.0)
+    - AFNetworking/Security (= 2.6.0)
+    - AFNetworking/Serialization (= 2.6.0)
+    - AFNetworking/UIKit (= 2.6.0)
+  - AFNetworking/NSURLConnection (2.6.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.6.2):
+  - AFNetworking/NSURLSession (2.6.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.6.2)
-  - AFNetworking/Security (2.6.2)
-  - AFNetworking/Serialization (2.6.2)
-  - AFNetworking/UIKit (2.6.2):
+  - AFNetworking/Reachability (2.6.0)
+  - AFNetworking/Security (2.6.0)
+  - AFNetworking/Serialization (2.6.0)
+  - AFNetworking/UIKit (2.6.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - ALAssetsLibrary-CustomPhotoAlbum (1.3.1)
+  - ALAssetsLibrary-CustomPhotoAlbum (1.3.0)
   - AmazonAWS (0.1.2):
     - AWSCognito (~> 2.2.4)
     - AWSCore (~> 2.2.4)
@@ -74,17 +74,17 @@ PODS:
     - Reachability
   - GamePluginBase (0.1.3)
   - GamePluginIOS (0.2.5):
-    - AFNetworking (~> 2.6.0)
-    - ALAssetsLibrary-CustomPhotoAlbum (~> 1.3.0)
-    - GameCenterManager (~> 5.3)
+    - AFNetworking (<= 2.6.0)
+    - ALAssetsLibrary-CustomPhotoAlbum (<= 1.3.0)
+    - GameCenterManager (<= 5.3)
     - GamePluginBase
-    - iRate (~> 1.11.4)
-    - MBProgressHUD (~> 0.9.1)
-    - MD5Digest (~> 1.0.1)
-    - Reachability (~> 3.2)
-    - RMStore (~> 0.7.1)
-    - RWBarChartView (~> 1.2.0)
-    - UIAlertView+Block (~> 1.1.0)
+    - iRate (<= 1.11.4)
+    - MBProgressHUD (<= 0.9.1)
+    - MD5Digest (<= 1.0.1)
+    - Reachability (<= 3.2)
+    - RMStore (<= 0.7.1)
+    - RWBarChartView (<= 1.2.0)
+    - UIAlertView+Block (<= 1.1.0)
   - iRate (1.11.4)
   - MBProgressHUD (0.9.1)
   - MD5Digest (1.0.1)
@@ -111,8 +111,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AdvertiseAdmob: 0a66f21a6c3e84221bf375edc434bd09ffc5a4f3
-  AFNetworking: 7f317038a9710cabfa43ec56396b307b45df72ab
-  ALAssetsLibrary-CustomPhotoAlbum: 299ea3f58e988b453b19c595859354e562814c93
+  AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
+  ALAssetsLibrary-CustomPhotoAlbum: 4df413c22294b310f47c5525fa99523fd43419f9
   AmazonAWS: 58a25d5dc63bdf376f88d2e1a109786d03f7738a
   AnalyticFL: ec718321a1e96e30684e4c630cbe7579de26ac94
   AnalyticTD: a85f6fa0ad09f9bcbf7576e3ea90c4ac56398c1f
@@ -129,7 +129,7 @@ SPEC CHECKSUMS:
   Flurry-iOS-SDK: 7b3fe6c3344c82b73c4c84163652eada84fbfcf4
   GameCenterManager: e3a855e9db97b876a3a4a0605f5be30c6de9cebd
   GamePluginBase: 06f08f188c9394bfa148e76802b7fbf7dcbffca5
-  GamePluginIOS: 04587b69ebbb586de4d881b5bdb0172f65fca523
+  GamePluginIOS: 1c5a38261ac9bd9de6c7474c25095aa2981ea331
   iRate: 599ed07c854e0695f3c605d1b2a64c67d912acb7
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   MD5Digest: 2757ae2ee239148912a42063135c6fab2fa082f9
