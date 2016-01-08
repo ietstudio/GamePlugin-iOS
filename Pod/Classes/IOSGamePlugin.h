@@ -221,4 +221,31 @@ SINGLETON_DECLARE(IOSGamePlugin)
  */
 - (void)gcShowArchievement;
 
+/**
+ *  GameCenter重置
+ */
+- (void)gcReset;
+
+/**
+ *  震动
+ */
+- (void)vibrate;
+
+/**
+ *  获取用户输入文字
+ *
+ *  @param title        标题
+ *  @param message      内容
+ *  @param defaultValue 默认返回值
+ *  @param block
+ */
+- (void)getInputText:(NSString*)title :(NSString*)message :(NSString*)defaultValue :(void(^)(NSString*))block;
+
+/**
+ *  显示通知
+ *
+ *  @param message
+ */
+- (void)showToast:(NSString*)message;
+
 @end

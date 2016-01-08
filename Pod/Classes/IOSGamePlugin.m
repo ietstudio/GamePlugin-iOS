@@ -10,6 +10,8 @@
 #include <sys/sysctl.h>
 #include <sys/utsname.h>
 
+#import <AudioToolbox/AudioToolbox.h>
+
 #import "SystemUtil.h"
 
 #import "IOSAdvertiseHelper.h"
@@ -27,6 +29,7 @@
 #import "AFNetworking.h"
 #import "NSString+MD5.h"
 #import "GameCenterManager.h"
+#import "UIView+Toast.h"
 
 #pragma mark - GameCenterManagerImp
 
@@ -201,7 +204,6 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     } else if (state == ReachableViaWiFi) {
         return @"ReachableViaWiFi";
     }
-    assert(NO);
     return @"";
 }
 
@@ -475,6 +477,41 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 - (void)gcShowArchievement {
     UIViewController* controller = [[SystemUtil getInstance] controller];
     [[GameCenterManager sharedManager] presentAchievementsOnViewController:controller];
+}
+
+- (void)gcReset {
+    [[GameCenterManager sharedManager] resetAchievementsWithCompletion:^(NSError *error) {
+        NSLog(@"gcReset: %@", error);
+    }];
+}
+
+- (void)vibrate {
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+}
+
+- (void)getInputText:(NSString *)title :(NSString *)message :(NSString *)defaultValue :(void (^)(NSString *))block {
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:title
+                                                        message:message
+                                              cancelButtonTitle:@"Cancel"
+                                               otherButtonTitle:@"Ok"];
+    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alertView showUsingBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (block) {
+            if (buttonIndex == 1) {
+                UITextField* textField = [alertView textFieldAtIndex:0];
+                NSString* inputText = textField.text;
+                if (inputText == nil || inputText.length <= 0) {
+                    inputText = defaultValue;
+                }
+                block(inputText);
+            }
+        }
+    }];
+}
+
+- (void)showToast:(NSString *)message {
+    UIView* view = [[SystemUtil getInstance] controller].view;
+    [view makeToast:message];
 }
 
 #pragma mark LifeCycleDelegate

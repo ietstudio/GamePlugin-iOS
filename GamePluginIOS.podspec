@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "GamePluginIOS"
-  s.version          = "0.2.6"
+  s.version          = "0.2.7"
   s.summary          = "GamePluginIOS."
 
 # This description is used to generate tags and improve search results.
@@ -51,6 +51,6 @@ Pod::Spec.new do |s|
   s.dependency 'iRate', '<= 1.11.4'
   s.dependency 'ALAssetsLibrary-CustomPhotoAlbum', '<= 1.3.0'
   s.dependency 'GameCenterManager', '<= 5.3'
-
+  s.dependency 'Toast', '<= 3.0'
   s.dependency 'GamePluginBase'
 end

@@ -202,19 +202,19 @@
 }
 
 - (IBAction)gcReportScore:(id)sender {
-    [[IOSGamePlugin getInstance] gcReportScore:10 leaderboard:@"grp.PlayerScores" sortH2L:YES];
+    [[IOSGamePlugin getInstance] gcReportScore:10 leaderboard:@"level" sortH2L:YES];
 }
 
 - (IBAction)gcGetScore:(id)sender {
-    NSLog(@"%d", [[IOSGamePlugin getInstance] gcGetScore:@"grp.PlayerScores"]);
+    NSLog(@"%d", [[IOSGamePlugin getInstance] gcGetScore:@"level"]);
 }
 
 - (IBAction)gcReportAchievement:(id)sender {
-    [[IOSGamePlugin getInstance] gcReportAchievement:@"grp.FirstAchievement" percentComplete:10];
+    [[IOSGamePlugin getInstance] gcReportAchievement:@"millionaire" percentComplete:80];
 }
 
 - (IBAction)gcGetAchievement:(id)sender {
-    NSLog(@"%f", [[IOSGamePlugin getInstance] gcGetAchievement:@"grp.FirstAchievement"]);
+    NSLog(@"%f", [[IOSGamePlugin getInstance] gcGetAchievement:@"millionaire"]);
 }
 
 - (IBAction)gcLeaderBoard:(id)sender {
@@ -223,6 +223,24 @@
 
 - (IBAction)gcAchievement:(id)sender {
     [[IOSGamePlugin getInstance] gcShowArchievement];
+}
+
+- (IBAction)gcReset:(id)sender {
+    [[IOSGamePlugin getInstance] gcReset];
+}
+
+- (IBAction)virbrate:(id)sender {
+    [[IOSGamePlugin getInstance] vibrate];
+}
+
+- (IBAction)getInputText:(id)sender {
+    [[IOSGamePlugin getInstance] getInputText:@"title" :@"message" :@"default" :^(NSString * result) {
+        NSLog(@"%@", result);
+    }];
+}
+
+- (IBAction)showToast:(id)sender {
+    [[IOSGamePlugin getInstance] showToast:@"Hello World Hello World Hello World Hello World Hello World Hello World"];
 }
 
 #pragma mark - Advertise
