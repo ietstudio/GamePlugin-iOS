@@ -73,7 +73,7 @@ PODS:
   - GameCenterManager (5.3):
     - Reachability
   - GamePluginBase (0.1.5)
-  - GamePluginIOS (0.2.7):
+  - GamePluginIOS (0.2.8):
     - AFNetworking (<= 2.6.0)
     - ALAssetsLibrary-CustomPhotoAlbum (<= 1.3.0)
     - GameCenterManager (<= 5.3)
@@ -131,7 +131,7 @@ SPEC CHECKSUMS:
   Flurry-iOS-SDK: 7b3fe6c3344c82b73c4c84163652eada84fbfcf4
   GameCenterManager: e3a855e9db97b876a3a4a0605f5be30c6de9cebd
   GamePluginBase: 6a80d832346bb17a34704b714914c1c1d619c6fa
-  GamePluginIOS: 98e4fef2352cbf76fc18aeb33be4353c9f51d870
+  GamePluginIOS: b3241ba9bea26916096ffb947ddef8a086a84555
   iRate: 599ed07c854e0695f3c605d1b2a64c67d912acb7
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   MD5Digest: 2757ae2ee239148912a42063135c6fab2fa082f9
