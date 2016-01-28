@@ -30,6 +30,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     [self hideAll];
+    [self setRestoreCallback:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -143,7 +144,20 @@
                                       :^(BOOL result, NSString *msg) {
                                           NSLog(@"result=%@", result?@"YES":@"NO");
                                           NSLog(@"%@", msg);
+                                          [[IOSGamePlugin getInstance] showChooseView:result?@"YES":@"NO"
+                                                                                     :msg
+                                                                                     :@"OK"
+                                                                                     :nil
+                                                                                     :nil];
                                       }];
+}
+
+- (IBAction)setRestoreCallback:(id)sender {
+    [[IOSGamePlugin getInstance] setRestoreCallback:^(BOOL result, NSString * msg) {
+        NSLog(@"%@", result?@"YES":@"NO");
+        NSLog(@"%@", msg);
+        [[IOSGamePlugin getInstance] showChooseView:result?@"YES":@"NO" :msg :@"OK" :nil :nil];
+    }];
 }
 
 - (IBAction)showChartView:(id)sender {

@@ -442,6 +442,13 @@
                                             <action selector="showToast:" destination="whP-gf-Uak" eventType="touchUpInside" id="H92-af-k16"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6HK-xQ-M1c">
+                                        <rect key="frame" x="179" y="291" width="135" height="30"/>
+                                        <state key="normal" title="SetRestoreCallback"/>
+                                        <connections>
+                                            <action selector="setRestoreCallback:" destination="whP-gf-Uak" eventType="touchUpInside" id="EUq-hS-Nvz"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>

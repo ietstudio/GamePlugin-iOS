@@ -29,10 +29,10 @@ PODS:
     - AWSMobileAnalytics (~> 2.2.4)
     - AWSSNS (~> 2.2.4)
     - GamePluginBase
-  - AnalyticFL (0.1.0):
+  - AnalyticFL (0.1.1):
     - Flurry-iOS-SDK/FlurrySDK (<= 7.1.0)
     - GamePluginBase
-  - AnalyticTD (0.1.0):
+  - AnalyticTD (0.1.1):
     - GamePluginBase (~> 0.1.0)
   - AWSCognito (2.2.7):
     - AWSCore (= 2.2.7)
@@ -116,8 +116,8 @@ SPEC CHECKSUMS:
   AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
   ALAssetsLibrary-CustomPhotoAlbum: 4df413c22294b310f47c5525fa99523fd43419f9
   AmazonAWS: 58a25d5dc63bdf376f88d2e1a109786d03f7738a
-  AnalyticFL: ec718321a1e96e30684e4c630cbe7579de26ac94
-  AnalyticTD: a85f6fa0ad09f9bcbf7576e3ea90c4ac56398c1f
+  AnalyticFL: 2515013257a0ccd12490da8d8fa6af42dc49a34e
+  AnalyticTD: 5e9652eaa2659b0c78c210e134c9df725d8b0cd6
   AWSCognito: f88aa1b969dafc6208d417ebfa18b0f3b3746093
   AWSCore: d81e1e534040780deb0f3877aaa207d297e54b4c
   AWSMobileAnalytics: ee66bd427dcfa264088804776e94d82932ad07f5

@@ -20,9 +20,9 @@
     self.window.rootViewController=[storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
     
-    [[IOSGamePlugin getInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     [[SystemUtil getInstance] setWindow:self.window];
     [[SystemUtil getInstance] setController:self.window.rootViewController];
+    [[IOSGamePlugin getInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     return YES;
 }
 

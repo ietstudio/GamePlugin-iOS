@@ -120,6 +120,13 @@ SINGLETON_DECLARE(IOSGamePlugin)
 - (void)doIap:(NSArray*)iapIdsArr :(NSString *)iapId :(NSString*)userId :(void(^)(BOOL, NSString*))callback;
 
 /**
+ *  设置恢复购买回调函数
+ *
+ *  @param block
+ */
+- (void)setRestoreCallback:(void(^)(BOOL, NSString*))block;
+
+/**
  *  显示条形图
  *
  *  @param arr      数组

@@ -117,6 +117,8 @@
     id _facebookInstance;
     MBProgressHUD* _hud;
     NSString* _iapSuccessMsg;
+    void(^_restoreBlock)(BOOL, NSString*);
+    void(^_iapBlock)(BOOL, NSString*);
 }
 
 SINGLETON_DEFINITION(IOSGamePlugin)
@@ -277,18 +279,26 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     }
     if (![RMStore canMakePayments]) {
         callback(NO, @"Can not make payments");
+        return;
+    }
+    if (_iapBlock != nil) {
+        callback(NO, @"Already has a payment");
+        return;
     }
     NSSet* iapIdsSet = [[NSSet alloc] initWithArray:iapIdsArr];
     [[RMStore defaultStore] requestProducts:iapIdsSet success:^(NSArray *products, NSArray *invalidProductIdentifiers) {
         if ([products count] > 0) {
+            _iapBlock = callback;
             [[RMStore defaultStore] addPayment:iapId
                                           user:userId
                                        success:^(SKPaymentTransaction *transaction) {
-                                           callback(YES, _iapSuccessMsg);
+                                           _iapBlock(YES, _iapSuccessMsg);
+                                           _iapBlock = nil;
                                        }
                                        failure:^(SKPaymentTransaction *transaction, NSError *error) {
                                            NSString* msg = [NSString stringWithFormat:@"Payment Failed! %@", error];
-                                           callback(NO, msg);
+                                           _iapBlock(NO, msg);
+                                           _iapBlock = nil;
                                        }];
         } else {
             NSString* msg = [NSString stringWithFormat:@"Invalid ProductId %@", iapId];
@@ -298,6 +308,10 @@ SINGLETON_DEFINITION(IOSGamePlugin)
         NSString* msg = [NSString stringWithFormat:@"Request Products Failed! %@", error];
         callback(NO, msg);
     }];
+}
+
+- (void)setRestoreCallback:(void (^)(BOOL, NSString *))block {
+    _restoreBlock = block;
 }
 
 - (void)showChartViewWithArr:(NSArray *)arr multiply:(float)multiply {
@@ -761,7 +775,8 @@ SINGLETON_DEFINITION(IOSGamePlugin)
             _iapSuccessMsg = msg;
             successBlock();
         } else {
-            failureBlock([NSError errorWithDomain:msg code:0 userInfo:nil]);
+            NSError* error = [NSError errorWithDomain:msg code:0 userInfo:nil];
+            failureBlock(error);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"get url failed : %@", error);
@@ -792,17 +807,34 @@ SINGLETON_DEFINITION(IOSGamePlugin)
         [userInfo setObject:userId forKey:@"userId"];
         [userInfo setObject:productId forKey:@"productId"];
         [userInfo setObject:receipt forKey:@"receipt"];
+        void(^_successBlock)() = ^() {
+            if (_iapBlock == nil) {
+                if (_restoreBlock != nil) {
+                    _restoreBlock(YES, productId);
+                }
+            }
+            successBlock();
+        };
+        void(^_failureBlock)(NSError*) = ^(NSError* error) {
+            if (_iapBlock == nil) {
+                if (_restoreBlock != nil) {
+                    NSString* msg = [NSString stringWithFormat:@"Payment Failed! %@", error];
+                    _restoreBlock(NO, msg);
+                }
+            }
+            failureBlock(error);
+        };
         // 如果没有设置生成验证url的回调函数，本地调用苹果接口验证
         if (_genVerifyUrlCallFunc == nil) {
             [self verifyLocalTransaction:transaction
                                 userInfo:userInfo
-                                 success:successBlock
-                                 failure:failureBlock];
+                                 success:_successBlock
+                                 failure:_failureBlock];
         } else {
             [self verifyRemoteTransaction:transaction
                                  userInfo:userInfo
-                                  success:successBlock
-                                  failure:failureBlock];
+                                  success:_successBlock
+                                  failure:_failureBlock];
         }
     };
     // 获取产品id

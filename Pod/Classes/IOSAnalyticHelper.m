@@ -59,6 +59,12 @@ SINGLETON_DEFINITION(IOSAnalyticHelper)
     }
 }
 
+- (void)onEvent:(NSString *)eventId eventData:(NSDictionary *)userInfo {
+    for (id<AnalyticDelegate> delegate in _delegates) {
+        [delegate onEvent:eventId eventData:userInfo];
+    }
+}
+
 - (void)setLevel:(int)level {
     for (id<AnalyticDelegate> delegate in _delegates) {
         [delegate setLevel:level];
