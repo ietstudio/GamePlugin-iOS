@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'GamePluginIOS_Example' do
+  pod 'GamePluginIOS', :path => '../'
+
+  target 'GamePluginIOS_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
