@@ -8,35 +8,28 @@
 
 Pod::Spec.new do |s|
   s.name             = 'GamePluginIOS'
-  s.version          = '0.1.0'
-  s.summary          = 'A short description of GamePluginIOS.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
+  s.version          = '0.3.0'
+  s.summary          = 'GamePluginIOS'
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+GamePluginIOS.
                        DESC
-
-  s.homepage         = 'https://github.com/<GITHUB_USERNAME>/GamePluginIOS'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+  s.homepage         = 'https://github.com/ietstudio/GamePluginIOS'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'gaoyang' => 'gaoyang@joycastle.mobi' }
-  s.source           = { :git => 'https://github.com/<GITHUB_USERNAME>/GamePluginIOS.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.source           = { :git => 'https://github.com/ietstudio/GamePluginIOS.git', :tag => s.version.to_s }
+  s.ios.deployment_target = '7.0'
 
-  s.ios.deployment_target = '8.0'
-
+  s.frameworks = 'MessageUI'
   s.source_files = 'GamePluginIOS/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'GamePluginIOS' => ['GamePluginIOS/Assets/*.png']
-  # }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'AFNetworking', '~> 2.6.0'
+  s.dependency 'MD5Digest', '~> 1.0.1'
+  s.dependency 'ALAssetsLibrary-CustomPhotoAlbum', '~> 1.3.0'
+
+  s.dependency 'GamePluginBase'
+
+  s.dependency 'RMStore', '~> 0.7.1'
+  s.dependency 'iRate', '~> 1.11.4'
+  s.dependency 'GameCenterManager', '~> 5.3'
+
 end

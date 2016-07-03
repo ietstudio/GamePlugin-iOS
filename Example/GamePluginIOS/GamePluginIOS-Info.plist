@@ -22,8 +22,76 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
+	<key>IETConfigs</key>
+	<dict>
+		<key>AWSCognitoIdentityPoolId</key>
+		<string>us-east-1:4f734aca-32b0-4788-a6ad-9b15df0716ed</string>
+		<key>AWSMobileAnalyticsAppId</key>
+		<string>9f4c9665f726472d8e400cf20c123c1b</string>
+		<key>AWSSNSPlatformApplicationArn</key>
+		<string>arn:aws:sns:us-east-1:091832752676:app/APNS/mayaslot</string>
+		<key>AWSSNSPlatformApplicationArnDev</key>
+		<string>arn:aws:sns:us-east-1:091832752676:app/APNS_SANDBOX/mayaslot</string>
+		<key>Adcolony_AppId</key>
+		<string>appf85fdb1609404f53a5</string>
+		<key>Adcolony_ZoneId</key>
+		<string>vze4713dbb4bc441739c</string>
+		<key>Admob_BannerId</key>
+		<string>ca-app-pub-8616016493142890/2472652160</string>
+		<key>Admob_SpotId</key>
+		<string>ca-app-pub-8616016493142890/9103160968</string>
+		<key>Admob_TestDevice</key>
+		<string></string>
+		<key>Admob_VedioId</key>
+		<string>ca-app-pub-8616016493142890/2612252967</string>
+		<key>AppLovin_Key</key>
+		<string>Vy9rM9tGs9_xLi8FkTZrcP4s7pmxN2yu_6kMGac7kc24JBK1kutLHxBOlyJ6_G_-NkLeIym1Tp6t-QuhIl1agD</string>
+		<key>ChartBoost_AppId</key>
+		<string>55560bf143150f4409a8c7eb</string>
+		<key>ChartBoost_AppSignature</key>
+		<string>5f6a4cc0976632f47842164c9b76c542e239bc4b</string>
+		<key>FileServer</key>
+		<string>https://ietstudio.github.io/assets</string>
+		<key>FileServerDev</key>
+		<string>https://ietstudio.github.io/assets</string>
+		<key>FlurryKey</key>
+		<string>R433V7Q4VNFVQH6VGKW5 </string>
+		<key>Inmobi_AccountId</key>
+		<string>9695dbf98c7d4531aa2346a73a2c1022</string>
+		<key>Inmobi_BannerId</key>
+		<string>1466142086926</string>
+		<key>Inmobi_RewardVideoId</key>
+		<string>1467526394503</string>
+		<key>Inmobi_SpotId</key>
+		<string>1465797760566</string>
+		<key>TalkingDataChannal</key>
+		<string>AppStore</string>
+		<key>TalkingDataKey</key>
+		<string>14B2C459391331DD7BB576BA45CF33BB</string>
+		<key>TencentGDT_AppKey</key>
+		<string>1104458775</string>
+		<key>TencentGDT_BannerId</key>
+		<string>5060303255467539</string>
+		<key>TencentGDT_SpotId</key>
+		<string>8060605255860558</string>
+		<key>UmengChannal</key>
+		<string>AppStore</string>
+		<key>UmengKey</key>
+		<string>55e0118a67e58ebdb40006d3</string>
+		<key>UnityAds_GameId</key>
+		<string>1076796</string>
+		<key>UnityAds_ZoneId</key>
+		<string>reward_video</string>
+		<key>Vungle_AppId</key>
+		<string>55168853c82307202f000078</string>
+	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -33,8 +101,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
