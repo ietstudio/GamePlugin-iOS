@@ -1,7 +1,30 @@
-use_frameworks!
+source 'https://github.com/ietstudio/Specs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+# use_frameworks!
 
 target 'GamePluginIOS_Example' do
   pod 'GamePluginIOS', :path => '../'
+
+  # 统计
+  pod 'AnalyticTD'
+  pod 'AnalyticUM'
+  pod 'AnalyticFL'
+
+  # 广告
+  pod 'AdvertiseAdmob'
+  pod 'AdvertiseAdcolony'
+  pod 'AdvertiseChartBoost'
+  pod 'AdvertiseUnityAds'
+  pod 'AdvertiseVungle'
+  # pod 'AdvertiseAppLovin'
+  # pod 'AdvertiseInmobi'
+  # pod 'AdvertiseTencentGDT'
+  
+  # Facebook
+  # pod 'Facebook'
+
+  # 亚马逊AWS
+  # pod 'AmazonAWS'
 
   target 'GamePluginIOS_Tests' do
     inherit! :search_paths
@@ -9,3 +32,4 @@ target 'GamePluginIOS_Example' do
     
   end
 end
+
