@@ -32,11 +32,11 @@ SINGLETON_DEFINITION(IOSAnalyticHelper)
         }
     }
     // 在DEBUG下不发送统计事件
-//#if DEBUG
-//    return nil;
-//#else
+#if DEBUG
+    return nil;
+#else
     return self;
-//#endif
+#endif
 }
 
 #pragma mark - public method

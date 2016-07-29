@@ -1,0 +1,21 @@
+/* 
+  Localizable.strings
+  Pods
+
+  Created by geekgy on 7/21/16.
+
+*/
+"failure" = "失败";
+"later" = "稍后";
+"okay" = "好的";
+"check_internet" =
+"网络访问失败，请检查您的设置。
+1. 确保您的设备信号良好。
+2. 打开设备的网络访问开关。
+3. 打开当前程序的网络访问权限。";
+"check_lockiap" = "购买失败，请在您设备的访问限制中开启App内购买项目。";
+"iap_exist" = "有一笔交易正在进行，请稍候。";
+"iap_failed" = "内购买失败，详细信息如下：%@。";
+"iap_request_failed" = "产品信息获取失败！%@";
+"iap_invalid_product" = "产品Id不可用。";
+"bad_network" = "当前网络状态不稳定，请耐心等待。";

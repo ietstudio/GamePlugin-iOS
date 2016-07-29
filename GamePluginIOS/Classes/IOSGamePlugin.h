@@ -7,103 +7,94 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <MessageUI/MessageUI.h>
-#import "Macros.h"
 #import "LifeCycleDelegate.h"
-#import "RMStore.h"
+#import "Macros.h"
 
-@class MBProgressHUD;
-
-@interface IOSGamePlugin : NSObject <LifeCycleDelegate, RMStoreReceiptVerificator, MFMailComposeViewControllerDelegate>
+@interface IOSGamePlugin : NSObject <LifeCycleDelegate>
 
 SINGLETON_DECLARE(IOSGamePlugin)
 
 /**
- *  显示游戏loading
- *
- *  @param img 图片路径
- */
-- (void)showGameLoading:(NSString*)img :(CGPoint)point :(CGFloat)scale;
-
-/**
- *  隐藏游戏loading
- */
-- (void)hideGameLoading;
-
-/**
  *  设置生成验证支付URL回调函数
  *
- *  @param func 回调函数
+ *  @param handler
  */
-- (void)setGenVerifyUrlCallFunc:(NSString*(^)(NSDictionary*))func;
-
-/**
- *  充值
- *
- *  @param iapIdsArr 所有计费点id
- *  @param userId    用户id
- *  @param iapId     计费点id
- *  @param callback  回调
- */
-- (void)doIap:(NSArray*)iapIdsArr :(NSString *)iapId :(NSString*)userId :(void(^)(BOOL, NSString*))callback;
+- (void)setGenVerifyUrlHandler:(NSString*(^)(NSDictionary*))handler;
 
 /**
  *  设置恢复购买回调函数
  *
- *  @param block
+ *  @param handler
  */
-- (void)setRestoreCallback:(void(^)(BOOL, NSString*))block;
+- (void)setRestoreHandler:(void(^)(BOOL result, NSString *msg, NSArray *iapIds))handler;
 
 /**
- *  评论游戏
+ *  充值
  *
- *  @param force 强制
+ *  @param iapId   计费点id
+ *  @param userId  用户id
+ *  @param handler 回调
  */
-- (void)rate:(BOOL)force;
+- (void)doIap:(NSString *)iapId userId:(NSString*)userId handler:(void(^)(BOOL result, NSString *msg, NSArray *iapIds))handler;
 
 /**
- *  保存图片到相册
+ *  评论
  *
- *  @param imgPath 图片路径
- *  @param album   相册名称
- *  @param block   回调
+ *  @param level 1-log/2-弹框/3-跳转
  */
-- (void)saveImage:(NSString*)imgPath toAlbum:(NSString*)album :(void(^)(BOOL, NSString*))block;
+- (void)rate:(int)level;
 
 /**
- *  发送邮件
+ *  GameCenter是否可用
  *
- *  @param subject      主题
- *  @param toRecipients 收件人数组
- *  @param emailBody    内容，HTML
- *  @param callback     回调
- *
- *  @return 是否可以发送
+ *  @return
  */
-- (BOOL)sendEmail:(NSString*)subject :(NSArray*)toRecipients :(NSString*)emailBody :(void(^)(BOOL, NSString*))callback;
+- (BOOL)gcIsAvailable;
 
 /**
- *  通知开关
+ *  GameCenter获取用户信息
  *
- *  @param enable
+ *  @return
  */
-- (void)setNotificationState:(BOOL)enable;
+- (NSDictionary*)gcGetPlayerInfo;
 
 /**
- *  发送通知
+ *  GameCenter获取用户好友
  *
- *  @param userInfo
+ *  @param handler
  */
-- (void)postNotification:(NSDictionary *)userInfo;
+- (void)gcGetPlayerFriends:(void(^)(NSArray*))handler;
 
 /**
- *  显示图片弹框
+ *  GameCenter获取用户头像
  *
- *  @param img
- *  @param btnImg
- *  @param func
+ *  @param playerId
+ *  @param handler  
  */
-- (void)showImageDialog:(NSString*)img :(NSString*)btnImg :(void(^)(BOOL))func;
+- (void)gcGetPlayerAvatarWithId:(NSString*)playerId handler:(void(^)(NSString*))handler;
+
+/**
+ *  GameCenter获取用户信息
+ *
+ *  @param playerIds
+ *  @param handler
+ */
+- (void)gcGetPlayerInfoWithIds:(NSArray*)playerIds handler:(void(^)(NSArray*))handler;
+
+/**
+ *  GameCenter获取用户信息
+ *
+ *  @param playerId
+ *  @param handler
+ */
+- (void)gcGetPlayerInfoWithId:(NSString*)playerId handler:(void(^)(NSDictionary*))handler;
+
+/**
+ *  GameCenter获取挑战
+ *
+ *  @param handler
+ */
+- (void)gcGetChallengesWithhandler:(void(^)(NSArray* challenges))handler;
 
 /**
  *  GameCenter获取分数
@@ -136,18 +127,13 @@ SINGLETON_DECLARE(IOSGamePlugin)
 - (void)gcShowArchievement;
 
 /**
+ *  GameCenter显示挑战
+ */
+- (void)gcShowChallenge;
+
+/**
  *  GameCenter重置
  */
 - (void)gcReset;
-
-/**
- *  获取用户输入文字
- *
- *  @param title        标题
- *  @param message      内容
- *  @param defaultValue 默认返回值
- *  @param block
- */
-//- (void)getInputText:(NSString*)title :(NSString*)message :(NSString*)defaultValue :(void(^)(NSString*))block;
 
 @end

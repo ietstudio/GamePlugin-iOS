@@ -14,13 +14,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    self.window.rootViewController=[storyboard instantiateInitialViewController];
-    [self.window makeKeyAndVisible];
+//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+//    self.window.rootViewController=[storyboard instantiateInitialViewController];
+//    [self.window makeKeyAndVisible];
     
-    [[IOSSystemUtil getInstance] setWindow:self.window];
-    [[IOSSystemUtil getInstance] setController:self.window.rootViewController];
     [[IOSGamePlugin getInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     return YES;
 }
@@ -46,7 +44,9 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    [[IOSGamePlugin getInstance] application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
+    [[IOSGamePlugin getInstance] application:application
+                                     openURL:url sourceApplication:sourceApplication
+                                  annotation:annotation];
     return YES;
 }
 

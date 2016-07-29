@@ -1,23 +1,4 @@
 PODS:
-  - AdColony (2.6.1)
-  - AdvertiseAdcolony (0.1.0):
-    - AdColony (~> 2.6.1)
-    - GamePluginBase
-  - AdvertiseAdmob (0.1.5):
-    - AdvertiseAdmob/Core (= 0.1.5)
-  - AdvertiseAdmob/Core (0.1.5):
-    - Firebase/AdMob
-    - Firebase/Core
-    - GamePluginBase
-  - AdvertiseChartBoost (0.1.1):
-    - ChartboostSDK (~> 6.4.4)
-    - GamePluginBase
-  - AdvertiseUnityAds (0.1.0):
-    - GamePluginBase
-    - UnityAds (~> 1.5.6)
-  - AdvertiseVungle (0.1.0):
-    - GamePluginBase
-    - VungleSDK-iOS (~> 3.2.0.1)
   - AFNetworking (2.6.3):
     - AFNetworking/NSURLConnection (= 2.6.3)
     - AFNetworking/NSURLSession (= 2.6.3)
@@ -40,15 +21,6 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - ALAssetsLibrary-CustomPhotoAlbum (1.3.1)
-  - AnalyticFL (0.1.2):
-    - Flurry-iOS-SDK/FlurrySDK (<= 7.1.0)
-    - GamePluginBase
-  - AnalyticTD (0.1.2):
-    - GamePluginBase
-    - TalkingData-GameAnalytics (~> 3.2.5)
-  - AnalyticUM (0.1.1):
-    - GamePluginBase
-    - UMengAnalytics (~> 4.0.4)
   - BlocksKit (2.2.5):
     - BlocksKit/All (= 2.2.5)
   - BlocksKit/All (2.2.5):
@@ -64,62 +36,33 @@ PODS:
   - BlocksKit/UIKit (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
-  - ChartboostSDK (6.4.4)
-  - Firebase/AdMob (3.2.1):
-    - Firebase/Analytics (= 3.2.1)
-    - Google-Mobile-Ads-SDK (= 7.8.1)
-  - Firebase/Analytics (3.2.1):
-    - FirebaseAnalytics (= 3.2.0)
-  - Firebase/Core (3.2.1):
-    - Firebase/Analytics (= 3.2.1)
-  - FirebaseAnalytics (3.2.0):
-    - FirebaseInstanceID (~> 1.0)
-    - GoogleInterchangeUtilities (~> 1.2)
-    - GoogleSymbolUtilities (~> 1.1)
-    - GoogleUtilities (~> 1.3)
-  - FirebaseInstanceID (1.0.6)
-  - Flurry-iOS-SDK/FlurrySDK (7.1.0)
   - GameCenterManager (5.3):
     - Reachability
-  - GamePluginBase (0.1.7):
+  - GamePluginBase (0.2.0):
+    - ALAssetsLibrary-CustomPhotoAlbum (~> 1.3.0)
     - BlocksKit (~> 2.2.5)
     - MBProgressHUD (~> 0.9.1)
+    - NSLogger (~> 1.5.1)
     - Reachability (~> 3.2)
-  - GamePluginIOS (0.2.9):
+  - GamePluginIOS (0.3.0):
     - AFNetworking (~> 2.6.0)
-    - ALAssetsLibrary-CustomPhotoAlbum (~> 1.3.0)
     - GameCenterManager (~> 5.3)
     - GamePluginBase
     - iRate (~> 1.11.4)
     - MD5Digest (~> 1.0.1)
     - RMStore (~> 0.7.1)
-  - Google-Mobile-Ads-SDK (7.8.1)
-  - GoogleInterchangeUtilities (1.2.1):
-    - GoogleSymbolUtilities (~> 1.0)
-  - GoogleSymbolUtilities (1.1.1)
-  - GoogleUtilities (1.3.1):
-    - GoogleSymbolUtilities (~> 1.0)
   - iRate (1.11.4)
   - MBProgressHUD (0.9.2)
   - MD5Digest (1.0.2)
+  - NSLogger (1.5.1):
+    - NSLogger/Standard (= 1.5.1)
+  - NSLogger/Standard (1.5.1)
   - Reachability (3.2)
   - RMStore (0.7.1):
     - RMStore/Core (= 0.7.1)
   - RMStore/Core (0.7.1)
-  - TalkingData-GameAnalytics (3.2.5)
-  - UMengAnalytics (4.0.4)
-  - UnityAds (1.5.6)
-  - VungleSDK-iOS (3.2.0.1)
 
 DEPENDENCIES:
-  - AdvertiseAdcolony
-  - AdvertiseAdmob
-  - AdvertiseChartBoost
-  - AdvertiseUnityAds
-  - AdvertiseVungle
-  - AnalyticFL
-  - AnalyticTD
-  - AnalyticUM
   - GamePluginIOS (from `../`)
 
 EXTERNAL SOURCES:
@@ -127,40 +70,19 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  AdColony: a9859672fee49d9a81017d1fffa3133bf8538bd8
-  AdvertiseAdcolony: 3feddc6398de8223d36bf5dfbcc34f4ddf764828
-  AdvertiseAdmob: 0793fe897d2ae8a3aff62a0546514980e2a5c41e
-  AdvertiseChartBoost: 80aa08f9ee0c0e9e3890bcf7606484518a540a9e
-  AdvertiseUnityAds: 2ab359246e1ed21d3ebdf93b4245ac30f3f6364b
-  AdvertiseVungle: 0b6b4838b80b40ebd6c5a434b46689eb649d31ea
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   ALAssetsLibrary-CustomPhotoAlbum: 299ea3f58e988b453b19c595859354e562814c93
-  AnalyticFL: 8f85f6dd3ec5827b1f56d10df0ee4d311c61ebff
-  AnalyticTD: 82b9d273d64d06c4430763367346470ab4bca685
-  AnalyticUM: 8380b8dc364d0b04ba547dff75711e8d6b9a3997
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
-  ChartboostSDK: 7ee1b62aa05f99163d6a31b4ce23bcf244befaf3
-  Firebase: 6c80ac28d59d06bfd9152a7b6ea17625ca93183d
-  FirebaseAnalytics: 6f75b04e6bfb8e0b6e9ef298e04c24eea3b13863
-  FirebaseInstanceID: d014d574053a2fe84478f12f7bae96979e7051bb
-  Flurry-iOS-SDK: 7b3fe6c3344c82b73c4c84163652eada84fbfcf4
   GameCenterManager: e3a855e9db97b876a3a4a0605f5be30c6de9cebd
-  GamePluginBase: f154df85a4134b2165697728bdab164aaf8681d0
-  GamePluginIOS: 0933c2d80d88b979ecaf61d8c5be658feb73cc2b
-  Google-Mobile-Ads-SDK: 3c2a6656117989469bfe7645640aa1de024a4c6c
-  GoogleInterchangeUtilities: def8415a862effc67d549d5b5b0b9c7a2f97d4de
-  GoogleSymbolUtilities: 33117db1b5f290c6fbf259585e4885b4c84b98d7
-  GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
+  GamePluginBase: 7989b2c2700b35e49246536ab90a0848f024a159
+  GamePluginIOS: bd2ab4c4ce264351ad865c66e5c72e5bf243b8ba
   iRate: 599ed07c854e0695f3c605d1b2a64c67d912acb7
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MD5Digest: b6d6b4b640a379c611d9828fe8f0e45dbaf88d2c
+  NSLogger: 5ed223a2436df96244e033be750656dacdeec034
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   RMStore: 64ba13a9c040e3b7572765d169f77175cd3243e5
-  TalkingData-GameAnalytics: a9ec66ca65288339c9dd0415ed47e0db186cbf3e
-  UMengAnalytics: 4ed421fb3bca63b26fc13c947743cabf3831d199
-  UnityAds: 717325c6fe6133fe83f7fd0f2993481df559637e
-  VungleSDK-iOS: e18cf2f47cf0abe096d4b162f583bd197de1ea28
 
-PODFILE CHECKSUM: 9f784cc19bccfc69954027b8f070c456aa98d2bc
+PODFILE CHECKSUM: eb8e2ef2d1c835ee2bf5688361b43eac1d345960
 
 COCOAPODS: 1.0.0

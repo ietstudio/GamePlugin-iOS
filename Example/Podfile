@@ -6,16 +6,16 @@ target 'GamePluginIOS_Example' do
   pod 'GamePluginIOS', :path => '../'
 
   # 统计
-  pod 'AnalyticTD'
-  pod 'AnalyticUM'
-  pod 'AnalyticFL'
+  # pod 'AnalyticTD'
+  # pod 'AnalyticUM'
+  # pod 'AnalyticFL'
 
   # 广告
-  pod 'AdvertiseAdmob'
-  pod 'AdvertiseAdcolony'
-  pod 'AdvertiseChartBoost'
-  pod 'AdvertiseUnityAds'
-  pod 'AdvertiseVungle'
+  # pod 'AdvertiseAdmob'
+  # pod 'AdvertiseAdcolony'
+  # pod 'AdvertiseChartBoost'
+  # pod 'AdvertiseUnityAds'
+  # pod 'AdvertiseVungle'
   # pod 'AdvertiseAppLovin'
   # pod 'AdvertiseInmobi'
   # pod 'AdvertiseTencentGDT'

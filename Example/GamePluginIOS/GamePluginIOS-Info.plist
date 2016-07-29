@@ -24,6 +24,16 @@
 	<string>1.0</string>
 	<key>IETConfigs</key>
 	<dict>
+		<key>iRate_daysUntilPrompt</key>
+		<string>0.5</string>
+		<key>iRate_usesUntilPrompt</key>
+		<string>2</string>
+		<key>iRate_eventsUntilPrompt</key>
+		<string>3</string>
+		<key>iRate_cancelButtonLabel</key>
+		<string></string>
+		<key>iRate_remindPeriod</key>
+		<string>1</string>
 		<key>AWSCognitoIdentityPoolId</key>
 		<string>us-east-1:4f734aca-32b0-4788-a6ad-9b15df0716ed</string>
 		<key>AWSMobileAnalyticsAppId</key>
@@ -108,6 +118,15 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>prefs</string>
+			</array>
+		</dict>
 	</array>
 </dict>
 </plist>

@@ -7,18 +7,15 @@
 //
 
 #import "IETViewController.h"
-#import "IOSSystemUtil.h"
 #import "IOSGamePlugin.h"
-#import "IOSAdvertiseHelper.h"
+#import "IOSAnalyticHelper.h"
+#import "IOSSystemUtil.h"
 #import "NSString+MD5.h"
 
-@interface IETViewController ()
+@interface IETViewController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIView *commonView;
-@property (weak, nonatomic) IBOutlet UIView *advertiseView;
-@property (weak, nonatomic) IBOutlet UIView *analyticsView;
-@property (weak, nonatomic) IBOutlet UIView *amazonAWSView;
-@property (weak, nonatomic) IBOutlet UIView *facebookView;
+@property (retain, nonatomic) UITableView *tableView;
+@property (retain, nonatomic) NSArray *dataList;
 
 @end
 
@@ -28,8 +25,12 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    [self hideAll];
-    [self setRestoreCallback:nil];
+    [self initDataList];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame
+                                                  style:UITableViewStylePlain];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    [self.view addSubview:self.tableView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -38,244 +39,187 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)hideAll {
-    self.commonView.hidden = YES;
-    self.advertiseView.hidden = YES;
-    self.analyticsView.hidden = YES;
-    self.amazonAWSView.hidden = YES;
-    self.facebookView.hidden = YES;
+- (void)initDataList {
+    NSMutableArray* dataList = [NSMutableArray array];
+#pragma mark common
+    [dataList addObject:@{@"name":@"---------GamePlugin---------", @"func":^(){}}];
+    [dataList addObject:@{@"name":@"setGenVerifyUrlCallFunc", @"func":^(){
+        [[IOSGamePlugin getInstance] setGenVerifyUrlHandler:^NSString *(NSDictionary *dict) {
+            NSString* userId    = [dict objectForKey:@"userId"];
+            NSString* productId = [dict objectForKey:@"productId"];
+            NSString* receipt   = [dict objectForKey:@"receipt"];
+            NSString* sign      = [[NSString stringWithFormat:@"iet_studio%@%@%@", userId, productId, receipt] MD5Digest];
+            NSString* url       = [NSString stringWithFormat:@"http://192.168.1.180:7999/mayaslots/iap_verify?user_id=%@&product_id=%@&receipt=%@&sign=%@", userId, productId, receipt, sign];
+            return url;
+        }];
+    }}];
+    [dataList addObject:@{@"name":@"setRestoreCallback", @"func":^(){
+        [[IOSGamePlugin getInstance] setRestoreHandler:^(BOOL result, NSString *msg, NSArray* iapIds) {
+            if (result) {
+                [[IOSSystemUtil getInstance] showAlertDialogWithTitle:msg
+                                                              message:[NSString stringWithFormat:@"%@", iapIds]
+                                                       cancelBtnTitle:@"ok"
+                                                       otherBtnTitles:nil
+                                                             callback:nil];
+            }
+        }];
+    }}];
+    [dataList addObject:@{@"name":@"doIap", @"func":^(){
+        [[IOSGamePlugin getInstance] doIap:@"mayaslot.coin2"
+                                    userId:@"guest"
+                                   handler:^(BOOL result, NSString *msg, NSArray* iapIds) {
+                                       if (result) {
+                                           [[IOSSystemUtil getInstance] showAlertDialogWithTitle:msg
+                                                                                         message:[NSString stringWithFormat:@"%@", iapIds]
+                                                                                  cancelBtnTitle:@"ok"
+                                                                                  otherBtnTitles:nil
+                                                                                        callback:nil];
+                                       }
+                                   }];
+    }}];
+    [dataList addObject:@{@"name":@"rate level=1", @"func":^(){
+        [[IOSGamePlugin getInstance] rate:1];
+    }}];
+    [dataList addObject:@{@"name":@"rate level=2", @"func":^(){
+        [[IOSGamePlugin getInstance] rate:2];
+    }}];
+    [dataList addObject:@{@"name":@"rate level=3", @"func":^(){
+        [[IOSGamePlugin getInstance] rate:3];
+    }}];
+    [dataList addObject:@{@"name":@"gcIsAvailable", @"func":^(){
+        NSLog(@"%@", NSStringFromBool([[IOSGamePlugin getInstance] gcIsAvailable]));
+    }}];
+    __block NSString *_playerId = nil;
+    [dataList addObject:@{@"name":@"gcGetPlayerInfo", @"func":^(){
+        NSDictionary *playerInfo = [[IOSGamePlugin getInstance] gcGetPlayerInfo];
+        NSLog(@"%@", playerInfo);
+        _playerId = [playerInfo objectForKey:@"playerId"];
+    }}];
+    __block NSArray *_friendIds = [NSArray array];
+    [dataList addObject:@{@"name":@"gcGetPlayerFriends", @"func":^(){
+        [[IOSGamePlugin getInstance] gcGetPlayerFriends:^(NSArray *friendIDs) {
+            NSLog(@"%@", friendIDs);
+            _friendIds = friendIDs;
+        }];
+    }}];
+    [dataList addObject:@{@"name":@"gcGetPlayerAvatar", @"func":^(){
+        [[IOSGamePlugin getInstance] gcGetPlayerAvatarWithId:_playerId handler:^(NSString *filePath) {
+            NSLog(@"%@", filePath);
+        }];
+        for (NSString *friendId in _friendIds) {
+            [[IOSGamePlugin getInstance] gcGetPlayerAvatarWithId:friendId handler:^(NSString *filePath) {
+                NSLog(@"%@", filePath);
+            }];
+        }
+    }}];
+    [dataList addObject:@{@"name":@"gcGetPlayerInfoWithIds", @"func":^(){
+        [[IOSGamePlugin getInstance] gcGetPlayerInfoWithIds:_friendIds handler:^(NSArray *playerInfos) {
+            NSLog(@"%@", playerInfos);
+        }];
+    }}];
+    [dataList addObject:@{@"name":@"gcGetPlayerInfoWithId", @"func":^(){
+        [[IOSGamePlugin getInstance] gcGetPlayerInfoWithId:_playerId handler:^(NSDictionary *playerInfo) {
+            NSLog(@"%@", playerInfo);
+        }];
+    }}];
+    [dataList addObject:@{@"name":@"gcGetChallenge", @"func":^(){
+        [[IOSGamePlugin getInstance] gcGetChallengesWithhandler:^(NSArray *challenges) {
+            NSLog(@"%@", challenges);
+        }];
+    }}];
+    [dataList addObject:@{@"name":@"gcGetScore", @"func":^(){
+        NSLog(@"%d", [[IOSGamePlugin getInstance] gcGetScore:@"level"]);
+    }}];
+    [dataList addObject:@{@"name":@"gcReportScore", @"func":^(){
+        [[IOSGamePlugin getInstance] gcReportScore:200 leaderboard:@"level" sortH2L:YES];
+    }}];
+    [dataList addObject:@{@"name":@"gcGetAchievement", @"func":^(){
+        NSLog(@"%f", [[IOSGamePlugin getInstance] gcGetAchievement:@"millionaire"]);
+    }}];
+    [dataList addObject:@{@"name":@"gcReportAchievement", @"func":^(){
+        [[IOSGamePlugin getInstance] gcReportAchievement:@"millionaire" percentComplete:80];
+    }}];
+    [dataList addObject:@{@"name":@"gcShowLeaderBoard", @"func":^(){
+        [[IOSGamePlugin getInstance] gcShowLeaderBoard];
+    }}];
+    [dataList addObject:@{@"name":@"gcShowArchievement", @"func":^(){
+        [[IOSGamePlugin getInstance] gcShowArchievement];
+    }}];
+    [dataList addObject:@{@"name":@"gcShowChallenge", @"func":^(){
+        [[IOSGamePlugin getInstance] gcShowChallenge];
+    }}];
+    [dataList addObject:@{@"name":@"gcReset", @"func":^(){
+        [[IOSGamePlugin getInstance] gcReset];
+    }}];
+#pragma mark analytic
+    [dataList addObject:@{@"name":@"---------Analytic---------", @"func":^(){}}];
+    [dataList addObject:@{@"name":@"setAccoutInfo", @"func":^(){
+        NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+        [dict setObject:@"0000001" forKey:@"userId"];
+        [dict setObject:@"male" forKey:@"gender"];
+        [dict setObject:@"15" forKey:@"age"];
+        [[IOSAnalyticHelper getInstance] setAccoutInfo:dict];
+    }}];
+    [dataList addObject:@{@"name":@"onEvent", @"func":^(){
+        [[IOSAnalyticHelper getInstance] onEvent:@"dead"];
+    }}];
+    [dataList addObject:@{@"name":@"onEventLabel", @"func":^(){
+        [[IOSAnalyticHelper getInstance] onEvent:@"dead" Label:@"10"];
+    }}];
+    [dataList addObject:@{@"name":@"onEventData", @"func":^(){
+        NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+        [dict setObject:@"10" forKey:@"level"];
+        [dict setObject:@"100" forKey:@"coin"];
+        [[IOSAnalyticHelper getInstance] onEvent:@"dead" eventData:dict];
+    }}];
+    [dataList addObject:@{@"name":@"setLevel", @"func":^(){
+        [[IOSAnalyticHelper getInstance] setLevel:10];
+    }}];
+    [dataList addObject:@{@"name":@"charge", @"func":^(){
+        [[IOSAnalyticHelper getInstance] charge:@"coin1" :10 :100 :1000];
+    }}];
+    [dataList addObject:@{@"name":@"reward", @"func":^(){
+        [[IOSAnalyticHelper getInstance] reward:100 :1000];
+    }}];
+    [dataList addObject:@{@"name":@"purchase", @"func":^(){
+        [[IOSAnalyticHelper getInstance] purchase:@"helmet" :1 :10];
+    }}];
+    [dataList addObject:@{@"name":@"use", @"func":^(){
+        [[IOSAnalyticHelper getInstance] use:@"helmet" :1 :10];
+    }}];
+#pragma mark advertise
+    [dataList addObject:@{@"name":@"---------Advertise---------", @"func":^(){}}];
+#pragma mark facebook
+    [dataList addObject:@{@"name":@"---------Facebook---------", @"func":^(){}}];
+#pragma mark amazonaws
+    [dataList addObject:@{@"name":@"---------AmazonAWS---------", @"func":^(){}}];
+    self.dataList = dataList;
 }
 
-- (IBAction)enterCommon:(id)sender {
-    self.commonView.hidden = NO;
+#pragma mark - UITableViewDataSource
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cellWithIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellWithIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                      reuseIdentifier:cellWithIdentifier];
+    }
+    NSDictionary* data = [self.dataList objectAtIndex:[indexPath row]];
+    cell.textLabel.text = [data objectForKey:@"name"];
+    return cell;
 }
 
-- (IBAction)enterAdvertise:(id)sender {
-    self.advertiseView.hidden = NO;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.dataList count];
 }
 
-- (IBAction)enterAnalytics:(id)sender {
-    self.analyticsView.hidden = NO;
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary* data = [self.dataList objectAtIndex:[indexPath row]];
+    ((void(^)())[data objectForKey:@"func"])();
 }
-
-- (IBAction)enterAmazonAWS:(id)sender {
-    self.amazonAWSView.hidden = NO;
-}
-
-- (IBAction)enterFacebook:(id)sender {
-    self.facebookView.hidden = NO;
-}
-
-- (IBAction)back:(id)sender {
-    [self hideAll];
-}
-
-#pragma mark - Common
-
-- (IBAction)getBuild:(id)sender {
-    NSLog(@"%@", [[IOSSystemUtil getInstance] getAppVersion]);
-}
-
-- (IBAction)getCountryCode:(id)sender {
-    NSLog(@"%@", [[IOSSystemUtil getInstance] getCountryCode]);
-}
-
-- (IBAction)getLanguageCode:(id)sender {
-    NSLog(@"%@", [[IOSSystemUtil getInstance] getLanguageCode]);
-}
-
-- (IBAction)getDeviceName:(id)sender {
-    NSLog(@"%@", [[IOSSystemUtil getInstance] getDeviceName]);
-}
-
-- (IBAction)getSystemVersion:(id)sender {
-    NSLog(@"%@", [[IOSSystemUtil getInstance] getSystemVersion]);
-}
-
-- (IBAction)getGameClock:(id)sender {
-    NSLog(@"%ld", [[IOSSystemUtil getInstance] getCpuTime]);
-}
-
-- (IBAction)showChooseView:(id)sender {
-    [[IOSSystemUtil getInstance] showChooseDialog:@"title" :@"message" :@"yes" :@"no" :^(BOOL ret) {
-        NSLog(@"%@", ret==YES?@"YES":@"NO");
-    }];
-}
-
-- (IBAction)getNetworkState:(id)sender {
-    NSLog(@"%@", [[IOSSystemUtil getInstance] getNetworkState]);
-}
-
-- (IBAction)showGameLoading:(id)sender {
-    [[IOSGamePlugin getInstance] showGameLoading:@"12.png" :CGPointMake(0.5, 0.25) :0.5f];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC*5), dispatch_get_main_queue(), ^{
-        [[IOSGamePlugin getInstance] hideGameLoading];
-    });
-}
-
-- (IBAction)showLoading:(id)sender {
-    [[IOSSystemUtil getInstance] showLoading:@"Loading..."];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC*5), dispatch_get_main_queue(), ^{
-        [[IOSSystemUtil getInstance] hideLoading];
-    });
-}
-
-- (IBAction)setGenVerifyUrlCallFunc:(id)sender {
-    [[IOSGamePlugin getInstance] setGenVerifyUrlCallFunc:^NSString *(NSDictionary *userInfo) {
-        NSString* userId = [userInfo objectForKey:@"userId"];
-        NSString* productId = [userInfo objectForKey:@"productId"];
-        NSString* receipt = [userInfo objectForKey:@"receipt"];
-        NSString* sign = [[NSString stringWithFormat:@"iet_studio%@%@%@", userId, productId, receipt] MD5Digest];
-        NSString* url = [NSString stringWithFormat:@"http://192.168.1.180:7999/mayaslots/iap_verify?user_id=%@&product_id=%@&receipt=%@&sign=%@", userId, productId, receipt, sign];
-        return url;
-    }];
-}
-
-- (IBAction)doIap:(id)sender {
-    [[IOSGamePlugin getInstance] doIap:@[@"mayaslot.coin5"]
-                                      :@"mayaslot.coin5"
-                                      :@"guest"
-                                      :^(BOOL result, NSString *msg) {
-                                          NSLog(@"result=%@", result?@"YES":@"NO");
-                                          NSLog(@"%@", msg);
-                                          [[IOSSystemUtil getInstance] showChooseDialog:result?@"YES":@"NO"
-                                                                                     :msg
-                                                                                     :@"OK"
-                                                                                     :nil
-                                                                                     :nil];
-                                      }];
-}
-
-- (IBAction)setRestoreCallback:(id)sender {
-    [[IOSGamePlugin getInstance] setRestoreCallback:^(BOOL result, NSString * msg) {
-        NSLog(@"%@", result?@"YES":@"NO");
-        NSLog(@"%@", msg);
-        [[IOSSystemUtil getInstance] showChooseDialog:result?@"YES":@"NO" :msg :@"OK" :nil :nil];
-    }];
-}
-
-- (IBAction)rate:(id)sender {
-    [[IOSGamePlugin getInstance] rate:YES];
-}
-
-- (IBAction)saveImg:(id)sender {
-    [[IOSGamePlugin getInstance] saveImage:@"12.png" toAlbum:@"test" :^(BOOL result, NSString *msg) {
-        NSLog(@"result=%@", result?@"YES":@"NO");
-        NSLog(@"%@", msg);
-    }];
-}
-
-- (IBAction)sendEmail:(id)sender {
-    [[IOSGamePlugin getInstance] sendEmail:@"title" :@[@"574920212@qq.com"] :@"body" :^(BOOL ret, NSString *msg) {
-        NSLog(@"%@", ret==YES?@"YES":@"NO");
-        NSLog(@"%@", msg);
-    }];
-}
-
-- (IBAction)setNotificationState:(id)sender {
-    [[IOSGamePlugin getInstance] setNotificationState:YES];
-}
-
-- (IBAction)postNotification:(id)sender {
-    NSDictionary* userInfo1 = @{@"message":@"Message1",@"delay":@(5),@"badge":@(1)};
-    NSDictionary* userInfo2 = @{@"message":@"Message2",@"delay":@(10),@"badge":@(2)};
-    NSDictionary* userInfo3 = @{@"message":@"Message3",@"delay":@(15),@"badge":@(3)};
-    NSDictionary* userInfo4 = @{@"message":@"Message4",@"delay":@(20),@"badge":@(4)};
-    NSDictionary* userInfo5 = @{@"message":@"Message5",@"delay":@(25),@"badge":@(5)};
-    [[IOSGamePlugin getInstance] postNotification:userInfo1];
-    [[IOSGamePlugin getInstance] postNotification:userInfo2];
-    [[IOSGamePlugin getInstance] postNotification:userInfo3];
-    [[IOSGamePlugin getInstance] postNotification:userInfo4];
-    [[IOSGamePlugin getInstance] postNotification:userInfo5];
-}
-
-- (IBAction)showImgDialog:(id)sender {
-    [[IOSGamePlugin getInstance] showImageDialog:@"2048x1536_01.png" :@"12.png" :^(BOOL result) {
-        NSLog(@"%@", result?@"YES":@"NO");
-    }];
-}
-
-- (IBAction)showProgressDialog:(id)sender {
-    [[IOSSystemUtil getInstance] showProgressDialog:@"loading" :20];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC*2), dispatch_get_main_queue(), ^{
-        [[IOSSystemUtil getInstance] showProgressDialog:@"uncompress" :80];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC*2), dispatch_get_main_queue(), ^{
-            [[IOSSystemUtil getInstance] hideProgressDialog];
-        });
-    });
-}
-
-- (IBAction)gcReportScore:(id)sender {
-    [[IOSGamePlugin getInstance] gcReportScore:10 leaderboard:@"level" sortH2L:YES];
-}
-
-- (IBAction)gcGetScore:(id)sender {
-    NSLog(@"%d", [[IOSGamePlugin getInstance] gcGetScore:@"level"]);
-}
-
-- (IBAction)gcReportAchievement:(id)sender {
-    [[IOSGamePlugin getInstance] gcReportAchievement:@"millionaire" percentComplete:80];
-}
-
-- (IBAction)gcGetAchievement:(id)sender {
-    NSLog(@"%f", [[IOSGamePlugin getInstance] gcGetAchievement:@"millionaire"]);
-}
-
-- (IBAction)gcLeaderBoard:(id)sender {
-    [[IOSGamePlugin getInstance] gcShowLeaderBoard];
-}
-
-- (IBAction)gcAchievement:(id)sender {
-    [[IOSGamePlugin getInstance] gcShowArchievement];
-}
-
-- (IBAction)gcReset:(id)sender {
-    [[IOSGamePlugin getInstance] gcReset];
-}
-
-- (IBAction)virbrate:(id)sender {
-    [[IOSSystemUtil getInstance] vibrate];
-}
-
-- (IBAction)showToast:(id)sender {
-    [[IOSSystemUtil getInstance] showMessage:@"Hello World Hello World Hello World Hello World Hello World Hello World"];
-}
-
-#pragma mark - Advertise
-
-- (IBAction)showSpot:(id)sender {
-    BOOL result = [[IOSAdvertiseHelper getInstance] showSpotAd:^(BOOL result) {
-        NSLog(@"SpotAd Click: %@", result?@"YES":@"NO");
-    }];
-    NSLog(@"SpotAd Show: %@", result?@"YES":@"NO");
-}
-
-- (IBAction)isVedioReady:(id)sender {
-    BOOL result = [[IOSAdvertiseHelper getInstance] isVedioAdReady];
-    NSLog(@"VedioAd Ready: %@", result?@"YES":@"NO");
-}
-
-- (IBAction)showVedio:(id)sender {
-    BOOL result = [[IOSAdvertiseHelper getInstance] showVedioAd:^(BOOL result) {
-        NSLog(@"VedioAd Valid: %@", result?@"YES":@"NO");
-    } :^(BOOL result) {
-        NSLog(@"VedioAd Click: %@", result?@"YES":@"NO");
-    }];
-    NSLog(@"VedioAd Show: %@", result?@"YES":@"NO");
-}
-
-- (IBAction)showBanner:(id)sender {
-    [[IOSAdvertiseHelper getInstance] showBannerAd:YES :YES];
-}
-
-- (IBAction)hideBanner:(id)sender {
-    [[IOSAdvertiseHelper getInstance] hideBannerAd];
-}
-
-
-
-
-
-#pragma mark - Analytic
 
 @end

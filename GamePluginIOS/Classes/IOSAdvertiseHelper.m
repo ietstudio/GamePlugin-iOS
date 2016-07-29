@@ -86,6 +86,21 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
     _bannerHelper = nil;
 }
 
+- (BOOL)isSpotAdReady {
+    id<AdvertiseDelegate> _advertiseHelper = nil;
+    BOOL result = NO;
+    for (NSString* videoName in _videoNames) {
+        _advertiseHelper = [_advertiseHelpers objectForKey:videoName];
+        if ([_advertiseHelper performSelector:@selector(isSpotAdReady)]) {
+            result = [_advertiseHelper isVedioAdReady];
+            if (result) {
+                break;
+            }
+        }
+    }
+    return result;
+}
+
 - (BOOL)showSpotAd:(void (^)(BOOL))func {
     id<AdvertiseDelegate> _advertiseHelper = nil;
     BOOL result = NO;
@@ -125,7 +140,6 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
         _advertiseHelper = [_advertiseHelpers objectForKey:videoName];
         result = [_advertiseHelper isVedioAdReady];
         if (result) {
-            NSLog(@"%@ vedio %@", [_advertiseHelper getName], result?@"YES":@"NO");
             break;
         }
     }

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'GamePluginIOS'
-  s.version          = '0.3.0'
+  s.version          = '0.3.1'
   s.summary          = 'GamePluginIOS'
   s.description      = <<-DESC
 GamePluginIOS.
@@ -19,12 +19,13 @@ GamePluginIOS.
   s.source           = { :git => 'https://github.com/ietstudio/GamePluginIOS.git', :tag => s.version.to_s }
   s.ios.deployment_target = '7.0'
 
-  s.frameworks = 'MessageUI'
   s.source_files = 'GamePluginIOS/Classes/**/*'
+  s.resource_bundles = {
+    'GamePluginIOS' => ['GamePluginIOS/Assets/*.png', 'GamePluginIOS/Assets/*.lproj']
+  }
 
   s.dependency 'AFNetworking', '~> 2.6.0'
   s.dependency 'MD5Digest', '~> 1.0.1'
-  s.dependency 'ALAssetsLibrary-CustomPhotoAlbum', '~> 1.3.0'
 
   s.dependency 'GamePluginBase'
 

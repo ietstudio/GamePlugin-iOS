@@ -1,0 +1,22 @@
+/* 
+  Localizable.strings
+  Pods
+
+  Created by geekgy on 7/21/16.
+
+*/
+
+"failure" = "Failure";
+"later" = "Later";
+"okay" = "Okay";
+"check_internet" =
+"Oops! Can not access internet, Check items below.
+1. Make sure your device signal is good. 
+2. Enable the internet toggle of your devices.
+3. Enable the permission of internet with this app.";
+"check_lockiap" = "Please enable In-App Purchases in your device restrictions settings.";
+"iap_exist" = "There is an payment is in progress, try again later";
+"iap_failed" = "In-App purchase is failed. see detail below: %@";
+"iap_request_failed" = "Request Products Failed! %@";
+"iap_invalid_product" = "The Product Identifier is invalid.";
+"bad_network" = "Your network is not good, please be patient.";
