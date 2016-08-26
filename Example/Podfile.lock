@@ -36,6 +36,9 @@ PODS:
   - BlocksKit/UIKit (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
+  - Crashlytics (3.7.2):
+    - Fabric (~> 1.6.3)
+  - Fabric (1.6.7)
   - GameCenterManager (5.3):
     - Reachability
   - GamePluginBase (0.2.0):
@@ -44,8 +47,10 @@ PODS:
     - MBProgressHUD (~> 0.9.1)
     - NSLogger (~> 1.5.1)
     - Reachability (~> 3.2)
-  - GamePluginIOS (0.3.0):
+  - GamePluginIOS (0.3.2):
     - AFNetworking (~> 2.6.0)
+    - Crashlytics
+    - Fabric
     - GameCenterManager (~> 5.3)
     - GamePluginBase
     - iRate (~> 1.11.4)
@@ -73,9 +78,11 @@ SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   ALAssetsLibrary-CustomPhotoAlbum: 299ea3f58e988b453b19c595859354e562814c93
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
+  Crashlytics: 130ab943f8c78cda7a814b434f270b2e2c8a3cba
+  Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   GameCenterManager: e3a855e9db97b876a3a4a0605f5be30c6de9cebd
   GamePluginBase: 7989b2c2700b35e49246536ab90a0848f024a159
-  GamePluginIOS: bd2ab4c4ce264351ad865c66e5c72e5bf243b8ba
+  GamePluginIOS: 63b177b5534c2360d4bbde325cbd8c6efe39829a
   iRate: 599ed07c854e0695f3c605d1b2a64c67d912acb7
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MD5Digest: b6d6b4b640a379c611d9828fe8f0e45dbaf88d2c

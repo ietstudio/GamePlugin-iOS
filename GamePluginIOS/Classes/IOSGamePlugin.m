@@ -21,6 +21,8 @@
 #import "NSString+MD5.h"
 #import "GameCenterManager.h"
 #import "RMStore.h"
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 
 #pragma mark - IOSGamePlugin
 
@@ -83,6 +85,24 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 }
 
 #pragma mark public
+
+- (void)crashReportLog:(NSString *)log {
+    CLS_LOG(@"%@", log);
+}
+
+- (void)crashReportExceptionWithReason:(NSString *)reason andTraceback:(NSArray *)traceback {
+    NSMutableArray* frameArray = [NSMutableArray array];
+    for (int i=0; i<[traceback count]; i++) {
+        NSString* message = [traceback objectAtIndex:i];
+        CLSStackFrame* frame = [CLSStackFrame stackFrameWithSymbol:message];
+        [frame setLibrary:@"Lua_Library"];
+        [frame setFileName:reason];
+        [frameArray addObject:frame];
+    }
+    [[Crashlytics sharedInstance] recordCustomExceptionName:@"Lua_Error"
+                                                     reason:reason
+                                                 frameArray:frameArray];
+}
 
 - (void)setGenVerifyUrlHandler:(NSString *(^)(NSDictionary *))handler {
     _genVerifyUrlHandler = handler;
@@ -365,6 +385,11 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     [iRate sharedInstance].cancelButtonLabel = [[IOSSystemUtil getInstance] getConfigValueWithKey:@"iRate_cancelButtonLabel"];
     // 用户点击了稍后提醒以后，等待1天
     [iRate sharedInstance].remindPeriod      = [[[IOSSystemUtil getInstance] getConfigValueWithKey:@"iRate_remindPeriod"] floatValue];
+    
+    // Crashlytics
+#if NDEBUG
+    [Fabric with:@[[Crashlytics class]]];
+#endif
     
     return YES;
 }

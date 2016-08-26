@@ -20,20 +20,33 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>prefs</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>3d528f3dcdce40fb2259c27a683b395edb92e03e</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
 	<key>IETConfigs</key>
 	<dict>
-		<key>iRate_daysUntilPrompt</key>
-		<string>0.5</string>
-		<key>iRate_usesUntilPrompt</key>
-		<string>2</string>
-		<key>iRate_eventsUntilPrompt</key>
-		<string>3</string>
-		<key>iRate_cancelButtonLabel</key>
-		<string></string>
-		<key>iRate_remindPeriod</key>
-		<string>1</string>
 		<key>AWSCognitoIdentityPoolId</key>
 		<string>us-east-1:4f734aca-32b0-4788-a6ad-9b15df0716ed</string>
 		<key>AWSMobileAnalyticsAppId</key>
@@ -94,6 +107,16 @@
 		<string>reward_video</string>
 		<key>Vungle_AppId</key>
 		<string>55168853c82307202f000078</string>
+		<key>iRate_cancelButtonLabel</key>
+		<string></string>
+		<key>iRate_daysUntilPrompt</key>
+		<string>0.5</string>
+		<key>iRate_eventsUntilPrompt</key>
+		<string>3</string>
+		<key>iRate_remindPeriod</key>
+		<string>1</string>
+		<key>iRate_usesUntilPrompt</key>
+		<string>2</string>
 	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -118,15 +141,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>prefs</string>
-			</array>
-		</dict>
 	</array>
 </dict>
 </plist>

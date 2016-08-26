@@ -15,6 +15,21 @@
 SINGLETON_DECLARE(IOSGamePlugin)
 
 /**
+ *  崩溃日志收集
+ *
+ *  @param log
+ */
+- (void)crashReportLog:(NSString*)log;
+
+/**
+ *  崩溃错误收集
+ *
+ *  @param reason
+ *  @param traceback
+ */
+- (void)crashReportExceptionWithReason:(NSString*)reason andTraceback:(NSArray*)traceback;
+
+/**
  *  设置生成验证支付URL回调函数
  *
  *  @param handler
