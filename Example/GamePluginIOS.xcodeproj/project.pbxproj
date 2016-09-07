@@ -634,7 +634,7 @@
 				INFOPLIST_FILE = "GamePluginIOS/GamePluginIOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = com.joylifez.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cardgamefree.blackjack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -652,7 +652,7 @@
 				INFOPLIST_FILE = "GamePluginIOS/GamePluginIOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = com.joylifez.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cardgamefree.blackjack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

@@ -142,7 +142,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
         return;
     }
     // check in-app purchase is in progress
-    if (_iapHandler != nil) {
+    if ([[SKPaymentQueue defaultQueue].transactions count] > 0) {
         [[IOSSystemUtil getInstance] showAlertDialogWithTitle:[self localizationString:@"failure"]
                                                       message:[self localizationString:@"iap_exist"]
                                                cancelBtnTitle:[self localizationString:@"okay"]
@@ -502,9 +502,8 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     NSString* userId    = [userInfo objectForKey:@"userId"];
     NSString* productId = [userInfo objectForKey:@"productId"];
     NSString* receipt   = [userInfo objectForKey:@"receipt"];
-    void(^block)(NSString*, void(^)(NSArray*, NSError*));
-    void(^ __block __weak wblock)(NSString*, void(^)(NSArray*, NSError*)) = block;
-    block = ^(NSString* url, void(^callback)(NSArray*, NSError*)) {
+    void(^ __block wblock)(NSString*, void(^)(NSArray*, NSError*));
+    void(^block)(NSString*, void(^)(NSArray*, NSError*)) = ^(NSString* url, void(^callback)(NSArray*, NSError*)) {
         NSError *error;
         NSDictionary *requestContents = @{@"receipt-data": receipt};
         NSData *requestData = [NSJSONSerialization dataWithJSONObject:requestContents options:0 error:&error];
@@ -525,7 +524,9 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                    dispatch_sync(dispatch_get_main_queue(), ^{
                                        if (connectionError) {
                                            NSLog(@"connectError: %@", connectionError);
-                                           wblock(url, callback);
+                                           dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                                               wblock(url, callback);
+                                           });
                                            return;
                                        }
                                        NSError *error;
@@ -569,6 +570,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                    });
                                }];
     };
+    wblock = block;
     // 先验证buy在验证sanbox
     block(@"https://buy.itunes.apple.com/verifyReceipt", ^(NSArray* iapIds, NSError* buyError){
         if (buyError != nil) {
@@ -673,9 +675,8 @@ SINGLETON_DEFINITION(IOSGamePlugin)
         return;
     }
     // 刷新回执
-    void(^refreshReceiptBlock)();
-    void(^ __block __weak wrefreshReceiptBlock)() = refreshReceiptBlock;
-    refreshReceiptBlock = ^(){
+    void(^ __block wrefreshReceiptBlock)();
+    void(^refreshReceiptBlock)() = ^(){
         [[RMStore defaultStore] refreshReceiptOnSuccess:^{
             NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
             NSData *receiptData = [NSData dataWithContentsOfURL:receiptURL];
@@ -686,12 +687,17 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                 return;
             }
             NSLog(@"refresh receipt failed receipt is nil");
-            wrefreshReceiptBlock();
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                wrefreshReceiptBlock();
+            });
         } failure:^(NSError *error) {
             NSLog(@"refresh receipt failed %@", error);
-            wrefreshReceiptBlock();
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                wrefreshReceiptBlock();
+            });
         }];
     };
+    wrefreshReceiptBlock = refreshReceiptBlock;
     refreshReceiptBlock();
 }
 

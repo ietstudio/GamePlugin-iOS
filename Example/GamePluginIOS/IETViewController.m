@@ -40,6 +40,16 @@
 }
 
 - (void)initDataList {
+    [[IOSGamePlugin getInstance] setRestoreHandler:^(BOOL result, NSString *msg, NSArray* iapIds) {
+        if (result) {
+            [[IOSSystemUtil getInstance] showAlertDialogWithTitle:msg
+                                                          message:[NSString stringWithFormat:@"%@", iapIds]
+                                                   cancelBtnTitle:@"ok"
+                                                   otherBtnTitles:nil
+                                                         callback:nil];
+        }
+    }];
+    
     NSMutableArray* dataList = [NSMutableArray array];
 #pragma mark common
     [dataList addObject:@{@"name":@"---------GamePlugin---------", @"func":^(){}}];
@@ -53,19 +63,21 @@
             return url;
         }];
     }}];
-    [dataList addObject:@{@"name":@"setRestoreCallback", @"func":^(){
-        [[IOSGamePlugin getInstance] setRestoreHandler:^(BOOL result, NSString *msg, NSArray* iapIds) {
-            if (result) {
-                [[IOSSystemUtil getInstance] showAlertDialogWithTitle:msg
-                                                              message:[NSString stringWithFormat:@"%@", iapIds]
-                                                       cancelBtnTitle:@"ok"
-                                                       otherBtnTitles:nil
-                                                             callback:nil];
-            }
-        }];
+    [dataList addObject:@{@"name":@"doIap1", @"func":^(){
+        [[IOSGamePlugin getInstance] doIap:@"blackjack.chip1"
+                                    userId:@"guest"
+                                   handler:^(BOOL result, NSString *msg, NSArray* iapIds) {
+                                       if (result) {
+                                           [[IOSSystemUtil getInstance] showAlertDialogWithTitle:msg
+                                                                                         message:[NSString stringWithFormat:@"%@", iapIds]
+                                                                                  cancelBtnTitle:@"ok"
+                                                                                  otherBtnTitles:nil
+                                                                                        callback:nil];
+                                       }
+                                   }];
     }}];
-    [dataList addObject:@{@"name":@"doIap", @"func":^(){
-        [[IOSGamePlugin getInstance] doIap:@"mayaslot.coin2"
+    [dataList addObject:@{@"name":@"doIap2", @"func":^(){
+        [[IOSGamePlugin getInstance] doIap:@"blackjack.chip5"
                                     userId:@"guest"
                                    handler:^(BOOL result, NSString *msg, NSArray* iapIds) {
                                        if (result) {
