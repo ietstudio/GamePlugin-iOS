@@ -37,10 +37,9 @@
     id _facebookInstance;
     id _amazonAwsInstance;
     NSString *(^_genVerifyUrlHandler)(NSDictionary *);
-    void(^_restoreHandler)(BOOL, NSString*, NSArray *);
-    void(^_iapHandler)(BOOL, NSString*, NSArray *);
+    void(^_restoreHandler)(BOOL, NSString*, NSString*);
+    void(^_iapHandler)(BOOL, NSString*);
     NSString* _iapSuccessState;
-    NSArray* _iapSuccessIds;
 }
 
 SINGLETON_DEFINITION(IOSGamePlugin)
@@ -108,11 +107,11 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     _genVerifyUrlHandler = handler;
 }
 
-- (void)setRestoreHandler:(void (^)(BOOL, NSString *, NSArray *))handler {
+- (void)setRestoreHandler:(void (^)(BOOL, NSString *, NSString *))handler {
     _restoreHandler = handler;
 }
 
-- (void)doIap:(NSString *)iapId userId:(NSString *)userId handler:(void (^)(BOOL, NSString *, NSArray *))handler {
+- (void)doIap:(NSString *)iapId userId:(NSString *)userId handler:(void (^)(BOOL, NSString *))handler {
     // check internet is avaliable
     if ([[[IOSSystemUtil getInstance] getNetworkState] isEqualToString:@"NotReachable"]) {
         [[IOSSystemUtil getInstance] showAlertDialogWithTitle:[self localizationString:@"failure"]
@@ -123,7 +122,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                                          if (buttonIdx == 1) {
                                                              [self openSystemSettings:@""];
                                                          }
-                                                         handler(NO, @"Can not access internet", nil);
+                                                         handler(NO, @"Can not access internet");
                                                      }];
         return;
     }
@@ -137,7 +136,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                                          if (buttonIdx == 1) {
                                                              [self openSystemSettings:@"General"];
                                                          }
-                                                         handler(NO, @"Can not make payments", nil);
+                                                         handler(NO, @"Can not make payments");
                                                      }];
         return;
     }
@@ -148,7 +147,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                                cancelBtnTitle:[self localizationString:@"okay"]
                                                otherBtnTitles:nil
                                                      callback:^(int buttonIdx) {
-                                                         handler(NO, @"Already has a payment", nil);
+                                                         handler(NO, @"Already has a payment");
                                                      }];
         return;
     }
@@ -161,7 +160,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                             [[RMStore defaultStore] addPayment:iapId
                                                                           user:userId
                                                                        success:^(SKPaymentTransaction *transaction) {
-                                                                           _iapHandler(YES, _iapSuccessState, _iapSuccessIds);
+                                                                           _iapHandler(YES, _iapSuccessState);
                                                                            _iapHandler = nil;
                                                                            [[IOSSystemUtil getInstance] hideLoading];
                                                                        }
@@ -172,7 +171,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                                                                                                   cancelBtnTitle:[self localizationString:@"okay"]
                                                                                                                   otherBtnTitles:nil
                                                                                                                         callback:^(int buttonIdx) {
-                                                                                                                            _iapHandler(NO, message, nil);
+                                                                                                                            _iapHandler(NO, message);
                                                                                                                             _iapHandler = nil;
                                                                                                                             [[IOSSystemUtil getInstance] hideLoading];
                                                                                                                         }];
@@ -184,7 +183,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                                                                    cancelBtnTitle:[self localizationString:@"okay"]
                                                                                    otherBtnTitles:nil
                                                                                          callback:^(int buttonIdx) {
-                                                                                             _iapHandler(NO, message, nil);
+                                                                                             _iapHandler(NO, message);
                                                                                              _iapHandler = nil;
                                                                                              [[IOSSystemUtil getInstance] hideLoading];
                                                                                          }];
@@ -196,7 +195,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                                                                cancelBtnTitle:[self localizationString:@"okay"]
                                                                                otherBtnTitles:nil
                                                                                      callback:^(int buttonIdx) {
-                                                                                         _iapHandler(NO, message, nil);
+                                                                                         _iapHandler(NO, message);
                                                                                          _iapHandler = nil;
                                                                                          [[IOSSystemUtil getInstance] hideLoading];
                                                                                      }];
@@ -502,14 +501,14 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     NSString* userId    = [userInfo objectForKey:@"userId"];
     NSString* productId = [userInfo objectForKey:@"productId"];
     NSString* receipt   = [userInfo objectForKey:@"receipt"];
-    void(^ __block wblock)(NSString*, void(^)(NSArray*, NSError*));
-    void(^block)(NSString*, void(^)(NSArray*, NSError*)) = ^(NSString* url, void(^callback)(NSArray*, NSError*)) {
+    void(^ __block wblock)(NSString*, void(^)(NSError*));
+    void(^block)(NSString*, void(^)(NSError*)) = ^(NSString* url, void(^callback)(NSError*)) {
         NSError *error;
         NSDictionary *requestContents = @{@"receipt-data": receipt};
         NSData *requestData = [NSJSONSerialization dataWithJSONObject:requestContents options:0 error:&error];
         if (error != nil) {
             NSString* msg = [NSString stringWithFormat:@"JSONSerialization1: %@", error];
-            callback(nil, [NSError errorWithDomain:msg code:0 userInfo:nil]);
+            callback([NSError errorWithDomain:msg code:0 userInfo:nil]);
             return;
         }
         // Create a POST request with the receipt data.
@@ -533,12 +532,12 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                        NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
                                        if (error != nil) {
                                            NSString* msg = [NSString stringWithFormat:@"JSONSerialization2: %@", error];
-                                           callback(nil, [NSError errorWithDomain:msg code:0 userInfo:nil]);
+                                           callback([NSError errorWithDomain:msg code:0 userInfo:nil]);
                                            return;
                                        }
                                        if (!jsonResponse) {
                                            NSString* msg = @"jsonResponse is nil";
-                                           callback(nil, [NSError errorWithDomain:msg code:0 userInfo:nil]);
+                                           callback([NSError errorWithDomain:msg code:0 userInfo:nil]);
                                            return;
                                        }
                                        NSLog(@"%@", jsonResponse);
@@ -546,7 +545,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                        int status = [[jsonResponse objectForKey:@"status"] intValue];
                                        if (status != 0) {
                                            NSString* msg = [NSString stringWithFormat:@"status!=0"];
-                                           callback(nil, [NSError errorWithDomain:msg code:0 userInfo:nil]);
+                                           callback([NSError errorWithDomain:msg code:0 userInfo:nil]);
                                            return;
                                        }
                                        NSDictionary* receipt = [jsonResponse objectForKey:@"receipt"];
@@ -554,16 +553,17 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                        NSString* bundle_id = [receipt objectForKey:@"bundle_id"];
                                        if (![bundle_id isEqualToString:[[IOSSystemUtil getInstance] getBundleId]]) {
                                            NSString* msg = [NSString stringWithFormat:@"bundle_id is wrong"];
-                                           callback(nil, [NSError errorWithDomain:msg code:0 userInfo:nil]);
+                                           callback([NSError errorWithDomain:msg code:0 userInfo:nil]);
                                            return;
                                        }
                                        // get in-app
-                                       NSMutableArray *iapIds = [NSMutableArray array];
                                        NSArray *inApp = [receipt objectForKey:@"in_app"];
-                                       for (NSDictionary *item in inApp) {
-                                           [iapIds addObject:[item objectForKey:@"product_id"]];
+                                       if ([inApp count] <= 0) {
+                                           NSString* msg = [NSString stringWithFormat:@"in_app is empty"];
+                                           callback([NSError errorWithDomain:msg code:0 userInfo:nil]);
+                                           return;
                                        }
-                                       callback([NSArray arrayWithArray:iapIds], nil);
+                                       callback(nil);
                                        // send analytic event
                                        NSString* label = [NSString stringWithFormat:@"%@,%@", userId, productId];
                                        [[IOSAnalyticHelper getInstance] onEvent:@"Purchase" Label:label];
@@ -572,9 +572,9 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     };
     wblock = block;
     // 先验证buy在验证sanbox
-    block(@"https://buy.itunes.apple.com/verifyReceipt", ^(NSArray* iapIds, NSError* buyError){
+    block(@"https://buy.itunes.apple.com/verifyReceipt", ^(NSError* buyError){
         if (buyError != nil) {
-            block(@"https://sandbox.itunes.apple.com/verifyReceipt", ^(NSArray* iapIds, NSError* sanboxError){
+            block(@"https://sandbox.itunes.apple.com/verifyReceipt", ^(NSError* sanboxError){
                 if (sanboxError != nil) {
                     NSError* error = [NSError errorWithDomain:[NSString stringWithFormat:@"%@,%@", buyError, sanboxError]
                                                          code:0
@@ -582,13 +582,11 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                     failureBlock(error);
                 } else {
                     _iapSuccessState = @"ProductionSandbox";
-                    _iapSuccessIds = iapIds;
                     successBlock();
                 }
             });
         } else {
             _iapSuccessState = @"Production";
-            _iapSuccessIds = iapIds;
             successBlock();
         }
     });
@@ -634,7 +632,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                 return;
             }
             if (_restoreHandler != nil) {
-                _restoreHandler(YES, _iapSuccessState, _iapSuccessIds);
+                _restoreHandler(YES, _iapSuccessState, productId);
                 successBlock();
             }
         };
@@ -644,7 +642,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                 return;
             }
             if (_restoreHandler != nil) {
-                _restoreHandler(NO, [NSString stringWithFormat:@"Payment Failed! %@", error], nil);
+                _restoreHandler(NO, [NSString stringWithFormat:@"Payment Failed! %@", error], productId);
                 failureBlock(error);
             }
         };

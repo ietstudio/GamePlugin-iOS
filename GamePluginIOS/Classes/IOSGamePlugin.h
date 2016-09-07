@@ -41,7 +41,7 @@ SINGLETON_DECLARE(IOSGamePlugin)
  *
  *  @param handler
  */
-- (void)setRestoreHandler:(void(^)(BOOL result, NSString *msg, NSArray *iapIds))handler;
+- (void)setRestoreHandler:(void(^)(BOOL result, NSString *msg, NSString *iapId))handler;
 
 /**
  *  充值
@@ -50,7 +50,7 @@ SINGLETON_DECLARE(IOSGamePlugin)
  *  @param userId  用户id
  *  @param handler 回调
  */
-- (void)doIap:(NSString *)iapId userId:(NSString*)userId handler:(void(^)(BOOL result, NSString *msg, NSArray *iapIds))handler;
+- (void)doIap:(NSString *)iapId userId:(NSString*)userId handler:(void(^)(BOOL result, NSString *msg))handler;
 
 /**
  *  评论

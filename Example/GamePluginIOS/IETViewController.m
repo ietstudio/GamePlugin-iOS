@@ -40,14 +40,12 @@
 }
 
 - (void)initDataList {
-    [[IOSGamePlugin getInstance] setRestoreHandler:^(BOOL result, NSString *msg, NSArray* iapIds) {
-        if (result) {
-            [[IOSSystemUtil getInstance] showAlertDialogWithTitle:msg
-                                                          message:[NSString stringWithFormat:@"%@", iapIds]
-                                                   cancelBtnTitle:@"ok"
-                                                   otherBtnTitles:nil
-                                                         callback:nil];
-        }
+    [[IOSGamePlugin getInstance] setRestoreHandler:^(BOOL result, NSString *msg, NSString *iapId) {
+        [[IOSSystemUtil getInstance] showAlertDialogWithTitle:NSStringFromBool(result)
+                                                      message:[NSString stringWithFormat:@"%@:%@", msg, iapId]
+                                               cancelBtnTitle:@"ok"
+                                               otherBtnTitles:nil
+                                                     callback:nil];
     }];
     
     NSMutableArray* dataList = [NSMutableArray array];
@@ -64,29 +62,33 @@
         }];
     }}];
     [dataList addObject:@{@"name":@"doIap1", @"func":^(){
-        [[IOSGamePlugin getInstance] doIap:@"blackjack.chip1"
+        NSString *iapId = @"blackjack.chip1";
+        [[IOSGamePlugin getInstance] doIap:iapId
                                     userId:@"guest"
-                                   handler:^(BOOL result, NSString *msg, NSArray* iapIds) {
-                                       if (result) {
-                                           [[IOSSystemUtil getInstance] showAlertDialogWithTitle:msg
-                                                                                         message:[NSString stringWithFormat:@"%@", iapIds]
-                                                                                  cancelBtnTitle:@"ok"
-                                                                                  otherBtnTitles:nil
-                                                                                        callback:nil];
+                                   handler:^(BOOL result, NSString *msg) {
+                                       if (!result) {
+                                           return;
                                        }
+                                       [[IOSSystemUtil getInstance] showAlertDialogWithTitle:NSStringFromBool(result)
+                                                                                     message:[NSString stringWithFormat:@"%@:%@", msg, iapId]
+                                                                              cancelBtnTitle:@"ok"
+                                                                              otherBtnTitles:nil
+                                                                                    callback:nil];
                                    }];
     }}];
     [dataList addObject:@{@"name":@"doIap2", @"func":^(){
-        [[IOSGamePlugin getInstance] doIap:@"blackjack.chip5"
+        NSString *iapId = @"blackjack.chip5";
+        [[IOSGamePlugin getInstance] doIap:iapId
                                     userId:@"guest"
-                                   handler:^(BOOL result, NSString *msg, NSArray* iapIds) {
-                                       if (result) {
-                                           [[IOSSystemUtil getInstance] showAlertDialogWithTitle:msg
-                                                                                         message:[NSString stringWithFormat:@"%@", iapIds]
-                                                                                  cancelBtnTitle:@"ok"
-                                                                                  otherBtnTitles:nil
-                                                                                        callback:nil];
+                                   handler:^(BOOL result, NSString *msg) {
+                                       if (!result) {
+                                           return;
                                        }
+                                       [[IOSSystemUtil getInstance] showAlertDialogWithTitle:NSStringFromBool(result)
+                                                                                     message:[NSString stringWithFormat:@"%@:%@", msg, iapId]
+                                                                              cancelBtnTitle:@"ok"
+                                                                              otherBtnTitles:nil
+                                                                                    callback:nil];
                                    }];
     }}];
     [dataList addObject:@{@"name":@"rate level=1", @"func":^(){
