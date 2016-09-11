@@ -95,11 +95,31 @@ SINGLETON_DEFINITION(IOSAnalyticHelper)
     }
 }
 
+- (void)missionStart:(NSString *)missionId {
+    for (id<AnalyticDelegate> delegate in _delegates) {
+        [delegate missionStart:missionId];
+    }
+}
+
+- (void)missionSuccess:(NSString *)missionId {
+    for (id<AnalyticDelegate> delegate in _delegates) {
+        [delegate missionSuccess:missionId];
+    }
+}
+
+- (void)missionFailed:(NSString *)missionId because:(NSString *)reason {
+    for (id<AnalyticDelegate> delegate in _delegates) {
+        [delegate missionFailed:missionId because:reason];
+    }
+}
+
 #pragma mark - LifeCycleDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     for (id<AnalyticDelegate> delegate in _delegates) {
-        [delegate application:application didFinishLaunchingWithOptions:launchOptions];
+        if ([delegate respondsToSelector:@selector(application:didFinishLaunchingWithOptions:)]) {
+            [delegate application:application didFinishLaunchingWithOptions:launchOptions];
+        }
     }
     return YES;
 }

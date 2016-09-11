@@ -170,8 +170,9 @@
     [dataList addObject:@{@"name":@"setAccoutInfo", @"func":^(){
         NSMutableDictionary* dict = [NSMutableDictionary dictionary];
         [dict setObject:@"0000001" forKey:@"userId"];
+        [dict setObject:@"SnowflakeTQ" forKey:@"accountName"];
         [dict setObject:@"male" forKey:@"gender"];
-        [dict setObject:@"15" forKey:@"age"];
+        [dict setObject:@"25" forKey:@"age"];
         [[IOSAnalyticHelper getInstance] setAccoutInfo:dict];
     }}];
     [dataList addObject:@{@"name":@"onEvent", @"func":^(){
@@ -200,6 +201,15 @@
     }}];
     [dataList addObject:@{@"name":@"use", @"func":^(){
         [[IOSAnalyticHelper getInstance] use:@"helmet" :1 :10];
+    }}];
+    [dataList addObject:@{@"name":@"missionStart", @"func":^(){
+        [[IOSAnalyticHelper getInstance] missionStart:@"missionId"];
+    }}];
+    [dataList addObject:@{@"name":@"missionSuccess", @"func":^(){
+        [[IOSAnalyticHelper getInstance] missionSuccess:@"missionId"];
+    }}];
+    [dataList addObject:@{@"name":@"missionFailed", @"func":^(){
+        [[IOSAnalyticHelper getInstance] missionFailed:@"missionId" because:@"reason"];
     }}];
 #pragma mark advertise
     [dataList addObject:@{@"name":@"---------Advertise---------", @"func":^(){}}];
