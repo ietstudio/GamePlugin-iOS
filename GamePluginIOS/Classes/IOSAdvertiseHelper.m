@@ -158,6 +158,7 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
                 [[IOSAnalyticHelper getInstance] onEvent:@"VedioAd Play Finish" Label:name];
             }
             viewFunc(result);
+            [[IOSSystemUtil getInstance] hideLoading];
         } :^(BOOL result) {
             if (result) {
                 NSString* name = [_advertiseHelper getName];
@@ -174,6 +175,7 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
         NSString* name = [_advertiseHelper getName];
         NSLog(@"%@", [NSString stringWithFormat:@"%@ Vedio ad show Success", name]);
         [[IOSAnalyticHelper getInstance] onEvent:@"VedioAd Show Success" Label:name];
+        [[IOSSystemUtil getInstance] showLoadingWithMessage:@"Loading..."];
     } else {
         NSLog(@"Vedio ad show Failed");
         [[IOSAnalyticHelper getInstance] onEvent:@"VedioAd Show Failed"];
