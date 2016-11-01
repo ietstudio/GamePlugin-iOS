@@ -176,22 +176,6 @@ SINGLETON_DEFINITION(IOSAnalyticHelper)
     }
 }
 
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    for (id<AnalyticDelegate> delegate in _delegates) {
-        if ([delegate respondsToSelector:@selector(application:didFailToRegisterForRemoteNotificationsWithError:)]) {
-            [delegate application:application didFailToRegisterForRemoteNotificationsWithError:error];
-        }
-    }
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    for (id<AnalyticDelegate> delegate in _delegates) {
-        if ([delegate respondsToSelector:@selector(application:didReceiveRemoteNotification:)]) {
-            [delegate application:application didReceiveRemoteNotification:userInfo];
-        }
-    }
-}
-
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler {
     for (id<AnalyticDelegate> delegate in _delegates) {
         if ([delegate respondsToSelector:@selector(application:handleActionWithIdentifier:forRemoteNotification:completionHandler:)]) {

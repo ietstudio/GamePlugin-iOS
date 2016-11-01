@@ -134,14 +134,6 @@ SINGLETON_DEFINITION(IOSFacebookHelper)
     [_instance application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    [_instance application:application didFailToRegisterForRemoteNotificationsWithError:error];
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    [_instance application:application didReceiveRemoteNotification:userInfo];
-}
-
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler {
     [_instance application:application handleActionWithIdentifier:identifier forRemoteNotification:userInfo completionHandler:completionHandler];
 }

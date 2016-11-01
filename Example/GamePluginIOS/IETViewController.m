@@ -40,6 +40,8 @@
 }
 
 - (void)initDataList {
+    
+    // 内购恢复
     [[IOSGamePlugin getInstance] setRestoreHandler:^(BOOL result, NSString *msg, NSString *iapId) {
         [[IOSSystemUtil getInstance] showAlertDialogWithTitle:NSStringFromBool(result)
                                                       message:[NSString stringWithFormat:@"%@:%@", msg, iapId]
@@ -47,8 +49,25 @@
                                                otherBtnTitles:nil
                                                      callback:nil];
     }];
+    // 推送回调
+    [[IOSGamePlugin getInstance] setNotificationHandler:^(NSDictionary *userInfo) {
+        [[IOSSystemUtil getInstance] showAlertDialogWithTitle:@"Open From Notification"
+                                                      message:[NSString stringWithFormat:@"%@", userInfo]
+                                               cancelBtnTitle:@"ok"
+                                               otherBtnTitles:nil
+                                                     callback:nil];
+    }];
     
     NSMutableArray* dataList = [NSMutableArray array];
+#pragma mark systemutil
+    [dataList addObject:@{@"name":@"---------SystemUtil---------", @"func":^(){}}];
+    [dataList addObject:@{@"name":@"setNotificationState", @"func":^(){
+        [[IOSSystemUtil getInstance] setNotificationState:YES];
+    }}];
+    [dataList addObject:@{@"name":@"postNotification", @"func":^(){
+        [[IOSSystemUtil getInstance] postNotification:@{@"message":@"message_value",
+                                                        @"delay":@(5)}];
+    }}];
 #pragma mark common
     [dataList addObject:@{@"name":@"---------GamePlugin---------", @"func":^(){}}];
     [dataList addObject:@{@"name":@"setGenVerifyUrlCallFunc", @"func":^(){

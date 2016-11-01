@@ -36,11 +36,4 @@ SINGLETON_DECLARE(IOSAmazonAWSHelper)
  */
 - (void)connectFb:(NSString*)token;
 
-/**
- *  设置远程推送事件回调接口
- *
- *  @param callback
- */
-- (void)setNotificationFunc:(void(^)(NSDictionary*))callback;
-
 @end

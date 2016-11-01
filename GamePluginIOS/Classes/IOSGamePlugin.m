@@ -36,6 +36,7 @@
     id _analyticInstance;
     id _facebookInstance;
     id _amazonAwsInstance;
+    void(^_notifyHandler)(NSDictionary*);
     NSString *(^_genVerifyUrlHandler)(NSDictionary *);
     void(^_restoreHandler)(BOOL, NSString*, NSString*);
     void(^_iapHandler)(BOOL, NSString*);
@@ -101,6 +102,10 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     [[Crashlytics sharedInstance] recordCustomExceptionName:@"Lua_Error"
                                                      reason:reason
                                                  frameArray:frameArray];
+}
+
+- (void)setNotificationHandler:(void (^)(NSDictionary *))handler {
+    _notifyHandler = handler;
 }
 
 - (void)setGenVerifyUrlHandler:(NSString *(^)(NSDictionary *))handler {
@@ -374,6 +379,8 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     // iRate 评价条件
     // 无论使用的程序的那个版本都可以评论
     [iRate sharedInstance].onlyPromptIfLatestVersion = NO;
+    // Apple StoreID
+    [iRate sharedInstance].appStoreID = [[[IOSSystemUtil getInstance] getConfigValueWithKey:@"iRate_appStoreID"] intValue];
     // 首次使用开始计算N天以上
     [iRate sharedInstance].daysUntilPrompt   = [[[IOSSystemUtil getInstance] getConfigValueWithKey:@"iRate_daysUntilPrompt"] floatValue];
     // app打开了N次以上
@@ -384,11 +391,25 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     [iRate sharedInstance].cancelButtonLabel = [[IOSSystemUtil getInstance] getConfigValueWithKey:@"iRate_cancelButtonLabel"];
     // 用户点击了稍后提醒以后，等待1天
     [iRate sharedInstance].remindPeriod      = [[[IOSSystemUtil getInstance] getConfigValueWithKey:@"iRate_remindPeriod"] floatValue];
+    // 启动或者从后台恢复弹出评论
+    [iRate sharedInstance].promptAtLaunch = NO;
     
     // Crashlytics
 #if NDEBUG
     [Fabric with:@[[Crashlytics class]]];
 #endif
+    
+    // 本地通知
+    UILocalNotification *localUserInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (localUserInfo) {
+        [self application:application didReceiveLocalNotification:localUserInfo];
+    }
+    
+    // 远程通知
+    NSDictionary* remoteUserInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (remoteUserInfo) {
+        [self application:application didReceiveRemoteNotification:remoteUserInfo];
+    }
     
     return YES;
 }
@@ -465,11 +486,16 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     [_amazonAwsInstance application:application didFailToRegisterForRemoteNotificationsWithError:error];
 }
 
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    if (_notifyHandler) {
+        _notifyHandler(notification.userInfo);
+    }
+}
+
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    [_advertiseInstance application:application didReceiveRemoteNotification:userInfo];
-    [_analyticInstance application:application didReceiveRemoteNotification:userInfo];
-    [_facebookInstance application:application didReceiveRemoteNotification:userInfo];
-    [_amazonAwsInstance application:application didReceiveRemoteNotification:userInfo];
+    if (_notifyHandler) {
+        _notifyHandler(userInfo);
+    }
 }
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler {

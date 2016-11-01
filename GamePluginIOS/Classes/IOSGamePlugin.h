@@ -29,6 +29,14 @@ SINGLETON_DECLARE(IOSGamePlugin)
  */
 - (void)crashReportExceptionWithReason:(NSString*)reason andTraceback:(NSArray*)traceback;
 
+
+/**
+ 推送通知回调
+
+ @param handler
+ */
+- (void)setNotificationHandler:(void(^)(NSDictionary*))handler;
+
 /**
  *  设置生成验证支付URL回调函数
  *

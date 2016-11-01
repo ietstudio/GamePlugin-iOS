@@ -107,6 +107,8 @@
 		<string>reward_video</string>
 		<key>Vungle_AppId</key>
 		<string>55168853c82307202f000078</string>
+		<key>iRate_appStoreID</key>
+		<string>1147994901</string>
 		<key>iRate_cancelButtonLabel</key>
 		<string></string>
 		<key>iRate_daysUntilPrompt</key>
@@ -130,6 +132,7 @@
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
+		<string>gamekit</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
