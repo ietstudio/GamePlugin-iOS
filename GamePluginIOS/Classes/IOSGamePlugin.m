@@ -395,7 +395,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     [iRate sharedInstance].promptAtLaunch = NO;
     
     // Crashlytics
-#if NDEBUG
+#ifndef DEBUG
     [Fabric with:@[[Crashlytics class]]];
 #endif
     
