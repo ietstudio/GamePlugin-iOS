@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'GamePluginIOS'
-  s.version          = '0.3.9'
+  s.version          = '0.4.0'
   s.summary          = 'GamePluginIOS'
   s.description      = <<-DESC
 GamePluginIOS.

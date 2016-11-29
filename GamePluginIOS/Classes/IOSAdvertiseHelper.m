@@ -15,7 +15,7 @@
 {
     NSDictionary* _advertiseHelpers;
     
-    NSArray* _bannerNames;
+    NSString* _bannerName;
     id<AdvertiseDelegate> _bannerHelper;
     
     NSArray* _spotNames;
@@ -52,8 +52,8 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
     return self;
 }
 
-- (void)setBannerAdNames:(NSArray *)names {
-    _bannerNames = names;
+- (void)setBannerAdName:(NSString *)name {
+    _bannerName = name;
 }
 
 - (void)setSpotAdNames:(NSArray *)names {
@@ -70,8 +70,10 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
     if (_bannerHelper != nil) {
         return -1;
     }
-    NSString* helperName = [_bannerNames objectAtIndex:0];
-    _bannerHelper = [_advertiseHelpers objectForKey:helperName];
+    _bannerHelper = [_advertiseHelpers objectForKey:_bannerName];
+    if (_bannerHelper == nil) {
+        return -1;
+    }
     int height = [_bannerHelper showBannerAd:portrait :bottom];
     NSLog(@"showBannerAd: %@", [_bannerHelper getName]);
     return height;
@@ -190,17 +192,20 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
         [advertiseHelper application:application didFinishLaunchingWithOptions:launchOptions];
     }
     
+    @"AMAdvertiseHelper",//admob
+    @"CBAdvertiseHelper",//chartboost
+    @"ALAdvertiseHelper",//applovin
+    @"UAAdvertiseHelper",//unityads
+    @"ACAdvertiseHelper",//adcolony
+    @"VGAdvertiseHelper",//vungle
     // default helper
-    [self setBannerAdNames:@[@"AMAdvertiseHelper"]];
-    [self setSpotAdNames:@[@"CBAdvertiseHelper", @"AMAdvertiseHelper"]];
-    [self setVideoAdNames:@[@"CBAdvertiseHelper", @"UAAdvertiseHelper",
-                            @"ACAdvertiseHelper", @"VGAdvertiseHelper"]];
-#if DEBUG
-    NSString* fileServerKey = @"FileServerDev";
-#else
-    NSString* fileServerKey = @"FileServer";
-#endif
-    NSString* fileServer = [[IOSSystemUtil getInstance] getConfigValueWithKey:fileServerKey];
+    [self setBannerAdName:@"AMAdvertiseHelper"];
+    [self setSpotAdNames:@[@"AMAdvertiseHelper",
+                           @"CBAdvertiseHelper",
+                           @"ALAdvertiseHelper"]];
+    [self setVideoAdNames:@[@"AMAdvertiseHelper", @"ACAdvertiseHelper", @"ALAdvertiseHelper", @"VGAdvertiseHelper", @"UAAdvertiseHelper", @"CBAdvertiseHelper"]];
+
+    NSString* fileServer = [[IOSSystemUtil getInstance] getConfigValueWithKey:FILE_SERVER];
     NSString* bundleId = [[NSBundle mainBundle] bundleIdentifier];
     NSString* adConfigUrl = [NSString stringWithFormat:@"%@/%@/ad_config.plist", fileServer, bundleId];
     
@@ -219,7 +224,7 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
     // cached server config
     NSDictionary* adConfig = [NSDictionary dictionaryWithContentsOfFile:filePath];
     if (adConfig != nil) {
-        [self setBannerAdNames:[adConfig objectForKey:@"Advertise_Banner"]];
+        [self setBannerAdName:[adConfig objectForKey:@"Advertise_Banner"]];
         [self setSpotAdNames:[adConfig objectForKey:@"Advertise_Spot"]];
         [self setVideoAdNames:[adConfig objectForKey:@"Advertise_Video"]];
     }
@@ -237,7 +242,7 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
         // loaded server config
         NSDictionary* adConfig = [NSDictionary dictionaryWithContentsOfFile:filePath];
         if (adConfig != nil) {
-            [self setBannerAdNames:[adConfig objectForKey:@"Advertise_Banner"]];
+            [self setBannerAdName:[adConfig objectForKey:@"Advertise_Banner"]];
             [self setSpotAdNames:[adConfig objectForKey:@"Advertise_Spot"]];
             [self setVideoAdNames:[adConfig objectForKey:@"Advertise_Video"]];
         }
