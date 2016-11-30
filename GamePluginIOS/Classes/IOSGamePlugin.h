@@ -159,4 +159,9 @@ SINGLETON_DECLARE(IOSGamePlugin)
  */
 - (void)gcReset;
 
+/**
+ *  uuid
+ */
+- (NSString*)uuidForDevice;
+
 @end

@@ -23,6 +23,7 @@
 #import "RMStore.h"
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
+#import "FCUUID.h"
 
 #pragma mark - IOSGamePlugin
 
@@ -351,6 +352,10 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     [[GameCenterManager sharedManager] resetAchievementsWithCompletion:^(NSError *error) {
         NSLog(@"gcReset: %@", error);
     }];
+}
+
+- (NSString *)uuidForDevice {
+    return [FCUUID uuidForDevice];
 }
 
 #pragma mark - LifeCycleDelegate
