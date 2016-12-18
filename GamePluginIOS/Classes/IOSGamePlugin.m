@@ -13,8 +13,6 @@
 #import "IOSSystemUtil.h"
 #import "IOSAdvertiseHelper.h"
 #import "IOSAnalyticHelper.h"
-#import "IOSAmazonAWSHelper.h"
-#import "IOSFacebookHelper.h"
 
 #import "iRate.h"
 #import "AFNetworking.h"
@@ -52,8 +50,8 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     if (self = [super init]) {
         _advertiseInstance = [IOSAdvertiseHelper getInstance];
         _analyticInstance  = [IOSAnalyticHelper getInstance];
-        _facebookInstance  = [IOSFacebookHelper getInstance];
-        _amazonAwsInstance = [IOSAmazonAWSHelper getInstance];
+        _facebookInstance = [NSClassFromString(@"FacebookHelper") getInstance];
+        _amazonAwsInstance = [NSClassFromString(@"AmazonAWSHelper") getInstance];
         return self;
     }
     return nil;
