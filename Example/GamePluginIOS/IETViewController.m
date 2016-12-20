@@ -71,13 +71,16 @@
 #pragma mark common
     [dataList addObject:@{@"name":@"---------GamePlugin---------", @"func":^(){}}];
     [dataList addObject:@{@"name":@"setGenVerifyUrlCallFunc", @"func":^(){
-        [[IOSGamePlugin getInstance] setGenVerifyUrlHandler:^NSString *(NSDictionary *dict) {
-            NSString* userId    = [dict objectForKey:@"userId"];
-            NSString* productId = [dict objectForKey:@"productId"];
-            NSString* receipt   = [dict objectForKey:@"receipt"];
-            NSString* sign      = [[NSString stringWithFormat:@"iet_studio%@%@%@", userId, productId, receipt] MD5Digest];
-            NSString* url       = [NSString stringWithFormat:@"http://192.168.1.180:7999/mayaslots/iap_verify?user_id=%@&product_id=%@&receipt=%@&sign=%@", userId, productId, receipt, sign];
-            return url;
+        [[IOSGamePlugin getInstance] setVerifyIapHandler:^(NSDictionary *userInfo, void (^cb)(int, NSString *)) {
+            NSString* userId    = [userInfo objectForKey:@"userId"];
+            NSString* productId = [userInfo objectForKey:@"productId"];
+            NSString* receipt   = [userInfo objectForKey:@"receipt"];
+            NSLog(@"userId: %@", userId);
+            NSLog(@"productId: %@", productId);
+            NSLog(@"receipt: %@", receipt);
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC*5), dispatch_get_main_queue(), ^{
+                cb(1, @"Production");
+            });
         }];
     }}];
     [dataList addObject:@{@"name":@"doIap1", @"func":^(){

@@ -42,7 +42,7 @@ SINGLETON_DECLARE(IOSGamePlugin)
  *
  *  @param handler
  */
-- (void)setGenVerifyUrlHandler:(NSString*(^)(NSDictionary*))handler;
+- (void)setVerifyIapHandler:(void(^)(NSDictionary*, void(^)(int, NSString*)))handler;
 
 /**
  *  设置恢复购买回调函数

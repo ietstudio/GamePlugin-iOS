@@ -36,7 +36,7 @@
     id _facebookInstance;
     id _amazonAwsInstance;
     void(^_notifyHandler)(NSDictionary*);
-    NSString *(^_genVerifyUrlHandler)(NSDictionary *);
+    void (^_verifyIapHandler)(NSDictionary *, void(^)(int, NSString*));
     void(^_restoreHandler)(BOOL, NSString*, NSString*);
     void(^_iapHandler)(BOOL, NSString*);
     NSString* _iapSuccessState;
@@ -107,8 +107,8 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     _notifyHandler = handler;
 }
 
-- (void)setGenVerifyUrlHandler:(NSString *(^)(NSDictionary *))handler {
-    _genVerifyUrlHandler = handler;
+- (void)setVerifyIapHandler:(void (^)(NSDictionary *, void (^)(int, NSString *)))handler {
+    _verifyIapHandler = handler;
 }
 
 - (void)setRestoreHandler:(void (^)(BOOL, NSString *, NSString *))handler {
@@ -625,15 +625,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                        userInfo:(NSDictionary*)userInfo
                         success:(void (^)())successBlock
                         failure:(void (^)(NSError *))failureBlock {
-    NSString* url = _genVerifyUrlHandler(userInfo);
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/json", nil];
-    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
-        int state = [[responseObject objectForKey:@"state"] intValue];
-        NSString* msg = [responseObject objectForKey:@"msg"];
+    _verifyIapHandler(userInfo, ^(int state, NSString* msg){
         if (state == 1) {
             _iapSuccessState = msg;
             successBlock();
@@ -641,9 +633,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
             NSError* error = [NSError errorWithDomain:msg code:0 userInfo:nil];
             failureBlock(error);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"get url failed : %@", error);
-    }];
+    });
 }
 
 - (void)verifyTransaction:(SKPaymentTransaction *)transaction
@@ -676,7 +666,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
             }
         };
         // 如果没有设置生成验证url的回调函数，本地调用苹果接口验证
-        if (_genVerifyUrlHandler == nil) {
+        if (_verifyIapHandler == nil) {
             [self verifyLocalTransaction:transaction
                                 userInfo:userInfo
                                  success:_successBlock
