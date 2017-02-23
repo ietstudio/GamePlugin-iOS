@@ -59,7 +59,7 @@ PODS:
     - MBProgressHUD (~> 0.9.1)
     - NSLogger (~> 1.5.1)
     - Reachability (~> 3.2)
-  - GamePluginIOS (0.4.0):
+  - GamePluginIOS (0.4.3):
     - AFNetworking (~> 2.6.0)
     - Crashlytics
     - Fabric
@@ -69,6 +69,7 @@ PODS:
     - iRate (~> 1.11.4)
     - MD5Digest (~> 1.0.1)
     - RMStore (~> 0.7.1)
+    - UICKeyChainStore (~> 2.1.0)
   - iRate (1.11.6)
   - MBProgressHUD (0.9.2)
   - MD5Digest (1.0.2)
@@ -106,7 +107,7 @@ SPEC CHECKSUMS:
   Flurry-iOS-SDK: 7b3fe6c3344c82b73c4c84163652eada84fbfcf4
   GameCenterManager: e3a855e9db97b876a3a4a0605f5be30c6de9cebd
   GamePluginBase: 5149d3a7d38d640292b9594fc76bff4492fc2600
-  GamePluginIOS: b50ca1e3336cea2fd281515d1e3f5e3b4b08fab0
+  GamePluginIOS: e250c495290beb0bf9bcf5b4e85417c0c1ca1acd
   iRate: 61e558919c4a7fde63b3c22ebbd6c114a1eee658
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MD5Digest: b6d6b4b640a379c611d9828fe8f0e45dbaf88d2c

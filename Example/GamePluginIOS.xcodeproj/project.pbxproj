@@ -221,7 +221,6 @@
 				35DD7EF897DBEB1337AD1409 /* [CP] Copy Pods Resources */,
 				69A71E285998FDB2CD3CFF7A /* 📦 Embed Pods Frameworks */,
 				4C1E9D017EFC776B7D6C2005 /* 📦 Copy Pods Resources */,
-				C38982851D70427C006FC8FC /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -492,19 +491,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GamePluginIOS_Tests/Pods-GamePluginIOS_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		C38982851D70427C006FC8FC /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./Pods/Fabric/Fabric.framework/run 3d528f3dcdce40fb2259c27a683b395edb92e03e bb83dff31514a88c5854c19c07f539b82504e4f9f05b0561742c49b24f18d1a8";
 		};
 		DEED0F50B3C1F2376AC51B55 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

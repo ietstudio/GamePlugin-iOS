@@ -164,4 +164,14 @@ SINGLETON_DECLARE(IOSGamePlugin)
  */
 - (NSString*)uuidForDevice;
 
+/**
+ *  save data into keychain
+ */
+- (void)keychainSet:(NSString*)value forKey:(NSString*)key;
+
+/**
+ *  obtain data from keychain
+ */
+- (NSString*)keychainValueforKey:(NSString*)key;
+
 @end

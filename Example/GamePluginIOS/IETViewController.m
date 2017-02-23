@@ -187,6 +187,15 @@
     [dataList addObject:@{@"name":@"gcReset", @"func":^(){
         [[IOSGamePlugin getInstance] gcReset];
     }}];
+    [dataList addObject:@{@"name":@"uuidForDevice", @"func":^(){
+        NSLog(@"%@", [[IOSGamePlugin getInstance] uuidForDevice]);
+    }}];
+    [dataList addObject:@{@"name":@"keychainSetValueForKey", @"func":^(){
+        [[IOSGamePlugin getInstance] keychainSet:@"value" forKey:@"key"];
+    }}];
+    [dataList addObject:@{@"name":@"keychainValueforKey", @"func":^(){
+        NSLog(@"%@", [[IOSGamePlugin getInstance] keychainValueforKey:@"key"]);
+    }}];
 #pragma mark analytic
     [dataList addObject:@{@"name":@"---------Analytic---------", @"func":^(){}}];
     [dataList addObject:@{@"name":@"setAccoutInfo", @"func":^(){

@@ -22,6 +22,7 @@
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import "FCUUID.h"
+#import <UICKeyChainStore/UICKeyChainStore.h>
 
 #pragma mark - IOSGamePlugin
 
@@ -354,6 +355,18 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 
 - (NSString *)uuidForDevice {
     return [FCUUID uuidForDevice];
+}
+
+- (void)keychainSet:(NSString *)value forKey:(NSString *)key {
+    NSString *bundleId = [NSBundle mainBundle].bundleIdentifier;
+    UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:bundleId];
+    [keychain setString:value forKey:key];
+}
+
+- (NSString *)keychainValueforKey:(NSString *)key {
+    NSString *bundleId = [NSBundle mainBundle].bundleIdentifier;
+    UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:bundleId];
+    return [keychain stringForKey:key];
 }
 
 #pragma mark - LifeCycleDelegate

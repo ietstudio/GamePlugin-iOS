@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'GamePluginIOS'
-  s.version          = '0.4.3'
+  s.version          = '0.4.4'
   s.summary          = 'GamePluginIOS'
   s.description      = <<-DESC
 GamePluginIOS.
@@ -34,4 +34,5 @@ GamePluginIOS.
   s.dependency 'Fabric'
   s.dependency 'Crashlytics'
   s.dependency 'FCUUID'
+  s.dependency 'UICKeyChainStore', '~> 2.1.0'
 end
