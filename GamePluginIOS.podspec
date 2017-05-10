@@ -26,7 +26,7 @@ GamePluginIOS.
 
   s.dependency 'GamePluginBase'
 
-  s.dependency 'AFNetworking', '~> 2.6.0'
+  s.dependency 'AFNetworking', '~> 3.1.0'
   s.dependency 'MD5Digest', '~> 1.0.1'
   s.dependency 'RMStore', '~> 0.7.1'
   s.dependency 'iRate', '~> 1.11.4'

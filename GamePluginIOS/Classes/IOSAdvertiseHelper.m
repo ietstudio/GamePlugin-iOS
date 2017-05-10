@@ -229,30 +229,28 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
         [self setVideoAdNames:[adConfig objectForKey:@"Advertise_Video"]];
     }
     
-    // Step 3: create AFHTTPRequestOperation object with our request
-    AFHTTPRequestOperation *downloadRequest = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    
-    // Step 4: set handling for answer from server and errors with request
-    [downloadRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        // here we must create NSData object with received data...
-        NSData *data = [[NSData alloc] initWithData:responseObject];
-        // ... and save this object as file
-        // Here 'pathToFile' must be path to directory 'Documents' on your device + filename, of course
-        [data writeToFile:filePath atomically:YES];
-        // loaded server config
-        NSDictionary* adConfig = [NSDictionary dictionaryWithContentsOfFile:filePath];
-        if (adConfig != nil) {
-            [self setBannerAdName:[adConfig objectForKey:@"Advertise_Banner"]];
-            [self setSpotAdNames:[adConfig objectForKey:@"Advertise_Spot"]];
-            [self setVideoAdNames:[adConfig objectForKey:@"Advertise_Video"]];
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+
+    NSURLSessionDataTask *dataTask = [manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        if (error) {
+            NSLog(@"file downloading error : %@", [error localizedDescription]);
+        } else {
+            NSLog(@"%@ %@", response, responseObject);
+            NSData *data = [[NSData alloc] initWithData:responseObject];
+            // ... and save this object as file
+            // Here 'pathToFile' must be path to directory 'Documents' on your device + filename, of course
+            [data writeToFile:filePath atomically:YES];
+            // loaded server config
+            NSDictionary* adConfig = [NSDictionary dictionaryWithContentsOfFile:filePath];
+            if (adConfig != nil) {
+                [self setBannerAdName:[adConfig objectForKey:@"Advertise_Banner"]];
+                [self setSpotAdNames:[adConfig objectForKey:@"Advertise_Spot"]];
+                [self setVideoAdNames:[adConfig objectForKey:@"Advertise_Video"]];
+            }
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"file downloading error : %@", [error localizedDescription]);
     }];
-    
-    // Step 5: begin asynchronous download
-    [downloadRequest start];
-    
+    [dataTask resume];
     return YES;
 }
 
