@@ -170,18 +170,10 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                                                            [[IOSSystemUtil getInstance] hideLoading];
                                                                        }
                                                                        failure:^(SKPaymentTransaction *transaction, NSError *error) {
-#if DEBUG
-                                                                           NSString *message = [NSString stringWithFormat:[self localizationString:@"iap_failed"], error];
-                                                                           [[IOSSystemUtil getInstance] showAlertDialogWithTitle:[self localizationString:@"failure"]
-                                                                                                                         message:message
-                                                                                                                  cancelBtnTitle:[self localizationString:@"okay"]
-                                                                                                                  otherBtnTitles:nil
-                                                                                                                        callback:^(int buttonIdx) {
-                                                                                                                            _iapHandler(NO, message);
-                                                                                                                            _iapHandler = nil;
-                                                                                                                            [[IOSSystemUtil getInstance] hideLoading];
-                                                                                                                        }];
-#endif
+                                                                           NSString *message = [NSString stringWithFormat:@"%@", error];
+                                                                           _iapHandler(NO, message);
+                                                                           _iapHandler = nil;
+                                                                           [[IOSSystemUtil getInstance] hideLoading];
                                                                        }];
                                         } else {
                                             NSString* message = [self localizationString:@"iap_invalid_product"];
