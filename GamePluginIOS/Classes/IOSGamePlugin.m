@@ -170,6 +170,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                                                            [[IOSSystemUtil getInstance] hideLoading];
                                                                        }
                                                                        failure:^(SKPaymentTransaction *transaction, NSError *error) {
+#if DEBUG
                                                                            NSString *message = [NSString stringWithFormat:[self localizationString:@"iap_failed"], error];
                                                                            [[IOSSystemUtil getInstance] showAlertDialogWithTitle:[self localizationString:@"failure"]
                                                                                                                          message:message
@@ -180,9 +181,10 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                                                                                                             _iapHandler = nil;
                                                                                                                             [[IOSSystemUtil getInstance] hideLoading];
                                                                                                                         }];
+#endif
                                                                        }];
                                         } else {
-                                            NSString *message = [NSString stringWithFormat:[self localizationString:@"iap_invalid_product"], iapId];
+                                            NSString* message = [self localizationString:@"iap_invalid_product"];
                                             [[IOSSystemUtil getInstance] showAlertDialogWithTitle:[self localizationString:@"failure"]
                                                                                           message:message
                                                                                    cancelBtnTitle:[self localizationString:@"okay"]
@@ -194,7 +196,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                                                                          }];
                                         }
                                     } failure:^(NSError *error) {
-                                        NSString* message = [NSString stringWithFormat:[self localizationString:@"iap_request_failed"], error];
+                                        NSString* message = [self localizationString:@"iap_invalid_product"];
                                         [[IOSSystemUtil getInstance] showAlertDialogWithTitle:[self localizationString:@"failure"]
                                                                                       message:message
                                                                                cancelBtnTitle:[self localizationString:@"okay"]

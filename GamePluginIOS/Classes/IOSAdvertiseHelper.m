@@ -192,12 +192,12 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
         [advertiseHelper application:application didFinishLaunchingWithOptions:launchOptions];
     }
     
-    @"AMAdvertiseHelper",//admob
-    @"CBAdvertiseHelper",//chartboost
-    @"ALAdvertiseHelper",//applovin
-    @"UAAdvertiseHelper",//unityads
-    @"ACAdvertiseHelper",//adcolony
-    @"VGAdvertiseHelper",//vungle
+//    @"AMAdvertiseHelper",//admob
+//    @"CBAdvertiseHelper",//chartboost
+//    @"ALAdvertiseHelper",//applovin
+//    @"UAAdvertiseHelper",//unityads
+//    @"ACAdvertiseHelper",//adcolony
+//    @"VGAdvertiseHelper",//vungle
     // default helper
     [self setBannerAdName:@"AMAdvertiseHelper"];
     [self setSpotAdNames:@[@"AMAdvertiseHelper",
