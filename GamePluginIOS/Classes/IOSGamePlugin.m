@@ -14,7 +14,6 @@
 #import "IOSAdvertiseHelper.h"
 #import "IOSAnalyticHelper.h"
 
-#import "iRate.h"
 #import "AFNetworking.h"
 #import "NSString+MD5.h"
 #import "GameCenterManager.h"
@@ -203,16 +202,6 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                     }];
 }
 
-- (void)rate:(int)level {
-    if (level == 2) {
-        [[iRate sharedInstance] openRatingsPageInAppStore];
-    } else if (level == 1) {
-        [[iRate sharedInstance] promptForRating];
-    } else {
-        [[iRate sharedInstance] logEvent:NO];
-    }
-}
-
 - (BOOL)gcIsAvailable {
     return [[GameCenterManager sharedManager] checkGameCenterAvailability];
 }
@@ -385,24 +374,6 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     // GameCenter初始化
     [[GameCenterManager sharedManager] setupManager];
     [[GameCenterManager sharedManager] setDelegate:self];
-    
-    // iRate 评价条件
-    // 无论使用的程序的那个版本都可以评论
-    [iRate sharedInstance].onlyPromptIfLatestVersion = NO;
-    // Apple StoreID
-    [iRate sharedInstance].appStoreID = [[[IOSSystemUtil getInstance] getConfigValueWithKey:@"iRate_appStoreID"] intValue];
-    // 首次使用开始计算N天以上
-    [iRate sharedInstance].daysUntilPrompt   = [[[IOSSystemUtil getInstance] getConfigValueWithKey:@"iRate_daysUntilPrompt"] floatValue];
-    // app打开了N次以上
-    [iRate sharedInstance].usesUntilPrompt   = [[[IOSSystemUtil getInstance] getConfigValueWithKey:@"iRate_usesUntilPrompt"] intValue];
-    // 事件N次以上
-    [iRate sharedInstance].eventsUntilPrompt = [[[IOSSystemUtil getInstance] getConfigValueWithKey:@"iRate_eventsUntilPrompt"] intValue];
-    // 不显示不再提醒按钮
-    [iRate sharedInstance].cancelButtonLabel = [[IOSSystemUtil getInstance] getConfigValueWithKey:@"iRate_cancelButtonLabel"];
-    // 用户点击了稍后提醒以后，等待1天
-    [iRate sharedInstance].remindPeriod      = [[[IOSSystemUtil getInstance] getConfigValueWithKey:@"iRate_remindPeriod"] floatValue];
-    // 启动或者从后台恢复弹出评论
-    [iRate sharedInstance].promptAtLaunch = NO;
     
     // Crashlytics
 #ifndef DEBUG

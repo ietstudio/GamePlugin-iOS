@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'GamePluginIOS'
-  s.version          = '0.5.3'
+  s.version          = '0.5.4'
   s.summary          = 'GamePluginIOS'
   s.description      = <<-DESC
 GamePluginIOS.
@@ -29,7 +29,6 @@ GamePluginIOS.
   s.dependency 'AFNetworking', '~> 3.1.0'
   s.dependency 'MD5Digest', '~> 1.0.1'
   s.dependency 'RMStore', '~> 0.7.1'
-  s.dependency 'iRate', '~> 1.11.4'
   s.dependency 'GameCenterManager', '~> 5.3'
   s.dependency 'Fabric'
   s.dependency 'Crashlytics'

@@ -113,15 +113,6 @@
                                                                                     callback:nil];
                                    }];
     }}];
-    [dataList addObject:@{@"name":@"rate level=1", @"func":^(){
-        [[IOSGamePlugin getInstance] rate:1];
-    }}];
-    [dataList addObject:@{@"name":@"rate level=2", @"func":^(){
-        [[IOSGamePlugin getInstance] rate:2];
-    }}];
-    [dataList addObject:@{@"name":@"rate level=3", @"func":^(){
-        [[IOSGamePlugin getInstance] rate:3];
-    }}];
     [dataList addObject:@{@"name":@"gcIsAvailable", @"func":^(){
         NSLog(@"%@", NSStringFromBool([[IOSGamePlugin getInstance] gcIsAvailable]));
     }}];

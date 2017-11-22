@@ -61,13 +61,6 @@ SINGLETON_DECLARE(IOSGamePlugin)
 - (void)doIap:(NSString *)iapId userId:(NSString*)userId handler:(void(^)(BOOL result, NSString *msg))handler;
 
 /**
- *  评论
- *
- *  @param level 1-log/2-弹框/3-跳转
- */
-- (void)rate:(int)level;
-
-/**
  *  GameCenter是否可用
  *
  *  @return
