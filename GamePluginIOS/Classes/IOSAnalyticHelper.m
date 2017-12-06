@@ -77,6 +77,14 @@ SINGLETON_DEFINITION(IOSAnalyticHelper)
     }
 }
 
+- (void)charge:(SKPaymentTransaction *)transaction {
+    for (id<AnalyticDelegate> delegate in _delegates) {
+        if ([delegate respondsToSelector:@selector(charge:)]) {
+            [delegate charge:transaction];
+        }
+    }
+}
+
 - (void)reward:(double)coin :(int)type {
     for (id<AnalyticDelegate> delegate in _delegates) {
         [delegate reward:coin :type];

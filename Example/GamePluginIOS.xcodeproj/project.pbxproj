@@ -266,7 +266,7 @@
 				ORGANIZATIONNAME = gaoyang;
 				TargetAttributes = {
 					6003F589195388D20070C39A = {
-						DevelopmentTeam = MHC5UD4DS5;
+						DevelopmentTeam = 3XJA79VE76;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
@@ -641,14 +641,14 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = GamePluginIOS_Example.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = MHC5UD4DS5;
+				DEVELOPMENT_TEAM = 3XJA79VE76;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GamePluginIOS/GamePluginIOS-Prefix.pch";
 				INFOPLIST_FILE = "GamePluginIOS/GamePluginIOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ietstudio.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cardgamefree.blackjack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -662,14 +662,14 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = GamePluginIOS_Example.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = MHC5UD4DS5;
+				DEVELOPMENT_TEAM = 3XJA79VE76;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GamePluginIOS/GamePluginIOS-Prefix.pch";
 				INFOPLIST_FILE = "GamePluginIOS/GamePluginIOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ietstudio.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cardgamefree.blackjack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

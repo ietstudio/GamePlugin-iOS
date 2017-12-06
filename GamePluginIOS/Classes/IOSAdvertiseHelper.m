@@ -203,54 +203,12 @@ SINGLETON_DEFINITION(IOSAdvertiseHelper)
     [self setSpotAdNames:@[@"AMAdvertiseHelper",
                            @"CBAdvertiseHelper",
                            @"ALAdvertiseHelper"]];
-    [self setVideoAdNames:@[@"AMAdvertiseHelper", @"ACAdvertiseHelper", @"ALAdvertiseHelper", @"VGAdvertiseHelper", @"UAAdvertiseHelper", @"CBAdvertiseHelper"]];
-
-    NSString* fileServer = [[IOSSystemUtil getInstance] getConfigValueWithKey:FILE_SERVER];
-    NSString* bundleId = [[NSBundle mainBundle] bundleIdentifier];
-    NSString* adConfigUrl = [NSString stringWithFormat:@"%@/%@/ad_config.plist", fileServer, bundleId];
-    
-    // Step 1: create NSURL with full path to downloading file
-    // And create NSURLRequest object with our URL
-    NSURL *URL = [NSURL URLWithString:adConfigUrl];
-    NSURLRequest *request = [NSURLRequest requestWithURL:URL];
-    
-    // Step 2: save downloading file's name
-    // For example our fileName string is equal to 'jrqzn4q29vwy4mors75s_400x400.png'
-    NSString *fileName = [URL lastPathComponent];
-    NSArray * paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString * documentsDirectory = [paths objectAtIndex:0];
-    NSString * filePath = [documentsDirectory stringByAppendingPathComponent:fileName];
-
-    // cached server config
-    NSDictionary* adConfig = [NSDictionary dictionaryWithContentsOfFile:filePath];
-    if (adConfig != nil) {
-        [self setBannerAdName:[adConfig objectForKey:@"Advertise_Banner"]];
-        [self setSpotAdNames:[adConfig objectForKey:@"Advertise_Spot"]];
-        [self setVideoAdNames:[adConfig objectForKey:@"Advertise_Video"]];
-    }
-    
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
-
-    NSURLSessionDataTask *dataTask = [manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
-        if (error) {
-            NSLog(@"file downloading error : %@", [error localizedDescription]);
-        } else {
-            NSLog(@"%@ %@", response, responseObject);
-            NSData *data = [[NSData alloc] initWithData:responseObject];
-            // ... and save this object as file
-            // Here 'pathToFile' must be path to directory 'Documents' on your device + filename, of course
-            [data writeToFile:filePath atomically:YES];
-            // loaded server config
-            NSDictionary* adConfig = [NSDictionary dictionaryWithContentsOfFile:filePath];
-            if (adConfig != nil) {
-                [self setBannerAdName:[adConfig objectForKey:@"Advertise_Banner"]];
-                [self setSpotAdNames:[adConfig objectForKey:@"Advertise_Spot"]];
-                [self setVideoAdNames:[adConfig objectForKey:@"Advertise_Video"]];
-            }
-        }
-    }];
-    [dataTask resume];
+    [self setVideoAdNames:@[@"AMAdvertiseHelper",
+                            @"ACAdvertiseHelper",
+                            @"ALAdvertiseHelper",
+                            @"VGAdvertiseHelper",
+                            @"UAAdvertiseHelper",
+                            @"CBAdvertiseHelper"]];
     return YES;
 }
 
