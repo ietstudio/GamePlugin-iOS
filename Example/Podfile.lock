@@ -15,14 +15,11 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - ALAssetsLibrary-CustomPhotoAlbum (1.3.1)
-  - AnalyticFL (0.1.4):
+  - AnalyticFL (0.1.5):
     - Flurry-iOS-SDK/FlurrySDK (~> 7.10.0)
     - GamePluginBase
-  - AnalyticTD (0.1.6):
+  - AnalyticTD (0.1.7):
     - GamePluginBase
-  - AnalyticUM (0.1.1):
-    - GamePluginBase
-    - UMengAnalytics (~> 4.0.4)
   - BlocksKit (2.2.5):
     - BlocksKit/All (= 2.2.5)
   - BlocksKit/All (2.2.5):
@@ -38,22 +35,47 @@ PODS:
   - BlocksKit/UIKit (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
+  - Bolts (1.2.2):
+    - Bolts/AppLinks (= 1.2.2)
+    - Bolts/Tasks (= 1.2.2)
+  - Bolts/AppLinks (1.2.2):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.2.2)
   - Crashlytics (3.9.3):
     - Fabric (~> 1.7.2)
   - Fabric (1.7.2)
+  - Facebook (0.1.8):
+    - Bolts (~> 1.2.0)
+    - FBSDKCoreKit (~> 4.5.1)
+    - FBSDKLoginKit (~> 4.5.1)
+    - FBSDKShareKit (~> 4.5.1)
+    - GamePluginBase
+  - FBSDKCoreKit (4.5.1):
+    - Bolts (~> 1.1)
+    - FBSDKCoreKit/arc (= 4.5.1)
+    - FBSDKCoreKit/no-arc (= 4.5.1)
+  - FBSDKCoreKit/arc (4.5.1):
+    - Bolts (~> 1.1)
+  - FBSDKCoreKit/no-arc (4.5.1):
+    - Bolts (~> 1.1)
+    - FBSDKCoreKit/arc
+  - FBSDKLoginKit (4.5.1):
+    - FBSDKCoreKit
+  - FBSDKShareKit (4.5.1):
+    - FBSDKCoreKit
   - FCUUID (1.3.1):
     - UICKeyChainStore (~> 2.1.0)
   - Flurry-iOS-SDK/FlurrySDK (7.10.0)
   - GameCenterManager (5.3):
     - Reachability
-  - GamePluginBase (0.2.5):
+  - GamePluginBase (0.2.6):
     - ALAssetsLibrary-CustomPhotoAlbum (~> 1.3.0)
     - BlocksKit (~> 2.2.5)
     - MBProgressHUD (~> 0.9.1)
     - NSLogger (~> 1.5.1)
     - Reachability (~> 3.2)
     - UICKeyChainStore
-  - GamePluginIOS (0.5.5):
+  - GamePluginIOS (0.5.6):
     - AFNetworking (~> 3.1.0)
     - Crashlytics
     - Fabric
@@ -73,12 +95,11 @@ PODS:
     - RMStore/Core (= 0.7.1)
   - RMStore/Core (0.7.1)
   - UICKeyChainStore (2.1.1)
-  - UMengAnalytics (4.0.4)
 
 DEPENDENCIES:
   - AnalyticFL
   - AnalyticTD
-  - AnalyticUM
+  - Facebook
   - GamePluginIOS (from `../`)
 
 EXTERNAL SOURCES:
@@ -88,25 +109,28 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   ALAssetsLibrary-CustomPhotoAlbum: 299ea3f58e988b453b19c595859354e562814c93
-  AnalyticFL: 9e008a2fe4c7a0ed72bd2ac1aa3c873d444327b0
-  AnalyticTD: d8631d2f85cb839ba595f0623643278dc43c76cd
-  AnalyticUM: 8380b8dc364d0b04ba547dff75711e8d6b9a3997
+  AnalyticFL: 70e0df9466e954a31f9d0692774a88f6d914aade
+  AnalyticTD: 30eacbfccfd06f9caaafcb2f132e20620399eb5b
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
+  Bolts: 20a2bd788273360cb1e31530dc19b8544eef2544
   Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
   Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
+  Facebook: cbcb98d26f573579a68174d94764637beec2ab1e
+  FBSDKCoreKit: f335eaf6865e1e1597dee1debfb533045500da47
+  FBSDKLoginKit: 225cc9a388a92916ee3f3bb14422017b6e44b65b
+  FBSDKShareKit: 642034ac9f30793dfd897851b724bb4281750266
   FCUUID: bb054fc90cd7cd99320f9f6ff8e130fe607fba05
   Flurry-iOS-SDK: e6975df9e57010d582bf9bed0f6312553cf24bc2
   GameCenterManager: e3a855e9db97b876a3a4a0605f5be30c6de9cebd
-  GamePluginBase: 854352898a74117e50719ad1507ea12ed8f60a89
-  GamePluginIOS: a30417ad19946a180f3130e9d9cd999f891a7303
+  GamePluginBase: 736b1e51149da8e9911c066962566ae3bf41e758
+  GamePluginIOS: f643704277591d8701f7205c6a68f9a094e35c59
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MD5Digest: b6d6b4b640a379c611d9828fe8f0e45dbaf88d2c
   NSLogger: 5ed223a2436df96244e033be750656dacdeec034
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   RMStore: 64ba13a9c040e3b7572765d169f77175cd3243e5
   UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
-  UMengAnalytics: 4ed421fb3bca63b26fc13c947743cabf3831d199
 
-PODFILE CHECKSUM: 0defd29a8c493c8b42e6a9979ae5c8f2143bae10
+PODFILE CHECKSUM: 3fd85372ad78b9b72e05e2e00a0cdd115695a0fa
 
 COCOAPODS: 1.2.1

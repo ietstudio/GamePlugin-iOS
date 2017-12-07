@@ -164,13 +164,14 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                             [[RMStore defaultStore] addPayment:iapId
                                                                           user:userId
                                                                        success:^(SKPaymentTransaction *transaction) {
-                                                                           [_analyticInstance charge:transaction];
+                                                                           if ([_iapSuccessState isEqualToString:@"Production"]) {
+                                                                               [_analyticInstance charge:transaction];
+                                                                           }
                                                                            _iapHandler(YES, _iapSuccessState);
                                                                            _iapHandler = nil;
                                                                            [[IOSSystemUtil getInstance] hideLoading];
                                                                        }
                                                                        failure:^(SKPaymentTransaction *transaction, NSError *error) {
-                                                                           [_analyticInstance charge:transaction];
                                                                            _iapHandler(NO, [NSString stringWithFormat:@"%@", error]);
                                                                            _iapHandler = nil;
                                                                            [[IOSSystemUtil getInstance] hideLoading];

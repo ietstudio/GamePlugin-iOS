@@ -26,9 +26,14 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>prefs</string>
+				<string></string>
 			</array>
 		</dict>
 	</array>
+	<key>FacebookAppID</key>
+	<string></string>
+	<key>FacebookDisplayName</key>
+	<string></string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>Fabric</key>
@@ -85,10 +90,6 @@
 		<string>5060303255467539</string>
 		<key>TencentGDT_SpotId</key>
 		<string>8060605255860558</string>
-		<key>UmengChannal</key>
-		<string>Test</string>
-		<key>UmengKey</key>
-		<string></string>
 		<key>UnityAds_GameId</key>
 		<string>1076796</string>
 		<key>UnityAds_ZoneId</key>
@@ -122,6 +123,13 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
 	</array>
 </dict>
 </plist>

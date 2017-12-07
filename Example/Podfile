@@ -8,9 +8,8 @@ target 'GamePluginIOS_Example' do
 
   # 统计
   pod 'AnalyticTD'
-  pod 'AnalyticUM'
   pod 'AnalyticFL'
-
+  
   # 广告
   # pod 'AdvertiseAdmob'
   # pod 'AdvertiseAdcolony'
@@ -22,7 +21,7 @@ target 'GamePluginIOS_Example' do
   # pod 'AdvertiseTencentGDT'
   
   # Facebook
-  # pod 'Facebook'
+  pod 'Facebook'
 
   # 亚马逊AWS
   # pod 'AmazonAWS'
