@@ -633,7 +633,10 @@ SINGLETON_DEFINITION(IOSGamePlugin)
             if (_restoreHandler != nil) {
                 _restoreHandler(YES, _iapSuccessState, productId);
                 successBlock();
+                return;
             }
+            // TODO: 不应该走到这里，内购成功了，但是没有给用户加上
+            successBlock();
         };
         void(^_failureBlock)(NSError*) = ^(NSError* error) {
             if (_iapHandler != nil) {
@@ -643,7 +646,9 @@ SINGLETON_DEFINITION(IOSGamePlugin)
             if (_restoreHandler != nil) {
                 _restoreHandler(NO, [NSString stringWithFormat:@"Payment Failed! %@", error], productId);
                 failureBlock(error);
+                return;
             }
+            failureBlock(error);
         };
         // 如果没有设置生成验证url的回调函数，本地调用苹果接口验证
         if (_verifyIapHandler == nil) {
