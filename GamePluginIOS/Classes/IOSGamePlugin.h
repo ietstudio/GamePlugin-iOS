@@ -167,4 +167,12 @@ SINGLETON_DECLARE(IOSGamePlugin)
  */
 - (NSString*)keychainValueforKey:(NSString*)key;
 
+
+/**
+ check device is jailbroken or not
+
+ @return is jailbroken
+ */
+- (BOOL)isJailbroken;
+
 @end

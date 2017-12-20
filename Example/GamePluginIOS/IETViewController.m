@@ -187,6 +187,9 @@
     [dataList addObject:@{@"name":@"keychainValueforKey", @"func":^(){
         NSLog(@"%@", [[IOSGamePlugin getInstance] keychainValueforKey:@"key"]);
     }}];
+    [dataList addObject:@{@"name":@"isJailbroken", @"func":^(){
+        [[IOSSystemUtil getInstance] showMessage:[[IOSGamePlugin getInstance] isJailbroken] ? @"YES" : @"NO"];
+    }}];
 #pragma mark analytic
     [dataList addObject:@{@"name":@"---------Analytic---------", @"func":^(){}}];
     [dataList addObject:@{@"name":@"setAccoutInfo", @"func":^(){

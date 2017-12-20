@@ -22,6 +22,7 @@
 #import <Crashlytics/Crashlytics.h>
 #import "FCUUID.h"
 #import <UICKeyChainStore/UICKeyChainStore.h>
+#import "JailbrokenDetector.h"
 
 #pragma mark - IOSGamePlugin
 
@@ -352,6 +353,10 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     NSString *bundleId = [NSBundle mainBundle].bundleIdentifier;
     UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:bundleId];
     return [keychain stringForKey:key];
+}
+
+- (BOOL)isJailbroken {
+    return [JailbrokenDetector isDeviceJailbroken];
 }
 
 #pragma mark - LifeCycleDelegate

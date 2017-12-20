@@ -75,16 +75,18 @@ PODS:
     - NSLogger (~> 1.5.1)
     - Reachability (~> 3.2)
     - UICKeyChainStore
-  - GamePluginIOS (0.5.6):
+  - GamePluginIOS (0.5.7):
     - AFNetworking (~> 3.1.0)
     - Crashlytics
     - Fabric
     - FCUUID
     - GameCenterManager (~> 5.3)
     - GamePluginBase
+    - JailbrokenDetector (~> 0.1.0)
     - MD5Digest (~> 1.0.1)
     - RMStore (~> 0.7.1)
     - UICKeyChainStore (~> 2.1.0)
+  - JailbrokenDetector (0.1.0)
   - MBProgressHUD (0.9.2)
   - MD5Digest (1.0.2)
   - NSLogger (1.5.1):
@@ -123,7 +125,8 @@ SPEC CHECKSUMS:
   Flurry-iOS-SDK: e6975df9e57010d582bf9bed0f6312553cf24bc2
   GameCenterManager: e3a855e9db97b876a3a4a0605f5be30c6de9cebd
   GamePluginBase: 736b1e51149da8e9911c066962566ae3bf41e758
-  GamePluginIOS: f643704277591d8701f7205c6a68f9a094e35c59
+  GamePluginIOS: 5f90328977d66a58fe8f4d58b065d22f962d6c7a
+  JailbrokenDetector: 876cc32cf9ab41e249d44a5f2916a689137a4e33
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MD5Digest: b6d6b4b640a379c611d9828fe8f0e45dbaf88d2c
   NSLogger: 5ed223a2436df96244e033be750656dacdeec034
