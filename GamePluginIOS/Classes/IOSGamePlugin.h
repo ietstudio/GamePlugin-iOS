@@ -7,49 +7,53 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LifeCycleDelegate.h"
 #import "Macros.h"
 
-@interface IOSGamePlugin : NSObject <LifeCycleDelegate>
+@interface IOSGamePlugin : NSObject <UIApplicationDelegate>
 
 SINGLETON_DECLARE(IOSGamePlugin)
+
+#pragma mark - Fabric
 
 /**
  *  崩溃日志收集
  *
- *  @param log
+ *  @param log          日志
  */
 - (void)crashReportLog:(NSString*)log;
 
 /**
  *  崩溃错误收集
  *
- *  @param reason
- *  @param traceback
+ *  @param reason       错误原因
+ *  @param traceback    错误堆栈信息
  */
 - (void)crashReportExceptionWithReason:(NSString*)reason andTraceback:(NSArray*)traceback;
 
+#pragma mark - Notification
 
 /**
  推送通知回调
 
- @param handler
+ @param handler         推送通知回调
  */
 - (void)setNotificationHandler:(void(^)(NSDictionary*))handler;
 
+#pragma mark - In-app-purchase
+
 /**
  *  设置生成验证支付URL回调函数
- *
- *  @param handler
+ *  已废弃
+ *  @param handler      内购验证回调
  */
-- (void)setVerifyIapHandler:(void(^)(NSDictionary*, void(^)(int, NSString*)))handler;
+- (void)setVerifyIapHandler:(void(^)(NSDictionary*, void(^)(int, NSString*)))handler __attribute__((deprecated));
 
 /**
  *  设置恢复购买回调函数
- *
- *  @param handler
+ *  已废弃
+ *  @param handler      内购恢复回调
  */
-- (void)setRestoreHandler:(void(^)(BOOL result, NSString *msg, NSString *iapId))handler;
+- (void)setRestoreHandler:(void(^)(BOOL result, NSString *msg, NSString *iapId))handler __attribute__((deprecated));
 
 /**
  *  充值
@@ -59,6 +63,8 @@ SINGLETON_DECLARE(IOSGamePlugin)
  *  @param handler 回调
  */
 - (void)doIap:(NSString *)iapId userId:(NSString*)userId handler:(void(^)(BOOL result, NSString *msg))handler;
+
+#pragma mark - Game Center
 
 /**
  *  GameCenter是否可用
@@ -151,28 +157,5 @@ SINGLETON_DECLARE(IOSGamePlugin)
  *  GameCenter重置
  */
 - (void)gcReset;
-
-/**
- *  uuid
- */
-- (NSString*)uuidForDevice;
-
-/**
- *  save data into keychain
- */
-- (void)keychainSet:(NSString*)value forKey:(NSString*)key;
-
-/**
- *  obtain data from keychain
- */
-- (NSString*)keychainValueforKey:(NSString*)key;
-
-
-/**
- check device is jailbroken or not
-
- @return is jailbroken
- */
-- (BOOL)isJailbroken;
 
 @end

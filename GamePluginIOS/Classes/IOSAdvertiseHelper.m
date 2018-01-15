@@ -9,7 +9,7 @@
 #import "IOSAdvertiseHelper.h"
 #import "IOSAnalyticHelper.h"
 #import "IOSSystemUtil.h"
-#import "AFNetworking.h"
+//#import "AFNetworking.h"
 
 @implementation IOSAdvertiseHelper
 {

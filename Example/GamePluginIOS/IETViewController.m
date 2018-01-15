@@ -10,7 +10,7 @@
 #import "IOSGamePlugin.h"
 #import "IOSAnalyticHelper.h"
 #import "IOSSystemUtil.h"
-#import "NSString+MD5.h"
+//#import "NSString+MD5.h"
 
 @interface IETViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -177,18 +177,6 @@
     }}];
     [dataList addObject:@{@"name":@"gcReset", @"func":^(){
         [[IOSGamePlugin getInstance] gcReset];
-    }}];
-    [dataList addObject:@{@"name":@"uuidForDevice", @"func":^(){
-        NSLog(@"%@", [[IOSGamePlugin getInstance] uuidForDevice]);
-    }}];
-    [dataList addObject:@{@"name":@"keychainSetValueForKey", @"func":^(){
-        [[IOSGamePlugin getInstance] keychainSet:@"value" forKey:@"key"];
-    }}];
-    [dataList addObject:@{@"name":@"keychainValueforKey", @"func":^(){
-        NSLog(@"%@", [[IOSGamePlugin getInstance] keychainValueforKey:@"key"]);
-    }}];
-    [dataList addObject:@{@"name":@"isJailbroken", @"func":^(){
-        [[IOSSystemUtil getInstance] showMessage:[[IOSGamePlugin getInstance] isJailbroken] ? @"YES" : @"NO"];
     }}];
 #pragma mark analytic
     [dataList addObject:@{@"name":@"---------Analytic---------", @"func":^(){}}];

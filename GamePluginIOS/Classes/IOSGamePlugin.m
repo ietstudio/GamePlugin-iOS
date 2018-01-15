@@ -14,15 +14,12 @@
 #import "IOSAdvertiseHelper.h"
 #import "IOSAnalyticHelper.h"
 
-#import "AFNetworking.h"
-#import "NSString+MD5.h"
+//#import "AFNetworking.h"
 #import "GameCenterManager.h"
 #import "RMStore.h"
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
-#import "FCUUID.h"
 #import <UICKeyChainStore/UICKeyChainStore.h>
-#import "JailbrokenDetector.h"
 
 #pragma mark - IOSGamePlugin
 
@@ -339,26 +336,6 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     }];
 }
 
-- (NSString *)uuidForDevice {
-    return [FCUUID uuidForDevice];
-}
-
-- (void)keychainSet:(NSString *)value forKey:(NSString *)key {
-    NSString *bundleId = [NSBundle mainBundle].bundleIdentifier;
-    UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:bundleId];
-    [keychain setString:value forKey:key];
-}
-
-- (NSString *)keychainValueforKey:(NSString *)key {
-    NSString *bundleId = [NSBundle mainBundle].bundleIdentifier;
-    UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:bundleId];
-    return [keychain stringForKey:key];
-}
-
-- (BOOL)isJailbroken {
-    return [JailbrokenDetector isDeviceJailbroken];
-}
-
 #pragma mark - LifeCycleDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -565,7 +542,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                        NSDictionary* receipt = [jsonResponse objectForKey:@"receipt"];
                                        // 验证程序包名
                                        NSString* bundle_id = [receipt objectForKey:@"bundle_id"];
-                                       if (![bundle_id isEqualToString:[[IOSSystemUtil getInstance] getBundleId]]) {
+                                       if (![bundle_id isEqualToString:[[IOSSystemUtil getInstance] getAppBundleId]]) {
                                            NSString* msg = [NSString stringWithFormat:@"bundle_id is wrong"];
                                            callback([NSError errorWithDomain:msg code:0 userInfo:nil]);
                                            return;
