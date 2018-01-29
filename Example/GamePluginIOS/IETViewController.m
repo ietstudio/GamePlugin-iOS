@@ -61,7 +61,7 @@
 #pragma mark common
     [dataList addObject:@{@"name":@"---------GamePlugin---------", @"func":^(){}}];
     [dataList addObject:@{@"name":@"setIapVerifyUrl:sign", @"func":^(){
-        [[IOSGamePlugin getInstance] setIapVerifyUrl:@"https://blackjack.cardgamefree.com/misc/iapOrderVerify" sign:@"$#^&GD198$(HJhwdP:["];
+        [[IOSGamePlugin getInstance] setIapVerifyUrl:@"" sign:@""];
     }}];
     [dataList addObject:@{@"name":@"canDoIap", @"func":^(){
         [[IOSSystemUtil getInstance] showMessage:NSStringFromBool([[IOSGamePlugin getInstance] canDoIap])];
