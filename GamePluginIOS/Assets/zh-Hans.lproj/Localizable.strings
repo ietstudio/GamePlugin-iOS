@@ -18,4 +18,3 @@
 "iap_exist" = "有一笔交易正在进行，请稍候。";
 "iap_request_failed" = "商品信息获取失败。";
 "iap_invalid_product" = "商品Id不可用。";
-"bad_network" = "当前网络状态不稳定，请耐心等待。";

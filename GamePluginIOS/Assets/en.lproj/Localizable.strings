@@ -18,4 +18,3 @@
 "iap_exist" = "There is an payment in progress, try again later.";
 "iap_request_failed" = "Request Products Failed.";
 "iap_invalid_product" = "The Product Identifier is invalid.";
-"bad_network" = "Your network is not good, please be patient.";

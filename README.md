@@ -27,3 +27,7 @@ gaoyang, gaoyang@joycastle.mobi
 ## License
 
 GamePluginIOS is available under the MIT license. See the LICENSE file for more info.
+
+## TODO:
+
+- 库项目里面的自定义事件，在UserDefault内的key添加前缀

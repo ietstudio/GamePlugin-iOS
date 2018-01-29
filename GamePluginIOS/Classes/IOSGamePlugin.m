@@ -14,12 +14,14 @@
 #import "IOSAdvertiseHelper.h"
 #import "IOSAnalyticHelper.h"
 
-//#import "AFNetworking.h"
-#import "GameCenterManager.h"
-#import "RMStore.h"
+#import <NSString+MD5.h>
+
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
-#import <UICKeyChainStore/UICKeyChainStore.h>
+#import <RMStore/RMStore.h>
+#import <GameCenterManager/GameCenterManager.h>
+
+#define GamePlugin_IapInfo @"GamePlugin_IapInfo"
 
 #pragma mark - IOSGamePlugin
 
@@ -33,16 +35,18 @@
     id _analyticInstance;
     id _facebookInstance;
     id _amazonAwsInstance;
-    void(^_notifyHandler)(NSDictionary*);
-    void (^_verifyIapHandler)(NSDictionary *, void(^)(int, NSString*));
-    void(^_restoreHandler)(BOOL, NSString*, NSString*);
-    void(^_iapHandler)(BOOL, NSString*);
-    NSString* _iapSuccessState;
+
+    NSString* _iapVerifyUrl;
+    NSString* _iapVerifySign;
+    NSString* _iapResultEnv;
+    void (^_iapResultHandler)(BOOL, NSString*);
+
+    void (^_notifyHandler)(NSDictionary*);
 }
 
 SINGLETON_DEFINITION(IOSGamePlugin)
 
-#pragma mark private
+#pragma mark - private
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -66,22 +70,22 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 
 - (void)openSystemSettings:(NSString*)rootName {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"prefs:root=%@", rootName]];
-    if ([[UIApplication sharedApplication] canOpenURL:url])
+    if (![[UIApplication sharedApplication] canOpenURL:url])
     {
-        [[UIApplication sharedApplication] openURL:url];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"App-Prefs:root=%@", rootName]];
     }
+    [[UIApplication sharedApplication] openURL:url];
 }
 
 - (void)openAppicationSettings {
     if (&UIApplicationOpenSettingsURLString != nil) {
-        NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-        [[UIApplication sharedApplication] openURL:url];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
     } else {
         NSLog(@"UIApplicationOpenSettingsURLString is not available in current iOS version");
     }
 }
 
-#pragma mark public
+#pragma mark - public
 
 - (void)crashReportLog:(NSString *)log {
     CLS_LOG(@"%@", log);
@@ -105,101 +109,99 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     _notifyHandler = handler;
 }
 
-- (void)setVerifyIapHandler:(void (^)(NSDictionary *, void (^)(int, NSString *)))handler {
-    _verifyIapHandler = handler;
+- (void)setIapVerifyUrl:(NSString *)url sign:(NSString *)sign {
+    _iapVerifyUrl = url;
+    _iapVerifySign = sign;
 }
 
-- (void)setRestoreHandler:(void (^)(BOOL, NSString *, NSString *))handler {
-    _restoreHandler = handler;
-}
-
-- (void)doIap:(NSString *)iapId userId:(NSString *)userId handler:(void (^)(BOOL, NSString *))handler {
-    // check internet is avaliable
+- (BOOL)canDoIap {
+    // 检测当前网络是否可用
     if ([[[IOSSystemUtil getInstance] getNetworkState] isEqualToString:@"NotReachable"]) {
         [[IOSSystemUtil getInstance] showAlertDialogWithTitle:[self localizationString:@"failure"]
                                                       message:[self localizationString:@"check_internet"]
-                                               cancelBtnTitle:[self localizationString:@"later"]
-                                               otherBtnTitles:@[[self localizationString:@"okay"]]
-                                                     callback:^(int buttonIdx) {
-                                                         if (buttonIdx == 1) {
-                                                             [self openSystemSettings:@""];
-                                                         }
-                                                         handler(NO, @"Can not access internet");
-                                                     }];
-        return;
+                                               cancelBtnTitle:[self localizationString:@"okay"]
+                                               otherBtnTitles:nil
+                                                     callback:nil];
+        return NO;
     }
-    // check user disable in-app purchase
+    // 检测用户是否禁用了IAP
     if (![RMStore canMakePayments]) {
         [[IOSSystemUtil getInstance] showAlertDialogWithTitle:[self localizationString:@"failure"]
                                                       message:[self localizationString:@"check_lockiap"]
-                                               cancelBtnTitle:[self localizationString:@"later"]
-                                               otherBtnTitles:@[[self localizationString:@"okay"]]
-                                                     callback:^(int buttonIdx) {
-                                                         if (buttonIdx == 1) {
-                                                             [self openSystemSettings:@"General"];
-                                                         }
-                                                         handler(NO, @"Can not make payments");
-                                                     }];
-        return;
+                                               cancelBtnTitle:[self localizationString:@"okay"]
+                                               otherBtnTitles:nil
+                                                     callback:nil];
+        return NO;
     }
-    // check in-app purchase is in progress
-    if ([[SKPaymentQueue defaultQueue].transactions count] > 0) {
+    // 检测当前是否有一笔正在进行的订单
+    if ([[SKPaymentQueue defaultQueue].transactions count] > 0 || _iapResultHandler != nil || [self getSuspensiveIap] != nil) {
         [[IOSSystemUtil getInstance] showAlertDialogWithTitle:[self localizationString:@"failure"]
                                                       message:[self localizationString:@"iap_exist"]
                                                cancelBtnTitle:[self localizationString:@"okay"]
                                                otherBtnTitles:nil
-                                                     callback:^(int buttonIdx) {
-                                                         handler(NO, @"Already has a payment");
-                                                     }];
+                                                     callback:nil];
+        return NO;
+    }
+    return YES;
+}
+
+- (void)doIap:(NSString *)iapId userId:(NSString *)userId handler:(void (^)(BOOL, NSString *))handler {
+    if (![self canDoIap]) {
+        handler(NO, @"can not make payment");
         return;
     }
+    _iapResultHandler = handler;
     [[IOSSystemUtil getInstance] showLoadingWithMessage:@"Loading..."];
-    _iapHandler = handler;
-    NSSet* iapIdsSet = [[NSSet alloc] initWithObjects:iapId, nil];
-    [[RMStore defaultStore] requestProducts:iapIdsSet
+    [[RMStore defaultStore] requestProducts:[[NSSet alloc] initWithObjects:iapId, nil]
                                     success:^(NSArray *products, NSArray *invalidProductIdentifiers) {
                                         if ([products count] > 0) {
                                             [[RMStore defaultStore] addPayment:iapId
                                                                           user:userId
                                                                        success:^(SKPaymentTransaction *transaction) {
-                                                                           if ([_iapSuccessState isEqualToString:@"Production"]) {
-                                                                               [_analyticInstance charge:transaction];
+                                                                           if ([_iapResultEnv isEqualToString:@"Production"]) {
+                                                                               [[IOSAnalyticHelper getInstance] charge:transaction];
                                                                            }
-                                                                           _iapHandler(YES, _iapSuccessState);
-                                                                           _iapHandler = nil;
+                                                                           _iapResultHandler(YES, _iapResultEnv);
+                                                                           _iapResultHandler = nil;
                                                                            [[IOSSystemUtil getInstance] hideLoading];
                                                                        }
                                                                        failure:^(SKPaymentTransaction *transaction, NSError *error) {
-                                                                           _iapHandler(NO, [NSString stringWithFormat:@"%@", error]);
-                                                                           _iapHandler = nil;
+                                                                           _iapResultHandler(NO, [NSString stringWithFormat:@"%@", error]);
+                                                                           _iapResultHandler = nil;
                                                                            [[IOSSystemUtil getInstance] hideLoading];
                                                                        }];
                                         } else {
-                                            NSString* message = [self localizationString:@"iap_invalid_product"];
                                             [[IOSSystemUtil getInstance] showAlertDialogWithTitle:[self localizationString:@"failure"]
-                                                                                          message:message
+                                                                                          message:[self localizationString:@"iap_invalid_product"]
                                                                                    cancelBtnTitle:[self localizationString:@"okay"]
                                                                                    otherBtnTitles:nil
                                                                                          callback:^(int buttonIdx) {
-                                                                                             _iapHandler(NO, message);
-                                                                                             _iapHandler = nil;
+                                                                                             _iapResultHandler(NO, @"invalid product id");
+                                                                                             _iapResultHandler = nil;
                                                                                              [[IOSSystemUtil getInstance] hideLoading];
                                                                                          }];
                                         }
                                     } failure:^(NSError *error) {
-                                        NSString* message = [self localizationString:@"iap_invalid_product"];
                                         [[IOSSystemUtil getInstance] showAlertDialogWithTitle:[self localizationString:@"failure"]
-                                                                                      message:message
+                                                                                      message:[self localizationString:@"iap_request_failed"]
                                                                                cancelBtnTitle:[self localizationString:@"okay"]
                                                                                otherBtnTitles:nil
                                                                                      callback:^(int buttonIdx) {
-                                                                                         _iapHandler(NO, message);
-                                                                                         _iapHandler = nil;
+                                                                                         _iapResultHandler(NO, @"request product failed");
+                                                                                         _iapResultHandler = nil;
                                                                                          [[IOSSystemUtil getInstance] hideLoading];
                                                                                      }];
                                         
                                         
                                     }];
+}
+
+- (NSDictionary *)getSuspensiveIap {
+    return (NSDictionary*)[[IOSSystemUtil getInstance] objectForKey:GamePlugin_IapInfo];
+}
+
+- (void)setSuspensiveIap:(NSDictionary *)iapInfo {
+    [[IOSSystemUtil getInstance] setObject:iapInfo forKey:GamePlugin_IapInfo];
 }
 
 - (BOOL)gcIsAvailable {
@@ -336,7 +338,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     }];
 }
 
-#pragma mark - LifeCycleDelegate
+#pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // 验证是否设置了 window 和 controller 并赋值
@@ -385,12 +387,11 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     [_facebookInstance applicationDidBecomeActive:application];
     [_amazonAwsInstance applicationDidBecomeActive:application];
     
+    // 清除图标角标
+    [[IOSSystemUtil getInstance] setBadgeNum:0];
+    
     // 取消已注册的本地通知
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    NSArray *notifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
-    for (UILocalNotification * notification in notifications) {
-        [[UIApplication sharedApplication] cancelLocalNotification:notification];
-    }
+    [[IOSSystemUtil getInstance] calcelAllNotifications];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -484,14 +485,12 @@ SINGLETON_DEFINITION(IOSGamePlugin)
 
 #pragma mark - RMStoreReceiptVerificator
 
-- (void)verifyLocalTransaction:(SKPaymentTransaction *)transaction
-                      userInfo:(NSDictionary*)userInfo
-                       success:(void (^)())successBlock
-                       failure:(void (^)(NSError *))failureBlock {
+- (void)localVerifyTransactionUserId:(NSString*)userId
+                           productId:(NSString*)productId
+                             receipt:(NSString*)receipt
+                             success:(void (^)())successBlock
+                             failure:(void (^)(NSError *))failureBlock {
     // Create the JSON object that describes the request
-    NSString* userId    = [userInfo objectForKey:@"userId"];
-    NSString* productId = [userInfo objectForKey:@"productId"];
-    NSString* receipt   = [userInfo objectForKey:@"receipt"];
     void(^ __block wblock)(NSString*, void(^)(NSError*));
     void(^block)(NSString*, void(^)(NSError*)) = ^(NSString* url, void(^callback)(NSError*)) {
         NSError *error;
@@ -572,30 +571,75 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                                      userInfo:nil];
                     failureBlock(error);
                 } else {
-                    _iapSuccessState = @"ProductionSandbox";
+                    _iapResultEnv = @"ProductionSandbox";
                     successBlock();
                 }
             });
         } else {
-            _iapSuccessState = @"Production";
+            _iapResultEnv = @"Production";
             successBlock();
         }
     });
 }
 
-- (void)verifyRemoteTransaction:(SKPaymentTransaction *)transaction
-                       userInfo:(NSDictionary*)userInfo
-                        success:(void (^)())successBlock
-                        failure:(void (^)(NSError *))failureBlock {
-    _verifyIapHandler(userInfo, ^(int state, NSString* msg){
-        if (state == 1) {
-            _iapSuccessState = msg;
-            successBlock();
-        } else {
-            NSError* error = [NSError errorWithDomain:msg code:0 userInfo:nil];
-            failureBlock(error);
-        }
-    });
+- (void)serverVerifyTransactionUserId:(NSString*)userId
+                            productId:(NSString*)productId
+                              receipt:(NSString*)receipt
+                              success:(void (^)())successBlock
+                              failure:(void (^)(NSError *))failureBlock {
+    // 开始验证
+    [[IOSAnalyticHelper getInstance] onEvent:@"VerifyStart" eventData:@{@"name":productId}];
+    NSMutableDictionary* postData = [NSMutableDictionary dictionary];
+    NSString *sign = [[NSString stringWithFormat:@"%@%@%@", _iapVerifySign, receipt, userId] MD5Digest];
+    [postData setObject:receipt forKey:@"receipt"];
+    [postData setObject:userId forKey:@"token"];
+    [postData setObject:sign forKey:@"sign"];
+    [[IOSSystemUtil getInstance] sendRequest:@"post"
+                                         url:_iapVerifyUrl
+                                        data:postData
+                                     handler:^(BOOL result, NSDictionary *resp) {
+                                         if (!result) {
+                                             [[IOSAnalyticHelper getInstance] onEvent:@"VerifyFailed" eventData:@{@"name":productId, @"reason":@"connect error"}];
+                                             // 接口请求失败，过5秒重试
+                                             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                                                 [self serverVerifyTransactionUserId:userId
+                                                                           productId:productId
+                                                                             receipt:receipt
+                                                                             success:successBlock
+                                                                             failure:failureBlock];
+                                             });
+                                             return;
+                                         }
+                                         if ([resp objectForKey:@"errCode"] != nil) {
+                                             int errCode = [[resp objectForKey:@"errCode"] intValue];
+                                             NSString* reason = [NSString stringWithFormat:@"verify error: %d", errCode];
+                                             [[IOSAnalyticHelper getInstance] onEvent:@"VerifyFailed" eventData:@{@"name":productId, @"reason":reason}];
+                                             // 未知错误，过5秒重试
+                                             if (errCode == 1) {
+                                                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                                                     [self serverVerifyTransactionUserId:userId
+                                                                               productId:productId
+                                                                                 receipt:receipt
+                                                                                 success:successBlock
+                                                                                 failure:failureBlock];
+                                                 });
+                                             } else {
+                                                 failureBlock([NSError errorWithDomain:@"IapVerifyDomain" code:0 userInfo:@{NSLocalizedDescriptionKey:reason}]);
+                                             }
+                                         } else {
+                                             NSString* environment = [resp objectForKey:@"environment"];
+                                             NSString* sign = [resp objectForKey:@"sign"];
+                                             NSString* mySign = [[NSString stringWithFormat:@"%@%@%@", _iapVerifySign, receipt, environment] MD5Digest];
+                                             if (![mySign isEqualToString:sign]) {
+                                                 NSString* reason = [NSString stringWithFormat:@"sign error"];
+                                                 [[IOSAnalyticHelper getInstance] onEvent:@"VerifyFailed" eventData:@{@"name":productId, @"reason":reason}];
+                                                 failureBlock([NSError errorWithDomain:@"IapVerifyDomain" code:0 userInfo:@{NSLocalizedDescriptionKey:reason}]);
+                                             } else {
+                                                 [[IOSAnalyticHelper getInstance] onEvent:@"VerifySuccess" eventData:@{@"name":productId}];
+                                                 successBlock();
+                                             }
+                                         }
+                                     }];
 }
 
 - (void)verifyTransaction:(SKPaymentTransaction *)transaction
@@ -603,46 +647,32 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                   failure:(void (^)(NSError *))failureBlock {
     void(^block)(NSString*, NSString*, NSString*) = ^(NSString* productId, NSString* userId, NSString* receipt){
         userId = userId==nil?@"unknow":userId;
-        NSMutableDictionary* userInfo = [NSMutableDictionary dictionary];
-        [userInfo setObject:userId forKey:@"userId"];
-        [userInfo setObject:productId forKey:@"productId"];
-        [userInfo setObject:receipt forKey:@"receipt"];
         void(^_successBlock)() = ^() {
-            if (_iapHandler != nil) {
-                successBlock();
-                return;
+            if (_iapResultHandler == nil) {
+                // 存储未处理订单
+                NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+                [dict setObject:_iapResultEnv forKey:@"environment"];
+                [dict setObject:productId forKey:@"productId"];
+                [self setSuspensiveIap:dict];
             }
-            if (_restoreHandler != nil) {
-                _restoreHandler(YES, _iapSuccessState, productId);
-                successBlock();
-                return;
-            }
-            // TODO: 不应该走到这里，内购成功了，但是没有给用户加上
             successBlock();
         };
         void(^_failureBlock)(NSError*) = ^(NSError* error) {
-            if (_iapHandler != nil) {
-                failureBlock(error);
-                return;
-            }
-            if (_restoreHandler != nil) {
-                _restoreHandler(NO, [NSString stringWithFormat:@"Payment Failed! %@", error], productId);
-                failureBlock(error);
-                return;
-            }
             failureBlock(error);
         };
-        // 如果没有设置生成验证url的回调函数，本地调用苹果接口验证
-        if (_verifyIapHandler == nil) {
-            [self verifyLocalTransaction:transaction
-                                userInfo:userInfo
-                                 success:_successBlock
-                                 failure:_failureBlock];
+        // 如果没有设置内购验证的url和sign，本地调用苹果接口验证
+        if (_iapVerifyUrl == nil || _iapVerifySign == nil) {
+            [self localVerifyTransactionUserId:userId
+                                     productId:productId
+                                       receipt:receipt
+                                       success:_successBlock
+                                       failure:_failureBlock];
         } else {
-            [self verifyRemoteTransaction:transaction
-                                 userInfo:userInfo
-                                  success:_successBlock
-                                  failure:_failureBlock];
+            [self serverVerifyTransactionUserId:userId
+                                      productId:productId
+                                        receipt:receipt
+                                        success:_successBlock
+                                        failure:_failureBlock];
         }
     };
     // 获取产品id

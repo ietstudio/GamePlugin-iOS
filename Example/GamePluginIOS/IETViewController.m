@@ -40,15 +40,6 @@
 }
 
 - (void)initDataList {
-    
-    // 内购恢复
-    [[IOSGamePlugin getInstance] setRestoreHandler:^(BOOL result, NSString *msg, NSString *iapId) {
-        [[IOSSystemUtil getInstance] showAlertDialogWithTitle:NSStringFromBool(result)
-                                                      message:[NSString stringWithFormat:@"%@:%@", msg, iapId]
-                                               cancelBtnTitle:@"ok"
-                                               otherBtnTitles:nil
-                                                     callback:nil];
-    }];
     // 推送回调
     [[IOSGamePlugin getInstance] setNotificationHandler:^(NSDictionary *userInfo) {
         [[IOSSystemUtil getInstance] showAlertDialogWithTitle:@"Open From Notification"
@@ -57,7 +48,6 @@
                                                otherBtnTitles:nil
                                                      callback:nil];
     }];
-    
     NSMutableArray* dataList = [NSMutableArray array];
 #pragma mark systemutil
     [dataList addObject:@{@"name":@"---------SystemUtil---------", @"func":^(){}}];
@@ -70,20 +60,13 @@
     }}];
 #pragma mark common
     [dataList addObject:@{@"name":@"---------GamePlugin---------", @"func":^(){}}];
-    [dataList addObject:@{@"name":@"setGenVerifyUrlCallFunc", @"func":^(){
-        [[IOSGamePlugin getInstance] setVerifyIapHandler:^(NSDictionary *userInfo, void (^cb)(int, NSString *)) {
-            NSString* userId    = [userInfo objectForKey:@"userId"];
-            NSString* productId = [userInfo objectForKey:@"productId"];
-            NSString* receipt   = [userInfo objectForKey:@"receipt"];
-            NSLog(@"userId: %@", userId);
-            NSLog(@"productId: %@", productId);
-            NSLog(@"receipt: %@", receipt);
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC*5), dispatch_get_main_queue(), ^{
-                cb(1, @"Production");
-            });
-        }];
+    [dataList addObject:@{@"name":@"setIapVerifyUrl:sign", @"func":^(){
+        [[IOSGamePlugin getInstance] setIapVerifyUrl:@"https://blackjack.cardgamefree.com/misc/iapOrderVerify" sign:@"$#^&GD198$(HJhwdP:["];
     }}];
-    [dataList addObject:@{@"name":@"doIap1", @"func":^(){
+    [dataList addObject:@{@"name":@"canDoIap", @"func":^(){
+        [[IOSSystemUtil getInstance] showMessage:NSStringFromBool([[IOSGamePlugin getInstance] canDoIap])];
+    }}];
+    [dataList addObject:@{@"name":@"doIap", @"func":^(){
         NSString *iapId = @"blackjack.chip1";
         [[IOSGamePlugin getInstance] doIap:iapId
                                     userId:@"guest"
@@ -98,20 +81,11 @@
                                                                                     callback:nil];
                                    }];
     }}];
-    [dataList addObject:@{@"name":@"doIap2", @"func":^(){
-        NSString *iapId = @"blackjack.chip5";
-        [[IOSGamePlugin getInstance] doIap:iapId
-                                    userId:@"guest"
-                                   handler:^(BOOL result, NSString *msg) {
-                                       if (!result) {
-                                           return;
-                                       }
-                                       [[IOSSystemUtil getInstance] showAlertDialogWithTitle:NSStringFromBool(result)
-                                                                                     message:[NSString stringWithFormat:@"%@:%@", msg, iapId]
-                                                                              cancelBtnTitle:@"ok"
-                                                                              otherBtnTitles:nil
-                                                                                    callback:nil];
-                                   }];
+    [dataList addObject:@{@"name":@"getSuspensiveIap", @"func":^(){
+        NSLog(@"%@", [NSString stringWithFormat:@"%@", [[IOSGamePlugin getInstance] getSuspensiveIap]]);
+    }}];
+    [dataList addObject:@{@"name":@"setSuspensiveIap", @"func":^(){
+        [[IOSGamePlugin getInstance] setSuspensiveIap:nil];
     }}];
     [dataList addObject:@{@"name":@"gcIsAvailable", @"func":^(){
         NSLog(@"%@", NSStringFromBool([[IOSGamePlugin getInstance] gcIsAvailable]));

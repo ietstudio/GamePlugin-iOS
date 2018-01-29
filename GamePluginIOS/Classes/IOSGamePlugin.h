@@ -42,18 +42,17 @@ SINGLETON_DECLARE(IOSGamePlugin)
 #pragma mark - In-app-purchase
 
 /**
- *  设置生成验证支付URL回调函数
- *  已废弃
- *  @param handler      内购验证回调
+ 设置内购验证Url和签名
+
+ @param url url
+ @param sign sign
  */
-- (void)setVerifyIapHandler:(void(^)(NSDictionary*, void(^)(int, NSString*)))handler __attribute__((deprecated));
+- (void)setIapVerifyUrl:(NSString*)url sign:(NSString*)sign;
 
 /**
- *  设置恢复购买回调函数
- *  已废弃
- *  @param handler      内购恢复回调
+ 是否可以发起购买
  */
-- (void)setRestoreHandler:(void(^)(BOOL result, NSString *msg, NSString *iapId))handler __attribute__((deprecated));
+- (BOOL)canDoIap;
 
 /**
  *  充值
@@ -64,57 +63,71 @@ SINGLETON_DECLARE(IOSGamePlugin)
  */
 - (void)doIap:(NSString *)iapId userId:(NSString*)userId handler:(void(^)(BOOL result, NSString *msg))handler;
 
+/**
+ 获取未处理的订单
+
+ @return 订单信息
+ */
+- (NSDictionary*)getSuspensiveIap;
+
+/**
+ 更新未处理的订单
+
+ @param iapInfo 订单信息
+ */
+- (void)setSuspensiveIap:(NSDictionary*)iapInfo;
+
 #pragma mark - Game Center
 
 /**
  *  GameCenter是否可用
  *
- *  @return
+ *  @return 是否可用
  */
 - (BOOL)gcIsAvailable;
 
 /**
  *  GameCenter获取用户信息
  *
- *  @return
+ *  @return 用户信息
  */
 - (NSDictionary*)gcGetPlayerInfo;
 
 /**
  *  GameCenter获取用户好友
  *
- *  @param handler
+ *  @param handler 用户好友
  */
 - (void)gcGetPlayerFriends:(void(^)(NSArray*))handler;
 
 /**
  *  GameCenter获取用户头像
  *
- *  @param playerId
- *  @param handler  
+ *  @param playerId 玩家Id
+ *  @param handler 回调
  */
 - (void)gcGetPlayerAvatarWithId:(NSString*)playerId handler:(void(^)(NSString*))handler;
 
 /**
  *  GameCenter获取用户信息
  *
- *  @param playerIds
- *  @param handler
+ *  @param playerIds 玩家Id
+ *  @param handler 回调
  */
 - (void)gcGetPlayerInfoWithIds:(NSArray*)playerIds handler:(void(^)(NSArray*))handler;
 
 /**
  *  GameCenter获取用户信息
  *
- *  @param playerId
- *  @param handler
+ *  @param playerId 玩家Id
+ *  @param handler 回调
  */
 - (void)gcGetPlayerInfoWithId:(NSString*)playerId handler:(void(^)(NSDictionary*))handler;
 
 /**
  *  GameCenter获取挑战
  *
- *  @param handler
+ *  @param handler 回调
  */
 - (void)gcGetChallengesWithhandler:(void(^)(NSArray* challenges))handler;
 
