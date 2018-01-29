@@ -636,6 +636,7 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                                  failureBlock([NSError errorWithDomain:@"IapVerifyDomain" code:0 userInfo:@{NSLocalizedDescriptionKey:reason}]);
                                              } else {
                                                  [[IOSAnalyticHelper getInstance] onEvent:@"VerifySuccess" eventData:@{@"name":productId}];
+                                                 _iapResultEnv = environment;
                                                  successBlock();
                                              }
                                          }
