@@ -158,9 +158,6 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                             [[RMStore defaultStore] addPayment:iapId
                                                                           user:userId
                                                                        success:^(SKPaymentTransaction *transaction) {
-                                                                           if ([_iapResultEnv isEqualToString:@"Production"]) {
-                                                                               [[IOSAnalyticHelper getInstance] charge:transaction];
-                                                                           }
                                                                            _iapResultHandler(YES, _iapResultEnv);
                                                                            _iapResultHandler = nil;
                                                                            [[IOSSystemUtil getInstance] hideLoading];
@@ -554,9 +551,6 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                                            return;
                                        }
                                        callback(nil);
-                                       // send analytic event
-                                       NSString* label = [NSString stringWithFormat:@"%@,%@", userId, productId];
-                                       [[IOSAnalyticHelper getInstance] onEvent:@"Purchase" Label:label];
                                    });
                                }];
     };
@@ -655,6 +649,10 @@ SINGLETON_DEFINITION(IOSGamePlugin)
                 [dict setObject:_iapResultEnv forKey:@"environment"];
                 [dict setObject:productId forKey:@"productId"];
                 [self setSuspensiveIap:dict];
+            }
+            // 统计内购收入
+            if ([_iapResultEnv isEqualToString:@"Production"]) {
+                [[IOSAnalyticHelper getInstance] charge:transaction];
             }
             successBlock();
         };
