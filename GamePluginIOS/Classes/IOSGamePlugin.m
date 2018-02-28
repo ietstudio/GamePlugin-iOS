@@ -335,6 +335,18 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     }];
 }
 
+- (void)rateGame {
+    NSString* appleId = [[IOSSystemUtil getInstance] getConfigValueWithKey:Apple_ID];
+    NSString* templateReviewURL;
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+        templateReviewURL = @"itms-apps://itunes.apple.com/app/idAPP_ID?action=write-review";
+    } else {
+        templateReviewURL = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=APP_ID";
+    }
+    templateReviewURL = [templateReviewURL stringByReplacingOccurrencesOfString:@"APP_ID" withString:appleId];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:templateReviewURL]];
+}
+
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {

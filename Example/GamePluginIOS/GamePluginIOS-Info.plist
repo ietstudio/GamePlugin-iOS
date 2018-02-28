@@ -96,6 +96,8 @@
 		<string>reward_video</string>
 		<key>Vungle_AppId</key>
 		<string>55168853c82307202f000078</string>
+		<key>Apple_ID</key>
+		<string>1147994901</string>
 	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -130,7 +132,7 @@
 		<string>fb-messenger-api</string>
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
-        <string>cydia</string>
+		<string>cydia</string>
 	</array>
 </dict>
 </plist>

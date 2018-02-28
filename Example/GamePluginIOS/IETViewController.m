@@ -152,6 +152,9 @@
     [dataList addObject:@{@"name":@"gcReset", @"func":^(){
         [[IOSGamePlugin getInstance] gcReset];
     }}];
+    [dataList addObject:@{@"name":@"rateGame", @"func":^(){
+        [[IOSGamePlugin getInstance] rateGame];
+    }}];
 #pragma mark analytic
     [dataList addObject:@{@"name":@"---------Analytic---------", @"func":^(){}}];
     [dataList addObject:@{@"name":@"setAccoutInfo", @"func":^(){

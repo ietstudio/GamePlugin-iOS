@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "Macros.h"
 
+#define Apple_ID        @"Apple_ID"
+
 @interface IOSGamePlugin : NSObject <UIApplicationDelegate>
 
 SINGLETON_DECLARE(IOSGamePlugin)
@@ -170,5 +172,10 @@ SINGLETON_DECLARE(IOSGamePlugin)
  *  GameCenter重置
  */
 - (void)gcReset;
+
+/**
+ *  评论游戏
+ */
+- (void)rateGame;
 
 @end
