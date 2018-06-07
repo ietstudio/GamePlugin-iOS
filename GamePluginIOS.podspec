@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'GamePluginIOS'
-  s.version          = '0.6.3'
+  s.version          = '0.6.4'
   s.summary          = 'GamePluginIOS'
   s.description      = <<-DESC
 GamePluginIOS.
@@ -17,7 +17,7 @@ GamePluginIOS.
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'gaoyang' => 'gaoyang@joycastle.mobi' }
   s.source           = { :git => 'https://github.com/ietstudio/GamePluginIOS.git', :tag => s.version.to_s }
-  s.ios.deployment_target = '7.0'
+  s.ios.deployment_target = '8.0'
 
   s.source_files = 'GamePluginIOS/Classes/**/*'
   s.resource_bundles = {

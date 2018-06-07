@@ -68,15 +68,6 @@ SINGLETON_DEFINITION(IOSGamePlugin)
     return NSLocalizedStringFromTableInBundle(key, nil, bundle, nil);
 }
 
-- (void)openSystemSettings:(NSString*)rootName {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"prefs:root=%@", rootName]];
-    if (![[UIApplication sharedApplication] canOpenURL:url])
-    {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"App-Prefs:root=%@", rootName]];
-    }
-    [[UIApplication sharedApplication] openURL:url];
-}
-
 - (void)openAppicationSettings {
     if (&UIApplicationOpenSettingsURLString != nil) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
