@@ -22,7 +22,7 @@ pod "GamePluginIOS"
 
 ## Author
 
-gaoyang, gaoyang@joycastle.mobi
+gaoyang
 
 ## License
 
